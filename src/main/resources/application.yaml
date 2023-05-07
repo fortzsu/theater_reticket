@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/reticket?serverTimezone=UTC
+#    username: root
+#    password: test1234
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    database: MYSQL
+#    show-sql: true
+#    generate-ddl: true
+#    hibernate:
+#            ddl-auto: create-drop
+#    properties:
+#      hibernate:
+#        show_sql: false
+#        format_sql: false
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#  sql:
+#    init:
+#      mode: always
+
+#docker run -d --name mysql-server -e MYSQL_ROOT_PASSWORD=test1234 -p 3306:3306 -v mysqldata:/var/lib/mysql mysql:8.0
+spring:
+  datasource:
+    url: jdbc:h2:mem:reticket
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
