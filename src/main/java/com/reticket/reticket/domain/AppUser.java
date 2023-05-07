@@ -1,0 +1,110 @@
+package com.reticket.reticket.domain;
+
+import com.reticket.reticket.domain.enums.AppUserType;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class AppUser {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type")
+    private AppUserType appUserType;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
+    private List<Ticket> tickets = new ArrayList<>();
+
+
+    public AppUser() {
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public AppUserType getAppUserType() {
+        return appUserType;
+    }
+
+    public void setAppUserType(String appUserType) {
+        switch (appUserType) {
+            case "Super Admin":
+                this.appUserType = AppUserType.SUPER_ADMIN;
+                break;
+            case "Theatre Admin":
+                this.appUserType = AppUserType.THEATRE_ADMIN;
+                break;
+            case "Theatre User":
+                this.appUserType = AppUserType.THEATRE_USER;
+                break;
+            case "Theatre Viewer":
+                this.appUserType = AppUserType.THEATRE_VIEWER;
+                break;
+            default:
+                this.appUserType = AppUserType.GUEST;
+        }
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+
+}
