@@ -10,6 +10,7 @@ import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,13 +50,13 @@ public class ReportService {
         } else {
             criteriaResultDto.setSearchPathName(searchThePath(reportFilterDto));
         }
-//        if(reportFilterDto.isExportToSheet()) {
-//            try {
-//                this.googleService.exportDataToSheet(criteriaResultDto);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        if(reportFilterDto.isExportToSheet()) {
+            try {
+                this.googleService.exportDataToSheet(criteriaResultDto);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return criteriaResultDto;
     }
 
