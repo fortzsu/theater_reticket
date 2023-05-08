@@ -8,7 +8,6 @@ public enum AppUserType {
     THEATRE_VIEWER("TheatreViewer"),
     THEATRE_USER("TheatreUser");
 
-//    private static final String ROLE_PREFIX = "ROLE_";
 
     private final String displayName;
 

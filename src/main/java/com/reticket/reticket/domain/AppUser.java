@@ -1,10 +1,13 @@
 package com.reticket.reticket.domain;
 
 import com.reticket.reticket.domain.enums.AppUserType;
+import com.reticket.reticket.security.UserRole;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class AppUser {
@@ -21,9 +24,11 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
     private AppUserType appUserType;
-
     @Column(name = "username")
     private String username;
+
+    @Column(name = "user_email")
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -31,6 +36,8 @@ public class AppUser {
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
     private List<Ticket> tickets = new ArrayList<>();
 
+    @ManyToMany
+    private Set<UserRole> roles = new HashSet<>();
 
     public AppUser() {
     }
@@ -107,4 +114,19 @@ public class AppUser {
     }
 
 
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
