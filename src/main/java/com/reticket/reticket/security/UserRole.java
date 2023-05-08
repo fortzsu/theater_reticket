@@ -13,7 +13,7 @@ public class UserRole {
     @Column(name = "role_id")
     private Long id;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.STRING) //Calls ToString (ROLE Prefix added)
     @Column(name = "role_name", nullable = false, unique = true)
     private RoleEnum roleEnum;
 
