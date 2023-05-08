@@ -8,6 +8,8 @@ public enum AppUserType {
     THEATRE_VIEWER("TheatreViewer"),
     THEATRE_USER("TheatreUser");
 
+//    private static final String ROLE_PREFIX = "ROLE_";
+
     private final String displayName;
 
     AppUserType(String displayName) {
@@ -17,4 +19,6 @@ public enum AppUserType {
     public String getDisplayName() {
         return displayName;
     }
+
+
 }

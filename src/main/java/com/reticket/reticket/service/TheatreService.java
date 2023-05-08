@@ -16,6 +16,7 @@ public class TheatreService {
 
     private final TheatreRepository theatreRepository;
 
+
     @Autowired
     public TheatreService(TheatreRepository theatreRepository) {
         this.theatreRepository = theatreRepository;

@@ -31,3 +31,7 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+  security:
+    user:
+      name: user
+      password: f2aefde0-6aae-4618-a5cf-a42d9bc70f98
