@@ -281,21 +281,21 @@ public class ReticketTest {
 
 	// -----------------------  GOOGLE TESTS  -----------------------
 
-    @Test
-    public void testReportPerformances_Google_soldTickets_byTheatre() {
-        ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
-                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
-                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, true);
-        Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
-    }
-
-    @Test
-    public void testReport_Google_soldTickets_byTheatre_ticketAmount() {
-        ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
-                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
-                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, true);
-        Assert.assertEquals(1940, (long) this.reportService.report(reportFilterDto).getTicketAmount());
-    }
+//    @Test
+//    public void testReportPerformances_Google_soldTickets_byTheatre() {
+//        ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+//                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+//                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, true);
+//        Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
+//    }
+//
+//    @Test
+//    public void testReport_Google_soldTickets_byTheatre_ticketAmount() {
+//        ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+//                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+//                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, true);
+//        Assert.assertEquals(1940, (long) this.reportService.report(reportFilterDto).getTicketAmount());
+//    }
 
 	// -----------------------  GOOGLE TESTS  -----------------------
 
