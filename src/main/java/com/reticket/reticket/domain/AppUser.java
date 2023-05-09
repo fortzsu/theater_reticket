@@ -4,9 +4,11 @@ import com.reticket.reticket.domain.enums.AppUserType;
 import com.reticket.reticket.security.UserRole;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class AppUser implements UserDetails {
@@ -63,7 +65,22 @@ public class AppUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        List<GrantedAuthority> userRoles = this.roles.stream()
+                .map(role -> role.getRoleEnum().toString())
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        List<GrantedAuthority> userAuthorities = this.roles.stream()
+                .flatMap(role -> role.getAuthorities().stream()
+                        .map(authority -> authority.getAuthorityEnum().toString())
+                        .map(SimpleGrantedAuthority::new)).collect(Collectors.toList());
+
+        authorities.addAll(userRoles);
+        authorities.addAll(userAuthorities);
+
+        return authorities;
     }
 
     public String getFirstName() {
