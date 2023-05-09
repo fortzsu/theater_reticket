@@ -29,7 +29,7 @@ public class TicketActionService {
     public boolean ticketAction(List<TicketActionDto> ticketActionDtoList) {
         boolean flag = true;
         for (TicketActionDto ticketActionDto : ticketActionDtoList) {
-            AppUser appUser = this.appUserService.findByUserName(ticketActionDto.getUsername());
+            AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
             for (Long ticketId : ticketActionDto.getTicketId()) {
                 Ticket ticket = this.ticketService.findByTicketId(ticketId);
                 ticket.setAppUser(appUser);

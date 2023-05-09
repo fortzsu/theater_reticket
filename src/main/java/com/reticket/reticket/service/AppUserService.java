@@ -8,6 +8,9 @@ import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AppUserService {
+public class AppUserService implements UserDetailsService {
 
     private final AppUserRepository appUserRepository;
     private final TicketService ticketService;
@@ -27,13 +30,14 @@ public class AppUserService {
     private final AddressService addressService;
     private final PlayRepository playRepository;
     private final ContributorRepository contributorRepository;
-        private final PerformanceRepository performanceRepository;
+    private final PerformanceRepository performanceRepository;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheatreService theatreService, AuditoriumService auditoriumService,
-                          AddressService addressService, PlayRepository playRepository, ContributorRepository contributorRepository, PerformanceRepository performanceRepository) {
+                          AddressService addressService, PlayRepository playRepository,
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -61,12 +65,12 @@ public class AppUserService {
         return appUser;
     }
 
-    public AppUser findByUserName(String username) {
+    public AppUser findByUsername(String username) {
         return this.appUserRepository.findByUsername(username);
     }
 
     public void likePlay(String username, Long playId) {
-        AppUser appUser = findByUserName(username);
+        AppUser appUser = findByUsername(username);
         Play play = this.playService.findById(playId);
         play.addAppUser(appUser);
     }
@@ -113,7 +117,7 @@ public class AppUserService {
 
     public List<ListTicketDto> listTickets(String username) {
         List<ListTicketDto> list = new ArrayList<>();
-        AppUser appUser = findByUserName(username);
+        AppUser appUser = findByUsername(username);
         List<Ticket> tickets = this.ticketService.findTicketByAppUserId(appUser);
         for (Ticket ticket : tickets) {
             Performance performance = this.performanceService.findPerformanceById(ticket.getPerformance().getId());
@@ -131,5 +135,10 @@ public class AppUserService {
             list.add(listTicketDto);
         }
         return list;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.findByUsername(username);
     }
 }
