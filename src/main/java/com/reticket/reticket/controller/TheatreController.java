@@ -29,8 +29,6 @@ public class TheatreController {
     @PostMapping
     public ResponseEntity createTheatre(@RequestBody TheatreSaveDto theatreSaveDto, Authentication authentication) {
         theatreService.save(theatreSaveDto);
-//        User principal = (User) authentication.getPrincipal();
-//        System.out.println(principal.getUsername());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

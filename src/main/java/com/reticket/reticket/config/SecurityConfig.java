@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -19,9 +18,12 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private AppUserService appUserService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public SecurityConfig(AppUserService appUserService) {
+    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder) {
         this.appUserService = appUserService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -40,14 +42,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(appUserService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
-    }
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

@@ -37,8 +37,8 @@ public class AppUser implements UserDetails {
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
     private List<Ticket> tickets = new ArrayList<>();
 
-    @ManyToMany
-    private Set<UserRole> roles = new HashSet<>();
+//    @ManyToMany
+//    private Set<UserRole> roles = new HashSet<>();
 
     public AppUser() {
     }
@@ -72,18 +72,18 @@ public class AppUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        List<GrantedAuthority> userRoles = this.roles.stream()
-                .map(role -> role.getRoleEnum().toString())
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+//        List<GrantedAuthority> userRoles = this.roles.stream()
+//                .map(role -> role.getRoleEnum().toString())
+//                .map(SimpleGrantedAuthority::new)
+//                .collect(Collectors.toList());
+//
+//        List<GrantedAuthority> userAuthorities = this.roles.stream()
+//                .flatMap(role -> role.getAuthorities().stream()
+//                        .map(authority -> authority.getAuthorityEnum().toString())
+//                        .map(SimpleGrantedAuthority::new)).collect(Collectors.toList());
 
-        List<GrantedAuthority> userAuthorities = this.roles.stream()
-                .flatMap(role -> role.getAuthorities().stream()
-                        .map(authority -> authority.getAuthorityEnum().toString())
-                        .map(SimpleGrantedAuthority::new)).collect(Collectors.toList());
-
-        authorities.addAll(userRoles);
-        authorities.addAll(userAuthorities);
+//        authorities.addAll(userRoles);
+//        authorities.addAll(userAuthorities);
 
         return authorities;
     }
@@ -160,13 +160,13 @@ public class AppUser implements UserDetails {
     }
 
 
-    public Set<UserRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
-    }
+//    public Set<UserRole> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Set<UserRole> roles) {
+//        this.roles = roles;
+//    }
 
     public String getEmail() {
         return email;

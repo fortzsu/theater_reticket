@@ -33,14 +33,14 @@ public class AppUserService implements UserDetailsService {
     private final PlayRepository playRepository;
     private final ContributorRepository contributorRepository;
     private final PerformanceRepository performanceRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheatreService theatreService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
-                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder) {
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository,
+                          PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -51,8 +51,7 @@ public class AppUserService implements UserDetailsService {
         this.playRepository = playRepository;
         this.contributorRepository = contributorRepository;
         this.performanceRepository = performanceRepository;
-        this.passwordEncoder = passwordEncoder;
-        appUserRepository.saveAll(FakerUtils.generateDummyUsers(10, passwordEncoder));
+        appUserRepository.saveAll(FakerUtils.generateDummyUsers(1, passwordEncoder));
     }
 
     public void save(List<AppUserSaveDto> appUserSaveDtoList) {
@@ -144,7 +143,8 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return this.findByUsername(username);
-        return new AppUser("user", "test");
+        AppUser appUser = this.findByUsername(username);
+        System.out.println(appUser.getUsername() + " : " + appUser.getPassword());
+        return appUser;
     }
 }
