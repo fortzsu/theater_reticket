@@ -7,10 +7,12 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
+import com.reticket.reticket.utils.FakerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +33,14 @@ public class AppUserService implements UserDetailsService {
     private final PlayRepository playRepository;
     private final ContributorRepository contributorRepository;
     private final PerformanceRepository performanceRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheatreService theatreService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
-                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository) {
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -48,6 +51,8 @@ public class AppUserService implements UserDetailsService {
         this.playRepository = playRepository;
         this.contributorRepository = contributorRepository;
         this.performanceRepository = performanceRepository;
+        this.passwordEncoder = passwordEncoder;
+        appUserRepository.saveAll(FakerUtils.generateDummyUsers(10, passwordEncoder));
     }
 
     public void save(List<AppUserSaveDto> appUserSaveDtoList) {
@@ -139,6 +144,7 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.findByUsername(username);
+//        return this.findByUsername(username);
+        return new AppUser("user", "test");
     }
 }
