@@ -1,5 +1,7 @@
 package com.reticket.reticket.controller;
 
+import com.reticket.reticket.dto.list.ListTheatresDto;
+import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheatreSaveDto;
 import com.reticket.reticket.service.TheatreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/theatre")
 public class TheatreController {
@@ -27,10 +31,17 @@ public class TheatreController {
     }
 
     @PostMapping
-    public ResponseEntity createTheatre(@RequestBody TheatreSaveDto theatreSaveDto, Authentication authentication) {
+    public ResponseEntity<Void> createTheatre(@RequestBody TheatreSaveDto theatreSaveDto) {
         theatreService.save(theatreSaveDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PostMapping
+    public ResponseEntity<List<ListTheatresDto>> listTheatres(@RequestBody PageableDto pageableDto) {
+        return new ResponseEntity<>(this.theatreService.listTheatres(pageableDto), HttpStatus.OK);
+    }
+
+
 
 
 }

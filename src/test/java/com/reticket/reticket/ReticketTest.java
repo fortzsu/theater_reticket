@@ -90,8 +90,8 @@ public class ReticketTest {
 		if (init) {
 
 			// ************* THEATRE *************
-			this.theatreService.save(new TheatreSaveDto("The Royal National Theatre"));
-			this.theatreService.save(new TheatreSaveDto("Harold Pinter Theatre"));
+			this.theatreService.save(new TheatreSaveDto("The Royal National Theatre", "theatreHistory"));
+			this.theatreService.save(new TheatreSaveDto("Harold Pinter Theatre", "theatreHistory"));
 
 			// ************* THEATRE *************
 

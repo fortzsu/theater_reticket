@@ -18,6 +18,9 @@ public class Theatre {
     @Column(name = "theatre_name")
     private String theatreName;
 
+    @Column(name = "theatre_history")
+    private String theatreHistory;
+
     @Column(name = "capacity")
     private Integer capacity;
 
@@ -57,6 +60,14 @@ public class Theatre {
 
     public void setAuditoriums(List<Auditorium> auditoriums) {
         this.auditoriums = auditoriums;
+    }
+
+    public String getTheatreHistory() {
+        return theatreHistory;
+    }
+
+    public void setTheatreHistory(String theatreHistory) {
+        this.theatreHistory = theatreHistory;
     }
 }
 

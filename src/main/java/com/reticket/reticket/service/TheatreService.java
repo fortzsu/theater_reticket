@@ -2,12 +2,15 @@ package com.reticket.reticket.service;
 
 
 import com.reticket.reticket.domain.Theatre;
+import com.reticket.reticket.dto.list.ListTheatresDto;
+import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheatreSaveDto;
 import com.reticket.reticket.repository.TheatreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,4 +49,7 @@ public class TheatreService {
         return opt.orElse(null);
     }
 
+    public List<ListTheatresDto> listTheatres(PageableDto pageableDto) {
+        return null;
+    }
 }

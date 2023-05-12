@@ -6,11 +6,14 @@ public class TheatreSaveDto {
     private Long id;
     private String theatreName;
 
+    private String theatreHistory;
+
     public TheatreSaveDto() {
     }
 
-    public TheatreSaveDto(String theatreName) {
+    public TheatreSaveDto(String theatreName, String theatreHistory) {
         this.theatreName = theatreName;
+        this.theatreHistory = theatreHistory;
     }
 
     public String getTheatreName() {
@@ -30,5 +33,11 @@ public class TheatreSaveDto {
     }
 
 
+    public String getTheatreHistory() {
+        return theatreHistory;
+    }
 
+    public void setTheatreHistory(String theatreHistory) {
+        this.theatreHistory = theatreHistory;
+    }
 }
