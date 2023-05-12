@@ -2,18 +2,22 @@ package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.domain.enums.PlayType;
+import com.reticket.reticket.dto.list.ListPlaysDto;
+import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.ContributorsSaveForPlaySaveDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.repository.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -83,21 +87,19 @@ public class PlayService {
         return opt.orElse(null);
     }
 
-
     public PlayType findPlayType(String path) {
-        switch (path) {
-            case "Drama" :
-                return PlayType.DRAMA;
-            case "Tragedy" :
-                return PlayType.TRAGEDY;
-            case "Political" :
-                return PlayType.POLITICAL;
-            case "Crime" :
-                return PlayType.CRIME;
-            case "Comedy" :
-                return PlayType.COMEDY;
-            default:
-                return PlayType.MUSICAL;
-        }
+        return switch (path) {
+            case "Drama" -> PlayType.DRAMA;
+            case "Tragedy" -> PlayType.TRAGEDY;
+            case "Political" -> PlayType.POLITICAL;
+            case "Crime" -> PlayType.CRIME;
+            case "Comedy" -> PlayType.COMEDY;
+            default -> PlayType.MUSICAL;
+        };
+    }
+
+    public List<ListPlaysDto> listPlays(PageableDto dto) {
+        return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()))
+                .stream().map(ListPlaysDto::new).collect(Collectors.toList());
     }
 }

@@ -47,7 +47,8 @@ public class PerformanceController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<List<PerformanceListDto>> listPerformances(@RequestBody PageableDto pageableDto) {
+    public ResponseEntity<List<PerformanceListDto>> listPerformances(
+            @RequestBody PageableDto pageableDto) {
         return new ResponseEntity<>(this.performanceService.listPerformances(pageableDto), HttpStatus.OK);
     }
 

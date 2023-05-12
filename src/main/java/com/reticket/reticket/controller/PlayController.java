@@ -3,6 +3,8 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.list.InitFormDataToPlaySaveDto;
 import com.reticket.reticket.dto.list.ListContributorsDto;
+import com.reticket.reticket.dto.list.ListPlaysDto;
+import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.ContributorService;
@@ -20,9 +22,9 @@ import java.util.List;
 @RequestMapping("/api/play")
 public class PlayController {
 
-    private PlayService playService;
-    private ContributorService contributorService;
-    private AuditoriumService auditoriumService;
+    private final PlayService playService;
+    private final ContributorService contributorService;
+    private final AuditoriumService auditoriumService;
 
     @Autowired
     public PlayController(PlayService playService, ContributorService contributorService, AuditoriumService auditoriumService) {
@@ -47,15 +49,8 @@ public class PlayController {
         return new ResponseEntity<>(initData, HttpStatus.CREATED);
     }
 
-
-
-
-
-//    @PostMapping("{playId}/{username}/userLike")
-//    public ResponseEntity userLikePlay(@PathVariable(value = "username") String Username,
-//                                       @PathVariable(value = "playId") Long playId) {
-//        this.
-//    }
-
-
+    @GetMapping("/listPlays")
+    public ResponseEntity<List<ListPlaysDto>> listPlays(@RequestBody PageableDto pageableDto) {
+        return new ResponseEntity<>(this.playService.listPlays(pageableDto), HttpStatus.OK);
+    }
 }

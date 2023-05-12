@@ -42,29 +42,33 @@ public class SearchPerformanceService {
         LocalDateTime startDate = LocalDateTime.of(dto.getSearchDateDto().getStartYear(), dto.getSearchDateDto().getStartMonth(), dto.getSearchDateDto().getStartDay(), 0, 0);
         LocalDateTime endDate = LocalDateTime.of(dto.getSearchDateDto().getEndYear(), dto.getSearchDateDto().getEndMonth(), dto.getSearchDateDto().getEndDay(), 23, 59);
         switch (dto.getPath()) {
-            case "theatre":
+            case "theatre" -> {
                 Theatre theatre = this.theatreService.findById(dto.getSearchId());
                 return mapPerformanceToDto(
                         this.performanceRepository.findUpcomingPerformancesByTheatreId(
                                 theatre, PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
                                 startDate, endDate));
-            case "auditorium":
+            }
+            case "auditorium" -> {
                 Auditorium auditorium = this.auditoriumService.findAuditoriumById(dto.getSearchId());
                 return mapPerformanceToDto(
                         this.performanceRepository.findUpcomingPerformancesByAuditoriumId(
                                 auditorium, PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
                                 startDate, endDate));
-            case "play":
+            }
+            case "play" -> {
                 Play play = this.playService.findById(dto.getSearchId());
                 return mapPerformanceToDto(
                         this.performanceRepository.findUpcomingPerformancesByPlayIdPage(
                                 play, PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
                                 startDate, endDate));
-            default:
+            }
+            default -> {
                 return mapPerformanceToDto(
                         this.performanceRepository.findUpcomingPerformancesByPlayType(
                                 this.playService.findPlayType(dto.getPath()), PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
                                 startDate, endDate));
+            }
         }
     }
 

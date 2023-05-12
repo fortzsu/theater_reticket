@@ -955,6 +955,12 @@ public class ReticketTest {
 	// -----------------------  PERFORMANCE TESTS  -----------------------
 
 	// -----------------------  PLAY TESTS  -----------------------
+
+	@Test
+	public void testListPlays() {
+		Assert.assertEquals(8, this.playService.listPlays(new PageableDto(0,8)).size());
+	}
+
 	@Test
 	public void testSavePlay_findById_fromService_false() {
 		Assert.assertNull(this.playService.findById(12L));

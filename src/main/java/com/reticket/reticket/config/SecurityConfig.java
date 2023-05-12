@@ -38,6 +38,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(new AntPathRequestMatcher("/api/auth/register", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/performance/searchPerformance", HttpMethod.POST.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/performance/list", HttpMethod.POST.toString())).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic();
         return http.build();
