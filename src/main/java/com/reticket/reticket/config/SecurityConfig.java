@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -31,12 +32,13 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers(new AntPathRequestMatcher("/api/auth/register")).permitAll()
+                        .anyRequest().authenticated())
                 .httpBasic();
         return http.build();
     }
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -45,7 +47,6 @@ public class SecurityConfig implements WebMvcConfigurer {
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
-
 
 
     @Override

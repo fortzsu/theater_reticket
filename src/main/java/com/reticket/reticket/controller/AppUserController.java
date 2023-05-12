@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/appUser")
 public class AppUserController {
 
-    private AppUserService appUserService;
+    private final AppUserService appUserService;
 
     @Autowired
     public AppUserController(AppUserService appUserService) {
@@ -24,7 +24,7 @@ public class AppUserController {
     }
 
     @PostMapping
-    public ResponseEntity save(@RequestBody List<AppUserSaveDto> appUserSaveDtoList) {
+    public ResponseEntity<Void> save(@RequestBody List<AppUserSaveDto> appUserSaveDtoList) {
         this.appUserService.save(appUserSaveDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -35,7 +35,7 @@ public class AppUserController {
     }
 
     @PostMapping("/{username}/{playId}")
-    public ResponseEntity likePlay(@PathVariable(value = "username") String username,
+    public ResponseEntity<Void> likePlay(@PathVariable(value = "username") String username,
                                    @PathVariable(value = "playId") Long playId) {
         this.appUserService.likePlay(username, playId);
         return new ResponseEntity<>(HttpStatus.OK);
