@@ -9,6 +9,8 @@ import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.utils.FakerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,7 +58,11 @@ public class AppUserService implements UserDetailsService {
 
     public void save(List<AppUserSaveDto> appUserSaveDtoList) {
         for (AppUserSaveDto appUserSaveDto : appUserSaveDtoList) {
-            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
+            AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
+            //If a user is saved, then it will log in automatically
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }
 
@@ -65,6 +71,7 @@ public class AppUserService implements UserDetailsService {
         appUser.setLastName(appUserSaveDto.getLastName());
         appUser.setPassword(appUserSaveDto.getPassword());
         appUser.setUsername(appUserSaveDto.getUsername());
+        appUser.setEmail(appUserSaveDto.getEmail());
         appUser.setAppUserType(appUserSaveDto.getAppUserType());
         return appUser;
     }
@@ -143,8 +150,6 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = this.findByUsername(username);
-        System.out.println(appUser.getUsername() + " : " + appUser.getPassword());
-        return appUser;
+        return this.findByUsername(username);
     }
 }

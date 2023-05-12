@@ -12,6 +12,7 @@ public class AppUserSaveDto {
 
     private String appUserType;
 
+    private String email;
     public AppUserSaveDto() {
     }
 
@@ -61,5 +62,13 @@ public class AppUserSaveDto {
 
     public void setAppUserType(String appUserType) {
         this.appUserType = appUserType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
