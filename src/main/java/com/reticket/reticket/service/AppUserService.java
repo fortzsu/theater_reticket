@@ -29,7 +29,7 @@ public class AppUserService implements UserDetailsService {
     private final TicketService ticketService;
     private final PerformanceService performanceService;
     private final PlayService playService;
-    private final TheatreService theatreService;
+    private final TheaterService theaterService;
     private final AuditoriumService auditoriumService;
     private final AddressService addressService;
     private final PlayRepository playRepository;
@@ -39,7 +39,7 @@ public class AppUserService implements UserDetailsService {
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
-                          TheatreService theatreService, AuditoriumService auditoriumService,
+                          TheaterService theaterService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
                           ContributorRepository contributorRepository, PerformanceRepository performanceRepository,
                           PasswordEncoder passwordEncoder) {
@@ -47,7 +47,7 @@ public class AppUserService implements UserDetailsService {
         this.ticketService = ticketService;
         this.performanceService = performanceService;
         this.playService = playService;
-        this.theatreService = theatreService;
+        this.theaterService = theaterService;
         this.auditoriumService = auditoriumService;
         this.addressService = addressService;
         this.playRepository = playRepository;
@@ -56,14 +56,12 @@ public class AppUserService implements UserDetailsService {
         appUserRepository.saveAll(FakerUtils.generateDummyUsers(1, passwordEncoder));
     }
 
-    public void save(List<AppUserSaveDto> appUserSaveDtoList) {
-        for (AppUserSaveDto appUserSaveDto : appUserSaveDtoList) {
+    public void save(AppUserSaveDto appUserSaveDto) {
             AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
             //If a user is saved, then it will log in automatically
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
     }
 
     private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto) {
@@ -94,7 +92,7 @@ public class AppUserService implements UserDetailsService {
             LikedPlaysListDto dto = new LikedPlaysListDto();
             dto.setPlayName(play.getPlayName());
             dto.setPlayPlot(play.getPlot());
-            dto.setTheatreName(play.getAuditorium().getTheatre().getTheatreName());
+            dto.setTheatreName(play.getAuditorium().getTheater().getTheaterName());
             dto.setTheatreAddress(this.addressService.findByAuditoriumId(play.getAuditorium()).toString());
             dto.setListContributorsDto(findContributorsByPlay(play));
             dto.setPerformanceListDtoListToLikedPlays(findPerformancesByPlay(play));
@@ -134,11 +132,11 @@ public class AppUserService implements UserDetailsService {
             Performance performance = this.performanceService.findPerformanceById(ticket.getPerformance().getId());
             Play play = this.playService.findById(performance.getPlay().getId());
             Auditorium auditorium = this.auditoriumService.findAuditoriumById(play.getAuditorium().getId());
-            Theatre theatre = this.theatreService.findById(auditorium.getTheatre().getId());
+            Theater theater = this.theaterService.findById(auditorium.getTheater().getId());
             AddressEntity addressEntity = this.addressService.findByAuditoriumId(auditorium);
             ListTicketDto listTicketDto = new ListTicketDto();
             listTicketDto.setPlayName(play.getPlayName());
-            listTicketDto.setTheatreName(theatre.getTheatreName());
+            listTicketDto.setTheatreName(theater.getTheaterName());
             listTicketDto.setAuditoriumAddress(addressEntity.getCity() + ", " + addressEntity.getStreet() + " " + addressEntity.getHouseNumber());
             listTicketDto.setPerformanceDateTime(performance.getPerformanceDateTime().getYear() + ". " + performance.getPerformanceDateTime().getMonth());
             listTicketDto.setTicketPrice(ticket.getPrice().getAmount());

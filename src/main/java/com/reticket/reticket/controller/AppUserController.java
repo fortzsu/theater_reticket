@@ -23,9 +23,15 @@ public class AppUserController {
         this.appUserService = appUserService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> save(@RequestBody List<AppUserSaveDto> appUserSaveDtoList) {
-        this.appUserService.save(appUserSaveDtoList);
+    @PostMapping("/saveGuest")
+    public ResponseEntity<Void> saveGuest(@RequestBody AppUserSaveDto appUserSaveDto) {
+        this.appUserService.save(appUserSaveDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/saveAssociate")
+    public ResponseEntity<Void> saveAssociate(@RequestBody AppUserSaveDto appUserSaveDto) {
+        this.appUserService.save(appUserSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

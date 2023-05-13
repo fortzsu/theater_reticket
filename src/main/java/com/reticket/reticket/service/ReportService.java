@@ -10,7 +10,6 @@ import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +23,14 @@ public class ReportService {
     private EntityManager entityManager;
     @PersistenceContext
     private EntityManager entityManagerPerformances;
-    private final TheatreService theatreService;
+    private final TheaterService theaterService;
     private final AuditoriumService auditoriumService;
     private final PlayService playService;
 
     private final GoogleService googleService;
 
-    public ReportService(TheatreService theatreService, AuditoriumService auditoriumService, PlayService playService, GoogleService googleService) {
-        this.theatreService = theatreService;
+    public ReportService(TheaterService theaterService, AuditoriumService auditoriumService, PlayService playService, GoogleService googleService) {
+        this.theaterService = theaterService;
         this.auditoriumService = auditoriumService;
         this.playService = playService;
         this.googleService = googleService;
@@ -87,7 +86,7 @@ public class ReportService {
                                         criteriaJoinDtoPerformances.getPerformanceJoin().get("performanceDateTime"),
                                         criteriaBuilderPerformances.count(rootPerformances),
                                         criteriaBuilderPerformances.sum(criteriaJoinDtoPerformances.getPriceJoin().get("amount")),
-                                        criteriaJoinDtoPerformances.getTheatreJoin().get("theatreName"),
+                                        criteriaJoinDtoPerformances.getTheaterJoin().get("theaterName"),
                                         criteriaJoinDtoPerformances.getAuditoriumJoin().get("auditoriumName"),
                                         criteriaJoinDtoPerformances.getPlayJoin().get("playName")).
                                 groupBy(rootPerformances.get("performance")).where(fillPredicateList(reportFilterDto, rootPerformances,
@@ -103,8 +102,8 @@ public class ReportService {
         criteriaJoinDto.setPlayJoin(playJoin);
         Join<Play, Auditorium> auditoriumJoin = playJoin.join("auditorium");
         criteriaJoinDto.setAuditoriumJoin(auditoriumJoin);
-        Join<Auditorium, Theatre> theatreJoin = auditoriumJoin.join("theatre");
-        criteriaJoinDto.setTheatreJoin(theatreJoin);
+        Join<Auditorium, Theater> theaterJoin = auditoriumJoin.join("theater");
+        criteriaJoinDto.setTheaterJoin(theaterJoin);
         Join<Ticket, Price> priceJoin = root.join("price");
         criteriaJoinDto.setPriceJoin(priceJoin);
         return criteriaJoinDto;
@@ -116,8 +115,8 @@ public class ReportService {
 
         List<Predicate> predicateList = new ArrayList<>();
 
-        if (reportFilterDto.getFilterByPath().equals("theatre")) {
-            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getTheatreJoin().get("id"), reportFilterDto.getSearchId()));
+        if (reportFilterDto.getFilterByPath().equals("theater")) {
+            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getTheaterJoin().get("id"), reportFilterDto.getSearchId()));
         } else if (reportFilterDto.getFilterByPath().equals("auditorium")) {
             predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getAuditoriumJoin().get("id"), reportFilterDto.getSearchId()));
         } else {
@@ -139,29 +138,28 @@ public class ReportService {
     }
 
     private TicketCondition findTicketCondition(String ticketCondition) {
-        switch (ticketCondition) {
-            case "SOLD":
-                return TicketCondition.SOLD;
-            case "RETURNED":
-                return TicketCondition.RETURNED;
-            case "RESERVED":
-                return TicketCondition.RESERVED;
-            default:
-                return TicketCondition.FOR_SALE;
-        }
+        return switch (ticketCondition) {
+            case "SOLD" -> TicketCondition.SOLD;
+            case "RETURNED" -> TicketCondition.RETURNED;
+            case "RESERVED" -> TicketCondition.RESERVED;
+            default -> TicketCondition.FOR_SALE;
+        };
     }
 
     private String searchThePath(ReportFilterDto reportFilterDto) {
         switch (reportFilterDto.getFilterByPath()) {
-            case "theatre":
-                Theatre theatre = this.theatreService.findById(reportFilterDto.getSearchId());
-                return theatre.getTheatreName();
-            case "auditorium":
+            case "theater" -> {
+                Theater theater = this.theaterService.findById(reportFilterDto.getSearchId());
+                return theater.getTheaterName();
+            }
+            case "auditorium" -> {
                 Auditorium auditorium = this.auditoriumService.findAuditoriumById(reportFilterDto.getSearchId());
                 return auditorium.getAuditoriumName();
-            default:
+            }
+            default -> {
                 Play play = this.playService.findById(reportFilterDto.getSearchId());
                 return play.getPlayName();
+            }
         }
     }
 

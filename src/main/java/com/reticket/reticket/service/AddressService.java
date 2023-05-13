@@ -22,14 +22,14 @@ public class AddressService {
 
     private final AuditoriumService auditoriumService;
 
-    private final TheatreService theatreService;
+    private final TheaterService theaterService;
 
 
     @Autowired
-    public AddressService(AddressRepository addressRepository, AuditoriumService auditoriumService, TheatreService theatreService) {
+    public AddressService(AddressRepository addressRepository, AuditoriumService auditoriumService, TheaterService theaterService) {
         this.addressRepository = addressRepository;
         this.auditoriumService = auditoriumService;
-        this.theatreService = theatreService;
+        this.theaterService = theaterService;
     }
 
     public List<AddressEntity> save(List<AddressSaveDto> addressSaveDtoList) {

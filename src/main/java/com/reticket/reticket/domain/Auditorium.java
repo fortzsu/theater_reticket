@@ -18,8 +18,8 @@ public class Auditorium {
     @Column
     private Integer capacity;
     @ManyToOne
-    @JoinColumn(name = "theatre_id")
-    private Theatre theatre;
+    @JoinColumn(name = "theater_id")
+    private Theater theater;
     @Column
     private Boolean isActive;
     @Column
@@ -55,12 +55,12 @@ public class Auditorium {
         this.capacity = capacity;
     }
 
-    public Theatre getTheatre() {
-        return theatre;
+    public Theater getTheater() {
+        return theater;
     }
 
-    public void setTheatre(Theatre theatre) {
-        this.theatre = theatre;
+    public void setTheater(Theater theater) {
+        this.theater = theater;
     }
 
     public Boolean getActive() {

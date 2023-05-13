@@ -1,17 +1,17 @@
 package com.reticket.reticket.dto.save;
 
 
-public class TheatreSaveDto {
+public class TheaterSaveDto {
 
     private Long id;
     private String theatreName;
 
     private String theatreHistory;
 
-    public TheatreSaveDto() {
+    public TheaterSaveDto() {
     }
 
-    public TheatreSaveDto(String theatreName, String theatreHistory) {
+    public TheaterSaveDto(String theatreName, String theatreHistory) {
         this.theatreName = theatreName;
         this.theatreHistory = theatreHistory;
     }

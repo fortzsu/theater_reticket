@@ -8,7 +8,7 @@ public class CriteriaJoinDto {
     Join<Ticket, Performance> performanceJoin;
     Join<Performance, Play> playJoin;
     Join<Play, Auditorium> auditoriumJoin;
-    Join<Auditorium, Theatre> theatreJoin;
+    Join<Auditorium, Theater> theaterJoin;
     Join<Ticket, Price> priceJoin;
 
     public CriteriaJoinDto() {
@@ -38,12 +38,12 @@ public class CriteriaJoinDto {
         this.auditoriumJoin = auditoriumJoin;
     }
 
-    public Join<Auditorium, Theatre> getTheatreJoin() {
-        return theatreJoin;
+    public Join<Auditorium, Theater> getTheaterJoin() {
+        return theaterJoin;
     }
 
-    public void setTheatreJoin(Join<Auditorium, Theatre> theatreJoin) {
-        this.theatreJoin = theatreJoin;
+    public void setTheaterJoin(Join<Auditorium, Theater> theaterJoin) {
+        this.theaterJoin = theaterJoin;
     }
 
     public Join<Ticket, Price> getPriceJoin() {

@@ -1,12 +1,12 @@
 package com.reticket.reticket.repository;
 
-import com.reticket.reticket.domain.Theatre;
+import com.reticket.reticket.domain.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TheatreRepository extends JpaRepository<Theatre, Long> {
+public interface TheaterRepository extends JpaRepository<Theater, Long> {
 
-    Theatre findTheatreByTheatreName(String name);
+    Theater findTheaterByTheaterName(String name);
 
 }

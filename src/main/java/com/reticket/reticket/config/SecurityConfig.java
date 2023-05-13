@@ -36,7 +36,6 @@ public class SecurityConfig implements WebMvcConfigurer {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/api/auth/register", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/performance/searchPerformance", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/performance/list", HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/play/listPlays", HttpMethod.GET.toString())).permitAll()

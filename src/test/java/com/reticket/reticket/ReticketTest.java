@@ -29,11 +29,11 @@ import java.util.*;
 public class ReticketTest {
 
 	@Autowired
-	private TheatreController theatreController;
+	private TheaterController theaterController;
 	@Autowired
-	private TheatreService theatreService;
+	private TheaterService theaterService;
 	@Autowired
-	private TheatreRepository theatreRepository;
+	private TheaterRepository theaterRepository;
 	@Autowired
 	private AuditoriumController auditoriumController;
 	@Autowired
@@ -90,8 +90,8 @@ public class ReticketTest {
 		if (init) {
 
 			// ************* THEATRE *************
-			this.theatreService.save(new TheatreSaveDto("The Royal National Theatre", "theatreHistory"));
-			this.theatreService.save(new TheatreSaveDto("Harold Pinter Theatre", "theatreHistory"));
+			this.theaterService.save(new TheaterSaveDto("The Royal National Theater", "theatreHistory"));
+			this.theaterService.save(new TheaterSaveDto("Harold Pinter Theater", "theatreHistory"));
 
 			// ************* THEATRE *************
 
@@ -104,27 +104,27 @@ public class ReticketTest {
 					new AuditoriumPriceCategorySaveDto(3, 15),
 					new AuditoriumPriceCategorySaveDto(4, 20)));
 			auditoriumSaveDtoList.add(new AuditoriumSaveDto(
-					"Oliver Theatre", 1L, 25, 18, auditoriumPriceCategorySaveDtoList)); //C:450
+					"Oliver Theater", 1L, 25, 18, auditoriumPriceCategorySaveDtoList)); //C:450
 
 			auditoriumPriceCategorySaveDtoList = new ArrayList<>(Arrays.asList(
 					new AuditoriumPriceCategorySaveDto(1, 7),
 					new AuditoriumPriceCategorySaveDto(2, 13),
 					new AuditoriumPriceCategorySaveDto(3, 18)));
 			auditoriumSaveDtoList.add(new AuditoriumSaveDto(
-					"Lyttelton Theatre", 1L, 22, 14, auditoriumPriceCategorySaveDtoList)); //C:308
+					"Lyttelton Theater", 1L, 22, 14, auditoriumPriceCategorySaveDtoList)); //C:308
 
 			auditoriumPriceCategorySaveDtoList = new ArrayList<>(Arrays.asList(
 					new AuditoriumPriceCategorySaveDto(1, 6),
 					new AuditoriumPriceCategorySaveDto(2, 11)));
 			auditoriumSaveDtoList.add(new AuditoriumSaveDto(
-					"Dorfman Theatre", 1L, 15, 10, auditoriumPriceCategorySaveDtoList)); //C:150
+					"Dorfman Theater", 1L, 15, 10, auditoriumPriceCategorySaveDtoList)); //C:150
 
 			auditoriumPriceCategorySaveDtoList = new ArrayList<>(Arrays.asList(
 					new AuditoriumPriceCategorySaveDto(1, 6),
 					new AuditoriumPriceCategorySaveDto(2, 11),
 					new AuditoriumPriceCategorySaveDto(3, 18)));
 			auditoriumSaveDtoList.add(new AuditoriumSaveDto(
-					"Harold Pinter Theatre", 2L, 23, 17, auditoriumPriceCategorySaveDtoList)); //C:391
+					"Harold Pinter Theater", 2L, 23, 17, auditoriumPriceCategorySaveDtoList)); //C:391
 
 			this.auditoriumController.createAuditorium(auditoriumSaveDtoList);
 
@@ -238,17 +238,10 @@ public class ReticketTest {
 
 			// ************* APPUSER *************
 
-			List<AppUserSaveDto> appUserSaveDtos = new ArrayList<>();
-			appUserSaveDtos.add(new AppUserSaveDto("Zsuzsi", "Fort", "fortzsu", "test1234", "Super Admin"));
-			appUserSaveDtos.add(new AppUserSaveDto("Zsuzsanna", "Bozso", "bozsofortzsu", "test1234", "Super Admin"));
-			appUserSaveDtos.add(new AppUserSaveDto("Daniel", "Bozso", "danielb", "test1234", "Super Admin"));
-			this.appUserController.save(appUserSaveDtos);
-			appUserSaveDtos.clear();
-
-			for (int i = 1; i <= 15; i++) {
-				appUserSaveDtos.add(new AppUserSaveDto("_" + i, "AppUser", i + "_" + "username", "test1234", "Guest"));
-			}
-			this.appUserController.save(appUserSaveDtos);
+			this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsi", "Fort", "fortzsu", "test1234", "Super Admin"));
+			this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsanna", "Bozso", "bozsofortzsu", "test1234", "Super Admin"));
+			this.appUserController.saveGuest(new AppUserSaveDto("Daniel", "Bozso", "danielb", "test1234", "Super Admin"));
+			this.appUserController.saveGuest(new AppUserSaveDto("User", "Name", "1_username", "test1234", "Super Admin"));
 
 			List<TicketActionDto> ticketActionDtoList = new ArrayList<>();
 
@@ -303,16 +296,16 @@ public class ReticketTest {
 
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
 	}
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre_testFirst_amount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater_testFirst_amount() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(1030, this.reportService.report(reportFilterDto).
@@ -320,8 +313,8 @@ public class ReticketTest {
 	}
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre_testFirst_returned() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("RETURNED", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater_testFirst_returned() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("RETURNED", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(200, this.reportService.report(reportFilterDto).
@@ -330,8 +323,8 @@ public class ReticketTest {
 
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre_testFirst_count() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater_testFirst_count() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(14, (long)
@@ -339,8 +332,8 @@ public class ReticketTest {
 	}
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre_testSecond_amount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater_testSecond_amount() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(580, this.reportService.report(reportFilterDto).
@@ -348,8 +341,8 @@ public class ReticketTest {
 	}
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre_testSecond_count() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater_testSecond_count() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(8, (long) this.reportService.report(reportFilterDto).
@@ -357,48 +350,48 @@ public class ReticketTest {
 	}
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre_testThird_amount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater_testThird_amount() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(330, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().get(2).getSumOfTickets());
 	}
 
 	@Test
-	public void testReportPerformances_soldTickets_byTheatre_testThird_count() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReportPerformances_soldTickets_byTheater_testThird_count() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(6, (long) this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().get(2).getCountOfTicket());
 	}
 
 	@Test
-	public void testReport_soldTickets_byTheatre_ticketCount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReport_soldTickets_byTheater_ticketCount() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
 		Assert.assertEquals(28, (long) this.reportService.report(reportFilterDto).getTicketCount());
 	}
 
 	@Test
-	public void testReport_soldTickets_byTheatre_ticketAmount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReport_soldTickets_byTheater_ticketAmount() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
 		Assert.assertEquals(1940, (long) this.reportService.report(reportFilterDto).getTicketAmount());
 	}
 
 	@Test
-	public void testReport_soldTickets_byTheatre_outOfDate() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReport_soldTickets_byTheater_outOfDate() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), false, false);
 		Assert.assertNull(this.reportService.report(reportFilterDto).getTicketAmount());
 	}
 
 	@Test
-	public void testReport_soldTickets_byTheatre_testStartDate() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReport_soldTickets_byTheater_testStartDate() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1, 0, 0);
@@ -406,19 +399,19 @@ public class ReticketTest {
 	}
 
 	@Test
-	public void testReport_soldTickets_byTheatre_testEndDate() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+	public void testReport_soldTickets_byTheater_testEndDate() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10, 23, 59);
 		Assert.assertEquals(endDate, this.reportService.report(reportFilterDto).getEnd());
 	}
 
 	@Test
-	public void testReport_soldTickets_byTheatre_theatreName() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+	public void testReport_soldTickets_byTheater_theaterName() {
+		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), false, false);
-		Assert.assertEquals("The Royal National Theatre", this.reportService.report(reportFilterDto).getSearchPathName());
+		Assert.assertEquals("The Royal National Theater", this.reportService.report(reportFilterDto).getSearchPathName());
 	}
 
 	@Test
@@ -426,7 +419,7 @@ public class ReticketTest {
 		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "auditorium", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
-		Assert.assertEquals("Oliver Theatre", this.reportService.report(reportFilterDto).getSearchPathName());
+		Assert.assertEquals("Oliver Theater", this.reportService.report(reportFilterDto).getSearchPathName());
 	}
 
 	@Test
@@ -664,7 +657,7 @@ public class ReticketTest {
 				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(1, 5));
-		Assert.assertEquals("Dorfman Theatre",
+		Assert.assertEquals("Dorfman Theater",
 				this.searchPerformanceService.searchFilteredPerformances(dto).get(4).getAuditoriumName());
 	}
 
@@ -713,7 +706,7 @@ public class ReticketTest {
 
 	@Test
 	public void testReserveTest_withAppUser_theatreName() {
-		Assert.assertEquals("The Royal National Theatre", this.appUserService.listTickets("bozsofortzsu").get(0).getTheatreName());
+		Assert.assertEquals("The Royal National Theater", this.appUserService.listTickets("bozsofortzsu").get(0).getTheatreName());
 	}
 
 	@Test
@@ -1044,22 +1037,22 @@ public class ReticketTest {
 
 	@Test
 	public void testSaveAuditorium_findThird_fromService() {
-		Assert.assertEquals(150, (long) this.auditoriumService.findAuditoriumByAuditoriumName("Dorfman Theatre").getCapacity());
+		Assert.assertEquals(150, (long) this.auditoriumService.findAuditoriumByAuditoriumName("Dorfman Theater").getCapacity());
 	}
 
 	@Test
 	public void testSaveAuditorium_findSecond_fromService() {
-		Assert.assertEquals("Lyttelton Theatre", this.auditoriumService.findAuditoriumById(2L).getAuditoriumName());
+		Assert.assertEquals("Lyttelton Theater", this.auditoriumService.findAuditoriumById(2L).getAuditoriumName());
 	}
 
 	@Test
 	public void testSaveAuditorium_findLast_fromRepository() {
-		Assert.assertEquals("Harold Pinter Theatre", this.auditoriumRepository.findById(4L).get().getAuditoriumName());
+		Assert.assertEquals("Harold Pinter Theater", this.auditoriumRepository.findById(4L).get().getAuditoriumName());
 	}
 
 	@Test
 	public void testSaveAuditorium_findFirst_fromRepository() {
-		Assert.assertEquals(1, (long) this.auditoriumRepository.findAuditoriumByAuditoriumName("Oliver Theatre").getId());
+		Assert.assertEquals(1, (long) this.auditoriumRepository.findAuditoriumByAuditoriumName("Oliver Theater").getId());
 	}
 
 	@Test
@@ -1070,47 +1063,47 @@ public class ReticketTest {
 	// -----------------------  THEATRE TESTS  -----------------------
 	@Test
 	public void testTheatreCapacity_second() {
-		Assert.assertEquals(908, (long) this.theatreService.findById(1L).getCapacity());
+		Assert.assertEquals(908, (long) this.theaterService.findById(1L).getCapacity());
 	}
 
 	@Test
 	public void testTheatreCapacity_first() {
-		Assert.assertEquals(391, (long) this.theatreService.findById(2L).getCapacity());
+		Assert.assertEquals(391, (long) this.theaterService.findById(2L).getCapacity());
 	}
 
 	@Test
 	public void testSaveTheatre_service_checkIfTheatreNameIsNotTaken_false() {
-		Assert.assertFalse(this.theatreService.checkIfTheatreNameIsNotTaken("Harold Pinter Theatre"));
+		Assert.assertFalse(this.theaterService.checkIfTheatreNameIsNotTaken("Harold Pinter Theater"));
 	}
 
 	@Test
 	public void testSaveTheatre_service_checkIfTheatreNameIsNotTaken_true() {
-		Assert.assertTrue(this.theatreService.checkIfTheatreNameIsNotTaken("The Royal National Theatre!"));
+		Assert.assertTrue(this.theaterService.checkIfTheatreNameIsNotTaken("The Royal National Theater!"));
 	}
 
 	@Test
 	public void testSaveTheatre_checkFSecond_id_fromRepository_findByTheatreName() {
-		Assert.assertEquals(2, (long) this.theatreRepository.findTheatreByTheatreName("Harold Pinter Theatre").getId());
+		Assert.assertEquals(2, (long) this.theaterRepository.findTheaterByTheaterName("Harold Pinter Theater").getId());
 	}
 
 	@Test
 	public void testSaveTheatre_checkFirst_id_fromRepository_findByTheatreName() {
-		Assert.assertEquals(1, (long) this.theatreRepository.findTheatreByTheatreName("The Royal National Theatre").getId());
+		Assert.assertEquals(1, (long) this.theaterRepository.findTheaterByTheaterName("The Royal National Theater").getId());
 	}
 
 	@Test
 	public void testSaveTheatre_checkListSize_fromRepository() {
-		Assert.assertEquals(2, this.theatreRepository.findAll().size());
+		Assert.assertEquals(2, this.theaterRepository.findAll().size());
 	}
 
 	@Test
 	public void testSaveTheatre_checkSecond_name_fromRepository() {
-		Assert.assertEquals("Harold Pinter Theatre", this.theatreRepository.findAll().get(1).getTheatreName());
+		Assert.assertEquals("Harold Pinter Theater", this.theaterRepository.findAll().get(1).getTheaterName());
 	}
 
 	@Test
 	public void testSaveTheatre_checkFirst_name_fromRepository() {
-		Assert.assertEquals("The Royal National Theatre", this.theatreRepository.findAll().get(0).getTheatreName());
+		Assert.assertEquals("The Royal National Theater", this.theaterRepository.findAll().get(0).getTheaterName());
 	}
 
 }

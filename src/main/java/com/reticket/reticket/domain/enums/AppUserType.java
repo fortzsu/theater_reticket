@@ -3,11 +3,9 @@ package com.reticket.reticket.domain.enums;
 public enum AppUserType {
 
     GUEST("Guest"),
-    SUPER_ADMIN("SuperAdmin"),
+    THEATRE_USER("TheatreUser"),
     THEATRE_ADMIN("TheatreAdmin"),
-    THEATRE_VIEWER("TheatreViewer"),
-    THEATRE_USER("TheatreUser");
-
+    SUPER_ADMIN("SuperAdmin");
 
     private final String displayName;
 

@@ -28,7 +28,7 @@ public class AuditoriumSaveDto {
     public AuditoriumSaveDto(Auditorium auditorium) {
         this.id = auditorium.getId();
         this.auditoriumName = auditorium.getAuditoriumName();
-        this.theatreId = auditorium.getTheatre().getId();
+        this.theatreId = auditorium.getTheater().getId();
     }
 
     public String getAuditoriumName() {

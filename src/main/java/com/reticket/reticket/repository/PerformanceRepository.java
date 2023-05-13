@@ -3,7 +3,7 @@ package com.reticket.reticket.repository;
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Performance;
 import com.reticket.reticket.domain.Play;
-import com.reticket.reticket.domain.Theatre;
+import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.domain.enums.PlayType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,10 +20,10 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
             "AND p.isCancelled = false AND p.isSeenOnline = true AND p.isSold = false ORDER BY p.performanceDateTime")
     List<Performance> findUpcomingPerformances(Pageable pageable);
 
-    @Query(value = "SELECT p FROM Performance p WHERE p.play.auditorium.theatre = :theatre AND p.isAvailableOnline = true" +
+    @Query(value = "SELECT p FROM Performance p WHERE p.play.auditorium.theater = :theater AND p.isAvailableOnline = true" +
             " AND p.isCancelled = false AND p.isSeenOnline = true AND p.isSold = false " +
             "AND p.performanceDateTime >= :startDate AND p.performanceDateTime <= :endDate ORDER BY p.performanceDateTime")
-    List<Performance> findUpcomingPerformancesByTheatreId(Theatre theatre, Pageable pageable,
+    List<Performance> findUpcomingPerformancesByTheaterId(Theater theater, Pageable pageable,
                                                           LocalDateTime startDate, LocalDateTime endDate);
 
     @Query(value = "SELECT p FROM Performance p WHERE p.play.auditorium = :auditorium AND p.isAvailableOnline = true" +

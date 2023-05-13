@@ -1,7 +1,7 @@
 package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.Auditorium;
-import com.reticket.reticket.domain.Theatre;
+import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.repository.AuditoriumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +17,24 @@ import java.util.stream.Collectors;
 @Transactional
 public class AuditoriumService {
     private final AuditoriumRepository auditoriumRepository;
-    private final TheatreService theatreService;
+    private final TheaterService theaterService;
     private final SeatService seatService;
 
     @Autowired
-    public AuditoriumService(AuditoriumRepository auditoriumRepository, TheatreService theatreService,
+    public AuditoriumService(AuditoriumRepository auditoriumRepository, TheaterService theaterService,
                               SeatService seatService) {
         this.auditoriumRepository = auditoriumRepository;
-        this.theatreService = theatreService;
+        this.theaterService = theaterService;
         this.seatService = seatService;
     }
 
     public List<Auditorium> save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
         List<Auditorium> auditoriumList =  new ArrayList<>();
         for (AuditoriumSaveDto dto : auditoriumSaveDtoList) {
-            Theatre tempTheatre = this.theatreService.findById(dto.getTheatreId());
+            Theater tempTheater = this.theaterService.findById(dto.getTheatreId());
             Auditorium savedAuditorium = updateValues(dto, new Auditorium());
             auditoriumList.add(savedAuditorium);
-            tempTheatre.setCapacity(tempTheatre.getCapacity() + savedAuditorium.getCapacity());
+            tempTheater.setCapacity(tempTheater.getCapacity() + savedAuditorium.getCapacity());
             this.seatService.generateSeats(savedAuditorium, dto);
         }
         return auditoriumList;
@@ -57,9 +57,9 @@ public class AuditoriumService {
         auditorium.setActive(true);
         auditorium.setNumberOfPriceCategories(auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList().size());
         if (auditoriumSaveDto.getTheatreId() != null) {
-            auditorium.setTheatre(theatreService.findById(auditoriumSaveDto.getTheatreId()));
+            auditorium.setTheater(theaterService.findById(auditoriumSaveDto.getTheatreId()));
         } else {
-            auditorium.setTheatre(null);
+            auditorium.setTheater(null);
         }
         this.auditoriumRepository.save(auditorium);
         return auditorium;

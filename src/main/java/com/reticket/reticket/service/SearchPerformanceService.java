@@ -3,7 +3,7 @@ package com.reticket.reticket.service;
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Performance;
 import com.reticket.reticket.domain.Play;
-import com.reticket.reticket.domain.Theatre;
+import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.repository.PerformanceRepository;
@@ -24,16 +24,16 @@ public class SearchPerformanceService {
 
     private final PlayService playService;
 
-    private final TheatreService theatreService;
+    private final TheaterService theaterService;
 
     private final AuditoriumService auditoriumService;
 
     @Autowired
     public SearchPerformanceService(PerformanceRepository performanceRepository, PlayService playService,
-                                    TheatreService theatreService, AuditoriumService auditoriumService) {
+                                    TheaterService theaterService, AuditoriumService auditoriumService) {
         this.performanceRepository = performanceRepository;
         this.playService = playService;
-        this.theatreService = theatreService;
+        this.theaterService = theaterService;
         this.auditoriumService = auditoriumService;
     }
 
@@ -43,10 +43,10 @@ public class SearchPerformanceService {
         LocalDateTime endDate = LocalDateTime.of(dto.getSearchDateDto().getEndYear(), dto.getSearchDateDto().getEndMonth(), dto.getSearchDateDto().getEndDay(), 23, 59);
         switch (dto.getPath()) {
             case "theatre" -> {
-                Theatre theatre = this.theatreService.findById(dto.getSearchId());
+                Theater theater = this.theaterService.findById(dto.getSearchId());
                 return mapPerformanceToDto(
-                        this.performanceRepository.findUpcomingPerformancesByTheatreId(
-                                theatre, PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
+                        this.performanceRepository.findUpcomingPerformancesByTheaterId(
+                                theater, PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
                                 startDate, endDate));
             }
             case "auditorium" -> {

@@ -134,20 +134,10 @@ public class AppUser implements UserDetails {
 
     public void setAppUserType(String appUserType) {
         switch (appUserType) {
-            case "Super Admin":
-                this.appUserType = AppUserType.SUPER_ADMIN;
-                break;
-            case "Theatre Admin":
-                this.appUserType = AppUserType.THEATRE_ADMIN;
-                break;
-            case "Theatre User":
-                this.appUserType = AppUserType.THEATRE_USER;
-                break;
-            case "Theatre Viewer":
-                this.appUserType = AppUserType.THEATRE_VIEWER;
-                break;
-            default:
-                this.appUserType = AppUserType.GUEST;
+            case "Super Admin" -> this.appUserType = AppUserType.SUPER_ADMIN;
+            case "Theater Admin" -> this.appUserType = AppUserType.THEATRE_ADMIN;
+            case "Theater User" -> this.appUserType = AppUserType.THEATRE_USER;
+            default -> this.appUserType = AppUserType.GUEST;
         }
     }
 
