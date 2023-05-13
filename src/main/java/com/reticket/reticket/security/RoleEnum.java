@@ -3,9 +3,8 @@ package com.reticket.reticket.security;
 public enum RoleEnum {
 
     GUEST,
-    THEATRE_ADMIN,
     THEATRE_USER,
-    THEATRE_VIEWER,
+    THEATRE_ADMIN,
     SUPER_ADMIN;
 
         private static final String ROLE_PREFIX = "ROLE_";
