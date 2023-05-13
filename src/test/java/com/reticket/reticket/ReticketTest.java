@@ -135,7 +135,7 @@ public class ReticketTest {
 			List<AddressSaveDto> addressSaveDtoList = new ArrayList<>();
 			addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 0, 1L));
 			addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 0, 2L));
-			addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 0, 2L));
+			addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 0, 3L));
 			addressSaveDtoList.add(new AddressSaveDto("SW1Y 4SW", "London", "Panton", 4, 4L));
 			this.addressController.save(addressSaveDtoList);
 
@@ -241,7 +241,7 @@ public class ReticketTest {
 			this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsi", "Fort", "fortzsu", "test1234", "Super Admin"));
 			this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsanna", "Bozso", "bozsofortzsu", "test1234", "Super Admin"));
 			this.appUserController.saveGuest(new AppUserSaveDto("Daniel", "Bozso", "danielb", "test1234", "Super Admin"));
-			this.appUserController.saveGuest(new AppUserSaveDto("User", "Name", "1_username", "test1234", "Super Admin"));
+			this.appUserController.saveGuest(new AppUserSaveDto("User", "Name", "1_username", "test1234", "Guest"));
 
 			List<TicketActionDto> ticketActionDtoList = new ArrayList<>();
 
@@ -721,27 +721,27 @@ public class ReticketTest {
 
 	@Test
 	public void testSavedAppUser_fromRepository_findAll() {
-		Assert.assertEquals(18, this.appUserRepository.findAll().size());
+		Assert.assertEquals(5, this.appUserRepository.findAll().size());
 	}
 
 	@Test
 	public void testSavedAppUser_fromRepository_checkUserName() {
-		Assert.assertEquals("fortzsu", this.appUserRepository.findAll().get(0).getUsername());
+		Assert.assertEquals("user", this.appUserRepository.findAll().get(0).getUsername());
 	}
 
 	@Test
 	public void testSavedAppUser_fromRepository_checkUserName_Last() {
-		Assert.assertEquals("15_username", this.appUserRepository.findAll().get(17).getUsername());
+		Assert.assertEquals("1_username", this.appUserRepository.findAll().get(4).getUsername());
 	}
 
 	@Test
 	public void testSavedAppUser_fromRepository_checkUserType_guest() {
-		Assert.assertEquals(AppUserType.GUEST, this.appUserRepository.findAll().get(17).getAppUserType());
+		Assert.assertEquals(AppUserType.GUEST, this.appUserRepository.findAll().get(4).getAppUserType());
 	}
 
 	@Test
 	public void testSavedAppUser_fromRepository_checkUserType() {
-		Assert.assertEquals(AppUserType.SUPER_ADMIN, this.appUserRepository.findAll().get(0).getAppUserType());
+		Assert.assertEquals(AppUserType.SUPER_ADMIN, this.appUserRepository.findAll().get(1).getAppUserType());
 	}
 
 	@Test
@@ -1061,48 +1061,54 @@ public class ReticketTest {
 	}
 
 	// -----------------------  THEATRE TESTS  -----------------------
+
 	@Test
-	public void testTheatreCapacity_second() {
+	public void testListTheaters() {
+		Assert.assertEquals(2, this.theaterService.listTheaters(new PageableDto(0, 10)).size());
+	}
+
+	@Test
+	public void testTheaterCapacity_second() {
 		Assert.assertEquals(908, (long) this.theaterService.findById(1L).getCapacity());
 	}
 
 	@Test
-	public void testTheatreCapacity_first() {
+	public void testTheaterCapacity_first() {
 		Assert.assertEquals(391, (long) this.theaterService.findById(2L).getCapacity());
 	}
 
 	@Test
-	public void testSaveTheatre_service_checkIfTheatreNameIsNotTaken_false() {
+	public void testSaveTheater_service_checkIfTheatreNameIsNotTaken_false() {
 		Assert.assertFalse(this.theaterService.checkIfTheatreNameIsNotTaken("Harold Pinter Theater"));
 	}
 
 	@Test
-	public void testSaveTheatre_service_checkIfTheatreNameIsNotTaken_true() {
+	public void testSaveTheater_service_checkIfTheatreNameIsNotTaken_true() {
 		Assert.assertTrue(this.theaterService.checkIfTheatreNameIsNotTaken("The Royal National Theater!"));
 	}
 
 	@Test
-	public void testSaveTheatre_checkFSecond_id_fromRepository_findByTheatreName() {
+	public void testSaveTheater_checkFSecond_id_fromRepository_findByTheatreName() {
 		Assert.assertEquals(2, (long) this.theaterRepository.findTheaterByTheaterName("Harold Pinter Theater").getId());
 	}
 
 	@Test
-	public void testSaveTheatre_checkFirst_id_fromRepository_findByTheatreName() {
+	public void testSaveTheater_checkFirst_id_fromRepository_findByTheatreName() {
 		Assert.assertEquals(1, (long) this.theaterRepository.findTheaterByTheaterName("The Royal National Theater").getId());
 	}
 
 	@Test
-	public void testSaveTheatre_checkListSize_fromRepository() {
+	public void testSaveTheater_checkListSize_fromRepository() {
 		Assert.assertEquals(2, this.theaterRepository.findAll().size());
 	}
 
 	@Test
-	public void testSaveTheatre_checkSecond_name_fromRepository() {
+	public void testSaveTheater_checkSecond_name_fromRepository() {
 		Assert.assertEquals("Harold Pinter Theater", this.theaterRepository.findAll().get(1).getTheaterName());
 	}
 
 	@Test
-	public void testSaveTheatre_checkFirst_name_fromRepository() {
+	public void testSaveTheater_checkFirst_name_fromRepository() {
 		Assert.assertEquals("The Royal National Theater", this.theaterRepository.findAll().get(0).getTheaterName());
 	}
 

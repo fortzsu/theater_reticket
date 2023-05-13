@@ -53,7 +53,7 @@ public class AppUserService implements UserDetailsService {
         this.playRepository = playRepository;
         this.contributorRepository = contributorRepository;
         this.performanceRepository = performanceRepository;
-        appUserRepository.saveAll(FakerUtils.generateDummyUsers(1, passwordEncoder));
+        appUserRepository.saveAll(FakerUtils.generateInitData(1, passwordEncoder));
     }
 
     public void save(AppUserSaveDto appUserSaveDto) {
