@@ -22,14 +22,11 @@ public class PerformanceService {
 
     private final PerformanceRepository performanceRepository;
     private final PlayService playService;
-    private final ContributorService contributorService;
 
     @Autowired
-    public PerformanceService(PerformanceRepository performanceRepository, PlayService playService,
-                              ContributorService contributorService) {
+    public PerformanceService(PerformanceRepository performanceRepository, PlayService playService) {
         this.performanceRepository = performanceRepository;
         this.playService = playService;
-        this.contributorService = contributorService;
     }
 
     public List<Performance> save(List<PerformanceSaveDto> performanceSaveDtoList) {

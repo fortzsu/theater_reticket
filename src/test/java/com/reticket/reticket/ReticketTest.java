@@ -85,6 +85,7 @@ public class ReticketTest {
 
 	private static boolean init = true;
 
+
 	@Before
 	public void init() {
 		if (init) {

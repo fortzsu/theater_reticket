@@ -1,12 +1,17 @@
 package com.reticket.reticket.service;
 
-import com.reticket.reticket.domain.Auditorium;
-import com.reticket.reticket.domain.Performance;
-import com.reticket.reticket.domain.Play;
-import com.reticket.reticket.domain.Theater;
+import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.PerformanceListDto;
+import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
+import com.reticket.reticket.dto.report_search.CriteriaResultDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.repository.PerformanceRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,9 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class SearchPerformanceService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final PerformanceRepository performanceRepository;
 
@@ -36,6 +44,27 @@ public class SearchPerformanceService {
         this.theaterService = theaterService;
         this.auditoriumService = auditoriumService;
     }
+
+    public List<PerformanceListDto> searchFilteredPerformances_(FilterPerformancesDto dto) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PerformanceListDto> criteriaQuery = criteriaBuilder.createQuery(PerformanceListDto.class);
+        Root<Performance> root = criteriaQuery.from(Performance.class);
+        CriteriaJoinDto criteriaJoinDto = fillCriteriaJoinDto(root);
+
+        return null;
+    }
+
+    private CriteriaJoinDto fillCriteriaJoinDto(Root<Performance> root) {
+        CriteriaJoinDto criteriaJoinDto = new CriteriaJoinDto();
+        Join<Performance, Play> playJoin = root.join("play");
+        criteriaJoinDto.setPlayJoin(playJoin);
+        Join<Play, Auditorium> auditoriumJoin = playJoin.join("auditorium");
+        criteriaJoinDto.setAuditoriumJoin(auditoriumJoin);
+        Join<Auditorium, Theater> theaterJoin = auditoriumJoin.join("theater");
+        criteriaJoinDto.setTheaterJoin(theaterJoin);
+        return criteriaJoinDto;
+    }
+
 
 
     public List<PerformanceListDto> searchFilteredPerformances(FilterPerformancesDto dto) {

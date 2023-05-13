@@ -1,4 +1,4 @@
-package com.reticket.reticket.utils;
+package com.reticket.reticket.init;
 
 import com.reticket.reticket.domain.AppUser;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -7,7 +7,6 @@ import java.util.*;
 
 public class FakerUtils {
 
-//    private static final Faker faker = new Faker();
 
     public static List<AppUser> generateInitData(int number, PasswordEncoder passwordEncoder) {
         List<AppUser> appUsers = new ArrayList<>();

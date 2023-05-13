@@ -26,7 +26,6 @@ public class ReportService {
     private final TheaterService theaterService;
     private final AuditoriumService auditoriumService;
     private final PlayService playService;
-
     private final GoogleService googleService;
 
     public ReportService(TheaterService theaterService, AuditoriumService auditoriumService, PlayService playService, GoogleService googleService) {
@@ -75,8 +74,8 @@ public class ReportService {
 
     }
 
-    private List<CriteriaResultPerformancesDto> fillPerformances(ReportFilterDto reportFilterDto,
-                                                                 TicketCondition ticketCondition, LocalDateTime queryStart, LocalDateTime queryEnd) {
+    private List<CriteriaResultPerformancesDto> fillPerformances(ReportFilterDto reportFilterDto, TicketCondition ticketCondition,
+                                                                 LocalDateTime queryStart, LocalDateTime queryEnd) {
         CriteriaBuilder criteriaBuilderPerformances = entityManager.getCriteriaBuilder();
         CriteriaQuery<CriteriaResultPerformancesDto> criteriaQueryPerformances = criteriaBuilderPerformances.createQuery(CriteriaResultPerformancesDto.class);
         Root<Ticket> rootPerformances = criteriaQueryPerformances.from(Ticket.class);
