@@ -18,8 +18,8 @@ public class Theater {
     @Column(name = "theater_name")
     private String theaterName;
 
-    @Column(name = "theater_history")
-    private String theaterHistory;
+    @Column(name = "theater_story")
+    private String theaterStory;
 
     @Column(name = "capacity")
     private Integer capacity;
@@ -62,12 +62,12 @@ public class Theater {
         this.auditoriums = auditoriums;
     }
 
-    public String getTheaterHistory() {
-        return theaterHistory;
+    public String getTheaterStory() {
+        return theaterStory;
     }
 
-    public void setTheaterHistory(String theatreHistory) {
-        this.theaterHistory = theatreHistory;
+    public void setTheaterStory(String theaterStory) {
+        this.theaterStory = theaterStory;
     }
 }
 

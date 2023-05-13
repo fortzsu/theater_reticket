@@ -1,6 +1,6 @@
 package com.reticket.reticket.controller;
 
-import com.reticket.reticket.dto.list.ListTheatresDto;
+import com.reticket.reticket.dto.list.ListTheatersDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
 import com.reticket.reticket.service.TheaterService;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/theatre")
+@RequestMapping("/api/theater")
 public class TheaterController {
 
     private final TheaterService theaterService;
@@ -31,9 +31,9 @@ public class TheaterController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping
-    public ResponseEntity<List<ListTheatresDto>> listTheatres(@RequestBody PageableDto pageableDto) {
-        return new ResponseEntity<>(this.theaterService.listTheatres(pageableDto), HttpStatus.OK);
+    @PostMapping("/listTheater")
+    public ResponseEntity<List<ListTheatersDto>> listTheaters(@RequestBody PageableDto pageableDto) {
+        return new ResponseEntity<>(this.theaterService.listTheaters(pageableDto), HttpStatus.OK);
     }
 
 
