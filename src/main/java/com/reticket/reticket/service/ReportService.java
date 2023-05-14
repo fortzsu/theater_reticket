@@ -46,8 +46,7 @@ public class ReportService {
         if (filterReportDto.isPerformances()) {
             reportResultDto.setCriteriaResultPerformancesDtos(fillPerformances(filterReportDto, ticketCondition, startDate, endDate));
         } else {
-            reportResultDto.setSearchPathName(CriteriaBuilderUtils.searchThePath(filterReportDto, this.theaterService,
-                    this.auditoriumService, this.playService));
+            reportResultDto.setSearchPathName(searchThePath(filterReportDto));
         }
 //        if(filterReportDto.isExportToSheet()) {
 //            try {
@@ -145,7 +144,22 @@ public class ReportService {
         };
     }
 
-
+    public String searchThePath(FilterReportDto filterReportDto) {
+        switch (filterReportDto.getFilterByPath()) {
+            case "theater" -> {
+                Theater theater = this.theaterService.findById(filterReportDto.getSearchId());
+                return theater.getTheaterName();
+            }
+            case "auditorium" -> {
+                Auditorium auditorium = this.auditoriumService.findAuditoriumById(filterReportDto.getSearchId());
+                return auditorium.getAuditoriumName();
+            }
+            default -> {
+                Play play = this.playService.findById(filterReportDto.getSearchId());
+                return play.getPlayName();
+            }
+        }
+    }
 
 
 }

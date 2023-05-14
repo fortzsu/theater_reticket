@@ -443,7 +443,7 @@ public class ReticketTest {
 				"Comedy", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 10));
-		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances_(dto).size());
 	}
 
 	@Test

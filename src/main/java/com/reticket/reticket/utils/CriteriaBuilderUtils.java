@@ -18,23 +18,7 @@ public class CriteriaBuilderUtils {
         criteriaJoinDto.setTheaterJoin(theaterJoin);
     }
 
-    public static String searchThePath(FilterReportDto filterReportDto, TheaterService theaterService,
-                                 AuditoriumService auditoriumService, PlayService playService) {
-        switch (filterReportDto.getFilterByPath()) {
-            case "theater" -> {
-                Theater theater = theaterService.findById(filterReportDto.getSearchId());
-                return theater.getTheaterName();
-            }
-            case "auditorium" -> {
-                Auditorium auditorium = auditoriumService.findAuditoriumById(filterReportDto.getSearchId());
-                return auditorium.getAuditoriumName();
-            }
-            default -> {
-                Play play = playService.findById(filterReportDto.getSearchId());
-                return play.getPlayName();
-            }
-        }
-    }
+
 
 
 

@@ -132,24 +132,19 @@ public class Play {
     }
 
     public void setPlayType(String playType) {
+        this.playType = findPlayType(playType);
+    }
+
+    public static PlayType findPlayType(String playType) {
+        PlayType result;
         switch (playType) {
-            case "Drama":
-                this.playType = PlayType.DRAMA;
-                break;
-            case "Tragedy":
-                this.playType = PlayType.TRAGEDY;
-                break;
-            case "Political":
-                this.playType = PlayType.POLITICAL;
-                break;
-            case "Crime":
-                this.playType = PlayType.CRIME;
-                break;
-            case "Comedy":
-                this.playType = PlayType.COMEDY;
-                break;
-            default:
-                this.playType = PlayType.MUSICAL;
+            case "Drama" -> result = PlayType.DRAMA;
+            case "Tragedy" -> result = PlayType.TRAGEDY;
+            case "Political" -> result = PlayType.POLITICAL;
+            case "Crime" -> result = PlayType.CRIME;
+            case "Comedy" -> result = PlayType.COMEDY;
+            default ->  result = PlayType.MUSICAL;
         }
+        return result;
     }
 }

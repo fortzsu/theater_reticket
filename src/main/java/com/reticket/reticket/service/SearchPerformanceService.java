@@ -1,6 +1,7 @@
 package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.*;
+import com.reticket.reticket.domain.enums.PlayType;
 import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
@@ -49,11 +50,21 @@ public class SearchPerformanceService {
         Root<Performance> performanceRoot = criteriaQuery.from(Performance.class);
         CriteriaJoinDto criteriaJoinDto = new CriteriaJoinDto();
         Join<Performance, Play> playJoin = performanceRoot.join("play");
+        criteriaJoinDto.setPlayJoin(playJoin);
+
         CriteriaBuilderUtils.createJoins(criteriaJoinDto, playJoin);
         LocalDateTime startDate = LocalDateTime.of(dto.getSearchDateDto().getStartYear(), dto.getSearchDateDto().getStartMonth(), dto.getSearchDateDto().getStartDay(), 0, 0);
         LocalDateTime endDate = LocalDateTime.of(dto.getSearchDateDto().getEndYear(), dto.getSearchDateDto().getEndMonth(), dto.getSearchDateDto().getEndDay(), 23, 59);
-        List<Predicate> predicateList = fillPredicateList(dto, performanceRoot, criteriaBuilder, criteriaJoinDto, startDate, endDate);
-        return null;
+
+        return entityManager.createQuery(
+                criteriaQuery.multiselect(
+                                performanceRoot.get("performanceDateTime"),
+                                criteriaJoinDto.getPlayJoin().get("playName"),
+                                criteriaJoinDto.getTheaterJoin().get("theaterName"),
+                                criteriaJoinDto.getAuditoriumJoin().get("auditoriumName")).where(fillPredicateList(dto, performanceRoot,
+                        criteriaBuilder, criteriaJoinDto, startDate, endDate)
+                                .toArray(new Predicate[0]))).getResultList();
+
     }
 
     private List<Predicate> fillPredicateList(FilterPerformancesDto dto, Root<Performance> performanceRoot,
@@ -62,8 +73,29 @@ public class SearchPerformanceService {
 
         List<Predicate> predicateList = new ArrayList<>();
 
+        if (dto.getPath().equals("theater")) {
+            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getTheaterJoin().get("id"), dto.getSearchId()));
+        } else if (dto.getPath().equals("auditorium")) {
+            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getAuditoriumJoin().get("id"), dto.getSearchId()));
+        } else {
+            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get("id"), dto.getSearchId()));
+        }
+
+        if(!dto.getPath().equals("theater") && !dto.getPath().equals("auditorium") && !dto.getPath().equals("play")) {
+            PlayType playType = Play.findPlayType(dto.getPath());
+            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get("playType"), playType));
+        }
+        predicateList.add(criteriaBuilder.isTrue(performanceRoot.get("isAvailableOnline")));
+        predicateList.add(criteriaBuilder.isFalse(performanceRoot.get("isCancelled")));
+        predicateList.add(criteriaBuilder.isTrue(performanceRoot.get("isSeenOnline")));
+        predicateList.add(criteriaBuilder.isFalse(performanceRoot.get("isSold")));
+
+        predicateList.add(criteriaBuilder.greaterThan(performanceRoot.get("performanceDateTime"), queryStart));
+        predicateList.add(criteriaBuilder.lessThan(performanceRoot.get("performanceDateTime"), queryEnd));
+
         return predicateList;
     }
+
 
 
     public List<PerformanceListDto> searchFilteredPerformances(FilterPerformancesDto dto) {
@@ -94,7 +126,8 @@ public class SearchPerformanceService {
             default -> {
                 return mapPerformanceToDto(
                         this.performanceRepository.findUpcomingPerformancesByPlayType(
-                                this.playService.findPlayType(dto.getPath()), PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
+                                this.playService.findPlayType(dto.getPath()),
+                                PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize()),
                                 startDate, endDate));
             }
         }
