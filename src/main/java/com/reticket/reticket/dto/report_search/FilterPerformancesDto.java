@@ -5,7 +5,6 @@ public class FilterPerformancesDto {
 
     private String path;
     private Long searchId;
-
     private SearchDateDto searchDateDto;
     private PageableDto pageableDto;
 

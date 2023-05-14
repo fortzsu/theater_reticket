@@ -3,21 +3,18 @@ package com.reticket.reticket.service;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
-import com.reticket.reticket.dto.report_search.CriteriaResultDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.repository.PerformanceRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,22 +46,17 @@ public class SearchPerformanceService {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PerformanceListDto> criteriaQuery = criteriaBuilder.createQuery(PerformanceListDto.class);
         Root<Performance> root = criteriaQuery.from(Performance.class);
-        CriteriaJoinDto criteriaJoinDto = fillCriteriaJoinDto(root);
+//        CriteriaJoinDto criteriaJoinDto = fillCriteriaJoinDto(root);
 
         return null;
     }
 
-    private CriteriaJoinDto fillCriteriaJoinDto(Root<Performance> root) {
-        CriteriaJoinDto criteriaJoinDto = new CriteriaJoinDto();
-        Join<Performance, Play> playJoin = root.join("play");
-        criteriaJoinDto.setPlayJoin(playJoin);
-        Join<Play, Auditorium> auditoriumJoin = playJoin.join("auditorium");
-        criteriaJoinDto.setAuditoriumJoin(auditoriumJoin);
-        Join<Auditorium, Theater> theaterJoin = auditoriumJoin.join("theater");
-        criteriaJoinDto.setTheaterJoin(theaterJoin);
-        return criteriaJoinDto;
-    }
+    private List<Predicate> fillPredicateList(FilterPerformancesDto dto, LocalDateTime queryStart, LocalDateTime queryEnd) {
 
+        List<Predicate> predicateList = new ArrayList<>();
+
+        return predicateList;
+    }
 
 
     public List<PerformanceListDto> searchFilteredPerformances(FilterPerformancesDto dto) {

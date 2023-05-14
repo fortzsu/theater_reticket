@@ -1,6 +1,6 @@
 package com.reticket.reticket.dto.report_search;
 
-public class ReportFilterDto {
+public class FilterReportDto {
     private String ticketCondition;
     private String filterByPath;
     private Long searchId;
@@ -8,7 +8,7 @@ public class ReportFilterDto {
     private boolean isPerformances;
     private boolean exportToSheet;
 
-    public ReportFilterDto(String ticketCondition, String filterByPath,
+    public FilterReportDto(String ticketCondition, String filterByPath,
                            Long searchId, SearchDateDto searchDateDto, boolean isPerformances, boolean exportToSheet) {
         this.ticketCondition = ticketCondition;
         this.filterByPath = filterByPath;

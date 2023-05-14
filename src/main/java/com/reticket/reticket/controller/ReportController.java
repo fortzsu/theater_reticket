@@ -1,7 +1,7 @@
 package com.reticket.reticket.controller;
 
-import com.reticket.reticket.dto.report_search.CriteriaResultDto;
-import com.reticket.reticket.dto.report_search.ReportFilterDto;
+import com.reticket.reticket.dto.report_search.FilterReportDto;
+import com.reticket.reticket.dto.report_search.ReportResultDto;
 import com.reticket.reticket.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ public class ReportController {
     }
 
     @PostMapping
-    public ResponseEntity<CriteriaResultDto> report(@RequestBody ReportFilterDto reportFilterDto) {
-        return new ResponseEntity<>(this.reportService.report(reportFilterDto), HttpStatus.OK);
+    public ResponseEntity<ReportResultDto> report(@RequestBody FilterReportDto filterReportDto) {
+        return new ResponseEntity<>(this.reportService.report(filterReportDto), HttpStatus.OK);
     }
 
 

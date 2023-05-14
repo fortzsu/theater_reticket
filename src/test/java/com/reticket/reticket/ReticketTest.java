@@ -5,8 +5,8 @@ import com.reticket.reticket.domain.enums.AppUserType;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.domain.enums.TicketCondition;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
+import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
-import com.reticket.reticket.dto.report_search.ReportFilterDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.repository.*;
@@ -277,7 +277,7 @@ public class ReticketTest {
 
 //    @Test
 //    public void testReportPerformances_Google_soldTickets_byTheatre() {
-//        ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+//        FilterReportDto reportFilterDto = new FilterReportDto("SOLD", "theatre", 1L,
 //                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 //                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, true);
 //        Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
@@ -285,7 +285,7 @@ public class ReticketTest {
 //
 //    @Test
 //    public void testReport_Google_soldTickets_byTheatre_ticketAmount() {
-//        ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theatre", 1L,
+//        FilterReportDto reportFilterDto = new FilterReportDto("SOLD", "theatre", 1L,
 //                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 //                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, true);
 //        Assert.assertEquals(1940, (long) this.reportService.report(reportFilterDto).getTicketAmount());
@@ -298,137 +298,137 @@ public class ReticketTest {
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-		Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
+		Assert.assertEquals(3, this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().size());
 	}
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater_testFirst_amount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-		Assert.assertEquals(1030, this.reportService.report(reportFilterDto).
+		Assert.assertEquals(1030, this.reportService.report(filterReportDto).
 				getCriteriaResultPerformancesDtos().get(0).getSumOfTickets());
 	}
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater_testFirst_returned() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("RETURNED", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("RETURNED", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-		Assert.assertEquals(200, this.reportService.report(reportFilterDto).
+		Assert.assertEquals(200, this.reportService.report(filterReportDto).
 				getCriteriaResultPerformancesDtos().get(0).getSumOfTickets());
 	}
 
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater_testFirst_count() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
 		Assert.assertEquals(14, (long)
-				this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().get(0).getCountOfTicket());
+				this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().get(0).getCountOfTicket());
 	}
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater_testSecond_amount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-		Assert.assertEquals(580, this.reportService.report(reportFilterDto).
+		Assert.assertEquals(580, this.reportService.report(filterReportDto).
 				getCriteriaResultPerformancesDtos().get(1).getSumOfTickets());
 	}
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater_testSecond_count() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-		Assert.assertEquals(8, (long) this.reportService.report(reportFilterDto).
+		Assert.assertEquals(8, (long) this.reportService.report(filterReportDto).
 				getCriteriaResultPerformancesDtos().get(1).getCountOfTicket());
 	}
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater_testThird_amount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-		Assert.assertEquals(330, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().get(2).getSumOfTickets());
+		Assert.assertEquals(330, this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().get(2).getSumOfTickets());
 	}
 
 	@Test
 	public void testReportPerformances_soldTickets_byTheater_testThird_count() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-		Assert.assertEquals(6, (long) this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().get(2).getCountOfTicket());
+		Assert.assertEquals(6, (long) this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().get(2).getCountOfTicket());
 	}
 
 	@Test
 	public void testReport_soldTickets_byTheater_ticketCount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
-		Assert.assertEquals(28, (long) this.reportService.report(reportFilterDto).getTicketCount());
+		Assert.assertEquals(28, (long) this.reportService.report(filterReportDto).getTicketCount());
 	}
 
 	@Test
 	public void testReport_soldTickets_byTheater_ticketAmount() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
-		Assert.assertEquals(1940, (long) this.reportService.report(reportFilterDto).getTicketAmount());
+		Assert.assertEquals(1940, (long) this.reportService.report(filterReportDto).getTicketAmount());
 	}
 
 	@Test
 	public void testReport_soldTickets_byTheater_outOfDate() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), false, false);
-		Assert.assertNull(this.reportService.report(reportFilterDto).getTicketAmount());
+		Assert.assertNull(this.reportService.report(filterReportDto).getTicketAmount());
 	}
 
 	@Test
 	public void testReport_soldTickets_byTheater_testStartDate() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
 		LocalDateTime startDate = LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1, 0, 0);
-		Assert.assertEquals(startDate, this.reportService.report(reportFilterDto).getStart());
+		Assert.assertEquals(startDate, this.reportService.report(filterReportDto).getStart());
 	}
 
 	@Test
 	public void testReport_soldTickets_byTheater_testEndDate() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
 		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10, 23, 59);
-		Assert.assertEquals(endDate, this.reportService.report(reportFilterDto).getEnd());
+		Assert.assertEquals(endDate, this.reportService.report(filterReportDto).getEnd());
 	}
 
 	@Test
 	public void testReport_soldTickets_byTheater_theaterName() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "theater", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), false, false);
-		Assert.assertEquals("The Royal National Theater", this.reportService.report(reportFilterDto).getSearchPathName());
+		Assert.assertEquals("The Royal National Theater", this.reportService.report(filterReportDto).getSearchPathName());
 	}
 
 	@Test
 	public void testReport_soldTickets_byAuditorium_auditoriumName() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "auditorium", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "auditorium", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
-		Assert.assertEquals("Oliver Theater", this.reportService.report(reportFilterDto).getSearchPathName());
+		Assert.assertEquals("Oliver Theater", this.reportService.report(filterReportDto).getSearchPathName());
 	}
 
 	@Test
 	public void testReport_soldTickets_byPlay_playName() {
-		ReportFilterDto reportFilterDto = new ReportFilterDto("SOLD", "play", 1L,
+		FilterReportDto filterReportDto = new FilterReportDto("SOLD", "play", 1L,
 				new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 						LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), false, false);
-		Assert.assertEquals("Standing at the Sky's Edge", this.reportService.report(reportFilterDto).getSearchPathName());
+		Assert.assertEquals("Standing at the Sky's Edge", this.reportService.report(filterReportDto).getSearchPathName());
 	}
 
 

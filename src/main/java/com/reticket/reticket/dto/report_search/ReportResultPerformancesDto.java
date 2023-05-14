@@ -2,7 +2,7 @@ package com.reticket.reticket.dto.report_search;
 
 import java.time.LocalDateTime;
 
-public class CriteriaResultPerformancesDto {
+public class ReportResultPerformancesDto {
 
     private LocalDateTime performanceDateTime;
     private Long countOfTicket;
@@ -11,8 +11,8 @@ public class CriteriaResultPerformancesDto {
     private String auditoriumName;
     private String playName;
 
-    public CriteriaResultPerformancesDto(LocalDateTime performanceDateTime, Long countOfTicket, Integer sumOfTickets,
-                                         String theatreName, String auditoriumName, String playName) {
+    public ReportResultPerformancesDto(LocalDateTime performanceDateTime, Long countOfTicket, Integer sumOfTickets,
+                                       String theatreName, String auditoriumName, String playName) {
         this.performanceDateTime = performanceDateTime;
         this.countOfTicket = countOfTicket;
         this.sumOfTickets = sumOfTickets;

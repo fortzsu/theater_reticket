@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CriteriaResultDto {
+public class ReportResultDto {
     private String ticketCondition;
     private Long ticketCount;
     private Integer ticketAmount;
@@ -15,9 +15,9 @@ public class CriteriaResultDto {
     private LocalDateTime start;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime end;
-    private List<CriteriaResultPerformancesDto> criteriaResultPerformancesDtos = new ArrayList<>();
+    private List<ReportResultPerformancesDto> reportResultPerformancesDtos = new ArrayList<>();
 
-    public CriteriaResultDto(Long ticketCount, Integer ticketAmount) {
+    public ReportResultDto(Long ticketCount, Integer ticketAmount) {
         this.ticketCount = ticketCount;
         this.ticketAmount = ticketAmount;
     }
@@ -62,12 +62,12 @@ public class CriteriaResultDto {
         this.end = end;
     }
 
-    public List<CriteriaResultPerformancesDto> getCriteriaResultPerformancesDtos() {
-        return criteriaResultPerformancesDtos;
+    public List<ReportResultPerformancesDto> getCriteriaResultPerformancesDtos() {
+        return reportResultPerformancesDtos;
     }
 
-    public void setCriteriaResultPerformancesDtos(List<CriteriaResultPerformancesDto> criteriaResultPerformancesDtos) {
-        this.criteriaResultPerformancesDtos = criteriaResultPerformancesDtos;
+    public void setCriteriaResultPerformancesDtos(List<ReportResultPerformancesDto> reportResultPerformancesDtos) {
+        this.reportResultPerformancesDtos = reportResultPerformancesDtos;
     }
 
     public String getSearchPathName() {

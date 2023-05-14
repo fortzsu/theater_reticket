@@ -1,18 +1,6 @@
 package com.reticket.reticket.google;
 
-import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.model.*;
-import com.reticket.reticket.dto.report_search.CriteriaResultDto;
-import com.reticket.reticket.dto.report_search.CriteriaResultPerformancesDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class GoogleService {
@@ -24,12 +12,12 @@ public class GoogleService {
 //        sheetsService = SheetsServiceUtil.getSheetsService();
 //    }
 //
-//    public void exportDataToSheet(CriteriaResultDto dto) throws IOException {
+//    public void exportDataToSheet(ReportResultDto dto) throws IOException {
 //        Spreadsheet spreadsheet = createSheet(dto);
 //        addDataToSheet(dto, spreadsheet);
 //    }
 //
-//    private Spreadsheet createSheet(CriteriaResultDto dto) throws IOException {
+//    private Spreadsheet createSheet(ReportResultDto dto) throws IOException {
 //        Spreadsheet spreadSheet = new Spreadsheet().setProperties(
 //                new SpreadsheetProperties().setTitle(createTitleForSheet(dto)));
 //        return sheetsService
@@ -37,7 +25,7 @@ public class GoogleService {
 //                .create(spreadSheet).execute();
 //    }
 //
-//    private BatchUpdateValuesResponse addDataToSheet(CriteriaResultDto dto, Spreadsheet spreadsheet) throws IOException {
+//    private BatchUpdateValuesResponse addDataToSheet(ReportResultDto dto, Spreadsheet spreadsheet) throws IOException {
 //        List<ValueRange> data = fillSheet(dto);
 //        BatchUpdateValuesRequest batchBody = new BatchUpdateValuesRequest()
 //                .setValueInputOption("USER_ENTERED")
@@ -48,7 +36,7 @@ public class GoogleService {
 //                .execute();
 //    }
 //
-//    private List<ValueRange> fillSheet(CriteriaResultDto dto) {
+//    private List<ValueRange> fillSheet(ReportResultDto dto) {
 //
 //        List<ValueRange> data = new ArrayList<>();
 //        data.add(new ValueRange()
@@ -91,7 +79,7 @@ public class GoogleService {
 //        return data;
 //    }
 //
-//    private ValueRange fillSheetWithPerformances(CriteriaResultPerformancesDto criteriaResultPerformancesDto, int j) {
+//    private ValueRange fillSheetWithPerformances(ReportResultPerformancesDto criteriaResultPerformancesDto, int j) {
 //        ValueRange performance = new ValueRange();
 //        performance.setRange("B" + j).setValues(
 //                List.of(Arrays.asList(criteriaResultPerformancesDto.getTheatreName(),
@@ -103,7 +91,7 @@ public class GoogleService {
 //        return performance;
 //    }
 //
-//    private String createTitleForSheet(CriteriaResultDto dto) {
+//    private String createTitleForSheet(ReportResultDto dto) {
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //        String start = dto.getStart().format(formatter);
 //        String end = dto.getEnd().format(formatter);
