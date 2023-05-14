@@ -4,7 +4,6 @@ import com.reticket.reticket.controller.*;
 import com.reticket.reticket.domain.enums.AppUserType;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.domain.enums.TicketCondition;
-import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
@@ -79,8 +78,6 @@ public class ReticketTest {
 	private AppUserService appUserService;
 	@Autowired
 	private TicketActionController ticketActionController;
-	@Autowired
-	private SearchPerformanceService searchPerformanceService;
 	@Autowired
 	private ReportService reportService;
 
@@ -444,7 +441,7 @@ public class ReticketTest {
 				"Comedy", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 10));
-		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances_(dto).size());
+		Assert.assertEquals(2, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -453,7 +450,7 @@ public class ReticketTest {
 				"Comedy", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 9),
 				new PageableDto(0, 10));
-		Assert.assertEquals(0, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(0, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -462,7 +459,7 @@ public class ReticketTest {
 				"Drama", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 16));
-		Assert.assertEquals(4, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(4, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -471,7 +468,7 @@ public class ReticketTest {
 				"Drama", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 15,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 16));
-		Assert.assertEquals(0, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(0, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -480,7 +477,7 @@ public class ReticketTest {
 				"Drama", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(1, 8));
-		Assert.assertEquals(0, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(0, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -489,7 +486,7 @@ public class ReticketTest {
 				"Musical", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 16));
-		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(2, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -498,7 +495,7 @@ public class ReticketTest {
 				"Musical", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 3,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 3),
 				new PageableDto(0, 16));
-		Assert.assertEquals(1, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(1, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -507,7 +504,7 @@ public class ReticketTest {
 				"play", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 10));
-		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(2, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -516,7 +513,7 @@ public class ReticketTest {
 				"play", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 10));
-		Assert.assertEquals(0, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(0, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -525,7 +522,7 @@ public class ReticketTest {
 				"play", 8L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 10));
-		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(2, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -534,7 +531,7 @@ public class ReticketTest {
 				"play", 8L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10),
 				new PageableDto(0, 10));
-		Assert.assertEquals(0, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(0, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 
@@ -544,7 +541,7 @@ public class ReticketTest {
 				"auditorium", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 10));
-		Assert.assertEquals(4, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(4, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -553,7 +550,7 @@ public class ReticketTest {
 				"auditorium", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 2));
-		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(2, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -562,7 +559,7 @@ public class ReticketTest {
 				"auditorium", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1),
 				new PageableDto(0, 2));
-		Assert.assertEquals(1, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(1, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -571,7 +568,7 @@ public class ReticketTest {
 				"auditorium", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1),
 				new PageableDto(1, 2));
-		Assert.assertEquals(0, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(0, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -580,7 +577,7 @@ public class ReticketTest {
 				"auditorium", 4L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 16));
-		Assert.assertEquals(6, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(6, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
@@ -590,7 +587,7 @@ public class ReticketTest {
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 16));
 		Assert.assertEquals("Lemons Lemons Lemons Lemons Lemons",
-				this.searchPerformanceService.searchFilteredPerformances(dto).get(0).getPlayName());
+				this.performanceService.searchFilteredPerformances(dto).get().toList().get(0).getPlayName());
 	}
 
 
@@ -601,66 +598,66 @@ public class ReticketTest {
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(2, 2));
 		Assert.assertEquals("Dr. Semmelweis",
-				this.searchPerformanceService.searchFilteredPerformances(dto).get(1).getPlayName());
+				this.performanceService.searchFilteredPerformances(dto).get().toList().get(1).getPlayName());
 	}
 
 
 	@Test
 	public void testSearchFilteredPerformances_byTheatre_firstPage() {
 		FilterPerformancesDto dto = new FilterPerformancesDto(
-				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 5),
 				new PageableDto(0, 5));
-		Assert.assertEquals(5, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(5, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
 	public void testSearchFilteredPerformances_byTheatre_secondPage() {
 		FilterPerformancesDto dto = new FilterPerformancesDto(
-				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 5),
 				new PageableDto(1, 2));
-		Assert.assertEquals(2, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		Assert.assertEquals(2, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
 	public void testSearchFilteredPerformances_byTheatre_first() {
 		FilterPerformancesDto dto = new FilterPerformancesDto(
-				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 5),
 				new PageableDto(0, 5));
 		Assert.assertEquals("Standing at the Sky's Edge",
-				this.searchPerformanceService.searchFilteredPerformances(dto).get(0).getPlayName());
+				this.performanceService.searchFilteredPerformances(dto).get().toList().get(0).getPlayName());
 	}
 
 	@Test
 	public void testSearchFilteredPerformances_byTheatre_last() {
 		FilterPerformancesDto dto = new FilterPerformancesDto(
-				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(1, 5));
 		Assert.assertEquals("Romeo and Julie",
-				this.searchPerformanceService.searchFilteredPerformances(dto).get(4).getPlayName());
+				this.performanceService.searchFilteredPerformances(dto).get().toList().get(4).getPlayName());
 	}
 
 	@Test
 	public void testSearchFilteredPerformances_byTheatre_checkEmptyPage() {
 		FilterPerformancesDto dto = new FilterPerformancesDto(
-				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(3, 5));
 		Assert.assertEquals(0,
-				this.searchPerformanceService.searchFilteredPerformances(dto).size());
+				this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	@Test
 	public void testSearchFilteredPerformances_byTheatre_checkAuditorium() {
 		FilterPerformancesDto dto = new FilterPerformancesDto(
-				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(1, 5));
 		Assert.assertEquals("Dorfman Theater",
-				this.searchPerformanceService.searchFilteredPerformances(dto).get(4).getAuditoriumName());
+				this.performanceService.searchFilteredPerformances(dto).get().toList().get(4).getAuditoriumName());
 	}
 
 	@Test
@@ -669,8 +666,7 @@ public class ReticketTest {
 				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 16));
-		List<PerformanceListDto> list = this.searchPerformanceService.searchFilteredPerformances_(dto);
-		Assert.assertEquals(10, list.size() );
+		Assert.assertEquals(10, this.performanceService.searchFilteredPerformances(dto).get().toList().size());
 	}
 
 	// -----------------------  SEARCH PERFORMANCES TESTS  -----------------------
@@ -917,16 +913,6 @@ public class ReticketTest {
 	// -----------------------  SEAT TESTS  -----------------------
 
 	// -----------------------  PERFORMANCE TESTS  -----------------------
-
-	@Test
-	public void testListPerformance_service_findAll() {
-		Assert.assertEquals(16, this.performanceService.listPerformances(new PageableDto(0, 16)).size());
-	}
-
-	@Test
-	public void testListPerformance_service_checkPages() {
-		Assert.assertEquals(4, this.performanceService.listPerformances(new PageableDto(2, 4)).size());
-	}
 
 	@Test
 	public void testSavePerformance_checkDateTime_fromService() {
