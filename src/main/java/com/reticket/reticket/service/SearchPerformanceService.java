@@ -2,6 +2,7 @@ package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.PerformanceListDto;
+import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.repository.PerformanceRepository;
@@ -45,13 +46,19 @@ public class SearchPerformanceService {
     public List<PerformanceListDto> searchFilteredPerformances_(FilterPerformancesDto dto) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PerformanceListDto> criteriaQuery = criteriaBuilder.createQuery(PerformanceListDto.class);
-        Root<Performance> root = criteriaQuery.from(Performance.class);
-//        CriteriaJoinDto criteriaJoinDto = fillCriteriaJoinDto(root);
-
+        Root<Performance> performanceRoot = criteriaQuery.from(Performance.class);
+        CriteriaJoinDto criteriaJoinDto = new CriteriaJoinDto();
+        Join<Performance, Play> playJoin = performanceRoot.join("play");
+        CriteriaBuilderUtils.createJoins(criteriaJoinDto, playJoin);
+        LocalDateTime startDate = LocalDateTime.of(dto.getSearchDateDto().getStartYear(), dto.getSearchDateDto().getStartMonth(), dto.getSearchDateDto().getStartDay(), 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(dto.getSearchDateDto().getEndYear(), dto.getSearchDateDto().getEndMonth(), dto.getSearchDateDto().getEndDay(), 23, 59);
+        List<Predicate> predicateList = fillPredicateList(dto, performanceRoot, criteriaBuilder, criteriaJoinDto, startDate, endDate);
         return null;
     }
 
-    private List<Predicate> fillPredicateList(FilterPerformancesDto dto, LocalDateTime queryStart, LocalDateTime queryEnd) {
+    private List<Predicate> fillPredicateList(FilterPerformancesDto dto, Root<Performance> performanceRoot,
+                                              CriteriaBuilder criteriaBuilder, CriteriaJoinDto criteriaJoinDto,
+                                              LocalDateTime queryStart, LocalDateTime queryEnd) {
 
         List<Predicate> predicateList = new ArrayList<>();
 

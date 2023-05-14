@@ -1,4 +1,4 @@
-package com.reticket.reticket.init;
+package com.reticket.reticket.utils;
 
 import com.reticket.reticket.domain.AppUser;
 import org.springframework.security.crypto.password.PasswordEncoder;

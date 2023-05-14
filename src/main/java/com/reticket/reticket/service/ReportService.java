@@ -4,6 +4,7 @@ import com.reticket.reticket.domain.*;
 import com.reticket.reticket.domain.enums.TicketCondition;
 import com.reticket.reticket.dto.report_search.*;
 import com.reticket.reticket.google.GoogleService;
+import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
@@ -45,7 +46,8 @@ public class ReportService {
         if (filterReportDto.isPerformances()) {
             reportResultDto.setCriteriaResultPerformancesDtos(fillPerformances(filterReportDto, ticketCondition, startDate, endDate));
         } else {
-            reportResultDto.setSearchPathName(searchThePath(filterReportDto));
+            reportResultDto.setSearchPathName(CriteriaBuilderUtils.searchThePath(filterReportDto, this.theaterService,
+                    this.auditoriumService, this.playService));
         }
 //        if(filterReportDto.isExportToSheet()) {
 //            try {
@@ -102,7 +104,7 @@ public class ReportService {
         criteriaJoinDto.setPerformanceJoin(performanceJoin);
         Join<Performance, Play> playJoin = performanceJoin.join("play");
         criteriaJoinDto.setPlayJoin(playJoin);
-        CreateCriteriaJoinDto.create(criteriaJoinDto, playJoin);
+        CriteriaBuilderUtils.createJoins(criteriaJoinDto, playJoin);
         return criteriaJoinDto;
     }
 
@@ -143,22 +145,7 @@ public class ReportService {
         };
     }
 
-    private String searchThePath(FilterReportDto filterReportDto) {
-        switch (filterReportDto.getFilterByPath()) {
-            case "theater" -> {
-                Theater theater = this.theaterService.findById(filterReportDto.getSearchId());
-                return theater.getTheaterName();
-            }
-            case "auditorium" -> {
-                Auditorium auditorium = this.auditoriumService.findAuditoriumById(filterReportDto.getSearchId());
-                return auditorium.getAuditoriumName();
-            }
-            default -> {
-                Play play = this.playService.findById(filterReportDto.getSearchId());
-                return play.getPlayName();
-            }
-        }
-    }
+
 
 
 }
