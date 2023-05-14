@@ -4,6 +4,7 @@ import com.reticket.reticket.controller.*;
 import com.reticket.reticket.domain.enums.AppUserType;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.domain.enums.TicketCondition;
+import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
@@ -665,10 +666,11 @@ public class ReticketTest {
 	@Test
 	public void testSearchFilteredPerformances_byTheatre_AllInOnePage() {
 		FilterPerformancesDto dto = new FilterPerformancesDto(
-				"theatre", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+				"theater", 1L, new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
 				LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16),
 				new PageableDto(0, 16));
-		Assert.assertEquals(10, this.searchPerformanceService.searchFilteredPerformances(dto).size());
+		List<PerformanceListDto> list = this.searchPerformanceService.searchFilteredPerformances_(dto);
+		Assert.assertEquals(10, list.size() );
 	}
 
 	// -----------------------  SEARCH PERFORMANCES TESTS  -----------------------

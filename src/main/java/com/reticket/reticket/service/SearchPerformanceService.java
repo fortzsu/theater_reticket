@@ -9,6 +9,7 @@ import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.repository.PerformanceRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -56,15 +57,16 @@ public class SearchPerformanceService {
         LocalDateTime startDate = LocalDateTime.of(dto.getSearchDateDto().getStartYear(), dto.getSearchDateDto().getStartMonth(), dto.getSearchDateDto().getStartDay(), 0, 0);
         LocalDateTime endDate = LocalDateTime.of(dto.getSearchDateDto().getEndYear(), dto.getSearchDateDto().getEndMonth(), dto.getSearchDateDto().getEndDay(), 23, 59);
 
-        return entityManager.createQuery(
+        List<PerformanceListDto> result = entityManager.createQuery(
                 criteriaQuery.multiselect(
-                                performanceRoot.get("performanceDateTime"),
-                                criteriaJoinDto.getPlayJoin().get("playName"),
-                                criteriaJoinDto.getTheaterJoin().get("theaterName"),
-                                criteriaJoinDto.getAuditoriumJoin().get("auditoriumName")).where(fillPredicateList(dto, performanceRoot,
+                        performanceRoot.get("performanceDateTime"),
+                        criteriaJoinDto.getPlayJoin().get("playName"),
+                        criteriaJoinDto.getTheaterJoin().get("theaterName"),
+                        criteriaJoinDto.getAuditoriumJoin().get("auditoriumName")).where(fillPredicateList(dto, performanceRoot,
                         criteriaBuilder, criteriaJoinDto, startDate, endDate)
-                                .toArray(new Predicate[0]))).getResultList();
+                        .toArray(new Predicate[0]))).getResultList();
 
+        return result;
     }
 
     private List<Predicate> fillPredicateList(FilterPerformancesDto dto, Root<Performance> performanceRoot,
@@ -73,29 +75,29 @@ public class SearchPerformanceService {
 
         List<Predicate> predicateList = new ArrayList<>();
 
-        if (dto.getPath().equals("theater")) {
-            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getTheaterJoin().get("id"), dto.getSearchId()));
-        } else if (dto.getPath().equals("auditorium")) {
-            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getAuditoriumJoin().get("id"), dto.getSearchId()));
-        } else {
-            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get("id"), dto.getSearchId()));
+        switch (dto.getPath()) {
+            case "theater" ->
+                    predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getTheaterJoin().get("id"), dto.getSearchId()));
+            case "auditorium" ->
+                    predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getAuditoriumJoin().get("id"), dto.getSearchId()));
+            case "play" ->
+                    predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get("id"), dto.getSearchId()));
+            default -> {
+                PlayType playType = Play.findPlayType(dto.getPath());
+                predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get("playType"), playType));
+            }
         }
-
-        if(!dto.getPath().equals("theater") && !dto.getPath().equals("auditorium") && !dto.getPath().equals("play")) {
-            PlayType playType = Play.findPlayType(dto.getPath());
-            predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get("playType"), playType));
-        }
-        predicateList.add(criteriaBuilder.isTrue(performanceRoot.get("isAvailableOnline")));
-        predicateList.add(criteriaBuilder.isFalse(performanceRoot.get("isCancelled")));
-        predicateList.add(criteriaBuilder.isTrue(performanceRoot.get("isSeenOnline")));
-        predicateList.add(criteriaBuilder.isFalse(performanceRoot.get("isSold")));
+        predicateList.add(criteriaBuilder.and(
+                criteriaBuilder.isTrue(performanceRoot.get("isAvailableOnline")),
+                criteriaBuilder.isTrue(performanceRoot.get("isSeenOnline")),
+                criteriaBuilder.isFalse(performanceRoot.get("isCancelled")),
+                criteriaBuilder.isFalse(performanceRoot.get("isSold"))));
 
         predicateList.add(criteriaBuilder.greaterThan(performanceRoot.get("performanceDateTime"), queryStart));
         predicateList.add(criteriaBuilder.lessThan(performanceRoot.get("performanceDateTime"), queryEnd));
 
         return predicateList;
     }
-
 
 
     public List<PerformanceListDto> searchFilteredPerformances(FilterPerformancesDto dto) {
