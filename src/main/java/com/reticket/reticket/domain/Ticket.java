@@ -4,6 +4,7 @@ import com.reticket.reticket.domain.enums.TicketCondition;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Ticket {
@@ -22,14 +23,10 @@ public class Ticket {
     private Price price;
     @Column(name = "generated_at")
     private LocalDateTime generatedAt;
-    @Column(name = "sold_at")
-    private LocalDateTime soldAt;
-    @Column(name = "reserved_at")
-    private LocalDateTime reservedAt;
-    @Column(name = "returned_at")
-    private LocalDateTime returnedAt;
     @ManyToOne
     private AppUser appUser;
+    @OneToMany(mappedBy = "ticket")
+    private List<TicketActionFollowerEntity> ticketActionFollowerEntities;
 
     public void setId(Long id) {
         this.id = id;
@@ -88,27 +85,12 @@ public class Ticket {
         this.generatedAt = generatedAt;
     }
 
-    public LocalDateTime getSoldAt() {
-        return soldAt;
+
+    public List<TicketActionFollowerEntity> getTicketActionFollowerEntities() {
+        return ticketActionFollowerEntities;
     }
 
-    public void setSoldAt(LocalDateTime soldAt) {
-        this.soldAt = soldAt;
-    }
-
-    public LocalDateTime getReservedAt() {
-        return reservedAt;
-    }
-
-    public void setReservedAt(LocalDateTime reservedAt) {
-        this.reservedAt = reservedAt;
-    }
-
-    public LocalDateTime getReturnedAt() {
-        return returnedAt;
-    }
-
-    public void setReturnedAt(LocalDateTime returnedAt) {
-        this.returnedAt = returnedAt;
+    public void setTicketActionFollowerEntities(List<TicketActionFollowerEntity> ticketActionFollowerEntities) {
+        this.ticketActionFollowerEntities = ticketActionFollowerEntities;
     }
 }

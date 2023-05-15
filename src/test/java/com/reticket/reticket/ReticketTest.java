@@ -81,6 +81,9 @@ public class ReticketTest {
 	@Autowired
 	private ReportService reportService;
 
+	@Autowired
+	private TicketActionFollowerRepository ticketActionFollowerRepository;
+
 	private static boolean init = true;
 
 
@@ -672,6 +675,26 @@ public class ReticketTest {
 	// -----------------------  SEARCH PERFORMANCES TESTS  -----------------------
 
 	// -----------------------  TICKET ACTIONS TESTS  -----------------------
+
+	@Test
+	public void testCreateFollower_allFromRepository() {
+		Assert.assertEquals(33, this.ticketActionFollowerRepository.findAll().size());
+	}
+
+	@Test
+	public void testCreateFollower_testUser() {
+		Assert.assertEquals(3, (long) this.ticketActionFollowerRepository.findAll().get(0).getAppUser().getId());
+	}
+
+	@Test
+	public void testCreateFollower_testTicketCondition() {
+		Assert.assertEquals(TicketCondition.RESERVED, this.ticketActionFollowerRepository.findAll().get(3).getTicketCondition());
+	}
+
+	@Test
+	public void testCreateFollower_testTicketCondition_RETURNED() {
+		Assert.assertEquals(TicketCondition.RETURNED, this.ticketActionFollowerRepository.findAll().get(10).getTicketCondition());
+	}
 
 	@Test
 	public void testReturnTest_withAppUser() {

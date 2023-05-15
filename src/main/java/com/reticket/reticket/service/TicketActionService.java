@@ -2,8 +2,10 @@ package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.domain.Ticket;
+import com.reticket.reticket.domain.TicketActionFollowerEntity;
 import com.reticket.reticket.domain.enums.TicketCondition;
 import com.reticket.reticket.dto.save.TicketActionDto;
+import com.reticket.reticket.repository.TicketActionFollowerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,15 +21,17 @@ public class TicketActionService {
 
     private final AppUserService appUserService;
 
+    private final TicketActionFollowerRepository ticketActionFollowerRepository;
+
     @Autowired
     public TicketActionService(TicketService ticketService,
-                               AppUserService appUserService) {
+                               AppUserService appUserService, TicketActionFollowerRepository ticketActionFollowerRepository) {
         this.ticketService = ticketService;
         this.appUserService = appUserService;
+        this.ticketActionFollowerRepository = ticketActionFollowerRepository;
     }
 
-    public boolean ticketAction(List<TicketActionDto> ticketActionDtoList) {
-        boolean flag = true;
+    public void ticketAction(List<TicketActionDto> ticketActionDtoList) {
         for (TicketActionDto ticketActionDto : ticketActionDtoList) {
             AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
             for (Long ticketId : ticketActionDto.getTicketId()) {
@@ -35,20 +39,24 @@ public class TicketActionService {
                 ticket.setAppUser(appUser);
                 if (ticketActionDto.getPath().equals("buy")) {
                     ticket.setTicketCondition(TicketCondition.SOLD);
-                    ticket.setSoldAt(LocalDateTime.now());
                 } else if (ticketActionDto.getPath().equals("reserve")) {
                     ticket.setTicketCondition(TicketCondition.RESERVED);
-                    ticket.setReservedAt(LocalDateTime.now());
                 } else {
                     if (ticket.getTicketCondition().equals(TicketCondition.SOLD) && ticket.getAppUser().getUsername().equals(ticketActionDto.getUsername())) {
                         ticket.setTicketCondition(TicketCondition.RETURNED);
-                        ticket.setReturnedAt(LocalDateTime.now());
-                    } else {
-                        flag = false;
                     }
                 }
+                createTicketActionFollower(appUser, ticket);
             }
         }
-        return flag;
+    }
+
+    private void createTicketActionFollower(AppUser appUser, Ticket ticket) {
+        TicketActionFollowerEntity entity = new TicketActionFollowerEntity();
+        entity.setTicket(ticket);
+        entity.setModifiedAt(LocalDateTime.now());
+        entity.setTicketCondition(ticket.getTicketCondition());
+        entity.setAppUser(appUser);
+        this.ticketActionFollowerRepository.save(entity);
     }
 }
