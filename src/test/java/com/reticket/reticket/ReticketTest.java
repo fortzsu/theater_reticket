@@ -284,7 +284,6 @@ public class ReticketTest {
 	public void testUserRole_findAll() {
 		Assert.assertEquals(4, this.userRoleRepository.findAll().size());
 	}
-
 	@Test
 	public void testUserRole_findFirst_authoritiesList() {
 		Assert.assertEquals(11, this.userRoleRepository.findAll().get(1).getAuthorities().size());
