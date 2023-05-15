@@ -1,11 +1,13 @@
 package com.reticket.reticket.config;
 
+import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +18,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig implements WebMvcConfigurer {
-
-    //2:07
 
     private final AppUserService appUserService;
 
@@ -41,6 +42,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(new AntPathRequestMatcher("/api/play/listPlays", HttpMethod.GET.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/theater/listTheater", HttpMethod.GET.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/appUser/api/saveGuest", HttpMethod.POST.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/api/saveAssociate")).hasRole(RoleEnum.SUPER_ADMIN.name())
                         .anyRequest().authenticated())
                 .httpBasic();
         return http.build();

@@ -13,6 +13,13 @@ public class RoleAuthority {
     @Column(name = "authority_name", nullable = false, unique = true)
     private AuthorityEnum authorityEnum;
 
+    public RoleAuthority(AuthorityEnum authorityEnum) {
+        this.authorityEnum = authorityEnum;
+    }
+
+    public RoleAuthority() {
+    }
+
     public Long getId() {
         return id;
     }

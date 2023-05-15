@@ -5,6 +5,7 @@ import com.reticket.reticket.service.AuditoriumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,13 @@ public class AuditoriumController {
     }
 
     @PostMapping
-    public ResponseEntity createAuditorium(@RequestBody List<AuditoriumSaveDto> auditoriumSaveDto) {
+    public ResponseEntity<Void> createAuditorium(@RequestBody List<AuditoriumSaveDto> auditoriumSaveDto) {
         auditoriumService.save(auditoriumSaveDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAuditorium(@PathVariable Long id) {
+    public ResponseEntity<Void>  deleteAuditorium(@PathVariable Long id) {
         if(auditoriumService.deleteAuditorium(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -37,7 +38,7 @@ public class AuditoriumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateAuditorium(@PathVariable Long id, @RequestBody AuditoriumSaveDto auditoriumSaveDto) {
+    public ResponseEntity<Void>  updateAuditorium(@PathVariable Long id, @RequestBody AuditoriumSaveDto auditoriumSaveDto) {
         if(auditoriumService.update(auditoriumSaveDto, id) != null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
