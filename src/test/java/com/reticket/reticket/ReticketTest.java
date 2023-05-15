@@ -10,6 +10,8 @@ import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.repository.*;
+import com.reticket.reticket.security.UserRole;
+import com.reticket.reticket.security.UserRoleRepository;
 import com.reticket.reticket.service.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -83,6 +85,9 @@ public class ReticketTest {
 
 	@Autowired
 	private TicketActionFollowerRepository ticketActionFollowerRepository;
+
+	@Autowired
+	private UserRoleRepository userRoleRepository;
 
 	private static boolean init = true;
 
@@ -273,6 +278,20 @@ public class ReticketTest {
 		}
 	}
 
+	// -----------------------  USERROLE TESTS  -----------------------
+
+	@Test
+	public void testUserRole_findAll() {
+		Assert.assertEquals(4, this.userRoleRepository.findAll().size());
+	}
+
+	@Test
+	public void testUserRole_findFirst_authoritiesList() {
+		Assert.assertEquals(11, this.userRoleRepository.findAll().get(1).getAuthorities().size());
+	}
+
+
+	// -----------------------  USERROLE TESTS  -----------------------
 
 	// -----------------------  GOOGLE TESTS  -----------------------
 

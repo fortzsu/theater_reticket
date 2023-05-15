@@ -17,7 +17,7 @@ public class UserRole {
     @Column(name = "role_name", nullable = false, unique = true)
     private RoleEnum roleEnum;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleAuthority> authorities = new HashSet<>();
 
     public Long getId() {
