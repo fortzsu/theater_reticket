@@ -43,7 +43,6 @@ public class UserRoleService {
         this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.ADD_NEW_THEATER));
     }
 
-
     private void createTheaterAdmin() {
         HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(8L));

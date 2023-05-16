@@ -7,7 +7,7 @@ public enum RoleEnum {
     THEATRE_ADMIN,
     SUPER_ADMIN;
 
-        private static final String ROLE_PREFIX = "ROLE_";
+    private static final String ROLE_PREFIX = "ROLE_";
 
     @Override
     public String toString() {
