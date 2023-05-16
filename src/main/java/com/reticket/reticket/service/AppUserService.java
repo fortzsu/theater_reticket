@@ -7,7 +7,8 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
-import com.reticket.reticket.utils.FakerUtils;
+import com.reticket.reticket.security.UserRole;
+import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -35,14 +37,15 @@ public class AppUserService implements UserDetailsService {
     private final PlayRepository playRepository;
     private final ContributorRepository contributorRepository;
     private final PerformanceRepository performanceRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRoleRepository userRoleRepository;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheaterService theaterService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
-                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository,
-                          PasswordEncoder passwordEncoder) {
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -53,7 +56,17 @@ public class AppUserService implements UserDetailsService {
         this.playRepository = playRepository;
         this.contributorRepository = contributorRepository;
         this.performanceRepository = performanceRepository;
-        appUserRepository.saveAll(FakerUtils.generateInitData(1, passwordEncoder));
+        this.passwordEncoder = passwordEncoder;
+        this.userRoleRepository = userRoleRepository;
+        createSuperAdmin();
+    }
+
+    private void createSuperAdmin() {
+        AppUser appUser = new AppUser();
+        appUser.setUsername("user");
+        appUser.setPassword(this.passwordEncoder.encode("test"));
+        appUser.setRoles(new HashSet<>(this.userRoleRepository.findAll()) );
+        this.appUserRepository.save(appUser);
     }
 
     public void save(AppUserSaveDto appUserSaveDto) {

@@ -16,10 +16,8 @@ public class AppUser implements UserDetails {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "first_name")
     private String firstName;
-
     @Column(name = "last_name")
     private String lastName;
     @Enumerated(EnumType.STRING)
@@ -27,18 +25,14 @@ public class AppUser implements UserDetails {
     private AppUserType appUserType;
     @Column(name = "username")
     private String username;
-
     @Column(name = "user_email")
     private String email;
-
     @Column(name = "password")
     private String password;
-
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
     private List<Ticket> tickets = new ArrayList<>();
-
-//    @ManyToMany
-//    private Set<UserRole> roles = new HashSet<>();
+    @ManyToMany
+    private Set<UserRole> roles = new HashSet<>();
 
     public AppUser() {
     }
@@ -150,13 +144,13 @@ public class AppUser implements UserDetails {
     }
 
 
-//    public Set<UserRole> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Set<UserRole> roles) {
-//        this.roles = roles;
-//    }
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
 
     public String getEmail() {
         return email;
