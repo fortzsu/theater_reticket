@@ -30,32 +30,22 @@ public class UserRoleService {
     }
 
     private void createRoleAuthorities() {
-        RoleAuthority roleAuthority = new RoleAuthority(AuthorityEnum.SELL);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.RESELL);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.RESERVE);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.BUY);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.RETURN);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.LIKE_PLAY);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.REPORT);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.ADD_NEW_PLAY_PERFORMANCE_CONTRIBUTOR);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.ADD_NEW_ASSOCIATE);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.ADD_NEW_AUDITORIUM);
-        this.roleAuthorityRepository.save(roleAuthority);
-        roleAuthority = new RoleAuthority(AuthorityEnum.ADD_NEW_THEATER);
-        this.roleAuthorityRepository.save(roleAuthority);
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.SELL));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.RESELL));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.RESERVE));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.BUY));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.RETURN));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.LIKE_PLAY));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.REPORT));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.ADD_NEW_PLAY_PERFORMANCE_CONTRIBUTOR));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.ADD_NEW_ASSOCIATE));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.ADD_NEW_AUDITORIUM_ADDRESS));
+        this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.ADD_NEW_THEATER));
     }
 
+
     private void createTheaterAdmin() {
-        HashSet<RoleAuthority> authorities = new HashSet<>(fillRoleAuthorities());
+        HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(8L));
         authorities.add(findRoleAuthorityById(9L));
         authorities.add(findRoleAuthorityById(10L));
@@ -66,7 +56,7 @@ public class UserRoleService {
     }
 
     private void createTheaterUser() {
-        HashSet<RoleAuthority> authorities = new HashSet<>(fillRoleAuthorities());
+        HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(8L));
         UserRole userRole = new UserRole();
         userRole.setRoleEnum(RoleEnum.THEATRE_USER);
@@ -87,7 +77,7 @@ public class UserRoleService {
     }
 
     private void createSuperAdminUserRole() {
-        HashSet<RoleAuthority> authorities = new HashSet<>(fillRoleAuthorities());
+        HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(1L));
         authorities.add(findRoleAuthorityById(2L));
         authorities.add(findRoleAuthorityById(7L));
@@ -106,7 +96,7 @@ public class UserRoleService {
         return opt.orElse(null);
     }
 
-    private HashSet<RoleAuthority> fillRoleAuthorities() {
+    private HashSet<RoleAuthority> fillBasicRoleAuthorities() {
         HashSet<RoleAuthority> authorities = new HashSet<>();
         authorities.add(findRoleAuthorityById(3L));
         authorities.add(findRoleAuthorityById(4L));
