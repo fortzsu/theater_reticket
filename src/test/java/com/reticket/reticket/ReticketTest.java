@@ -268,7 +268,7 @@ public class ReticketTest {
 							2500L, 2501L, 2600L, 2601L, 2700L, 2701L));
 			ticketActionDtoList.add(ticketActionDto_buyAll);
 
-			this.ticketActionController.buyOrReserveTicket(ticketActionDtoList);
+			this.ticketActionController.ticketAction(ticketActionDtoList);
 
 
 			// ************* APPUSER *************
@@ -765,7 +765,7 @@ public class ReticketTest {
 
 	@Test
 	public void testSavedAppUser_fromRepository_checkUserName() {
-		Assert.assertEquals("user", this.appUserRepository.findAll().get(0).getUsername());
+		Assert.assertEquals("superUser", this.appUserRepository.findAll().get(0).getUsername());
 	}
 
 	@Test

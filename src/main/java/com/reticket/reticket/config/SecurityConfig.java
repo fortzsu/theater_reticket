@@ -37,12 +37,17 @@ public class SecurityConfig implements WebMvcConfigurer {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/api/performance/searchPerformance", HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/performance/list", HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/play/listPlays", HttpMethod.GET.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/theater/listTheater", HttpMethod.GET.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/api/saveGuest", HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/api/saveAssociate")).hasRole(RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/performance/searchPerformance",
+                                HttpMethod.POST.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/play/listPlays",
+                                HttpMethod.GET.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/theater/listTheater",
+                                HttpMethod.GET.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/api/saveGuest",
+                                HttpMethod.POST.toString())).permitAll()
+
+                        .requestMatchers(new AntPathRequestMatcher("/api/api/ticketAction")).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.GUEST.name(), RoleEnum.SUPER_ADMIN.name(), RoleEnum.THEATRE_USER.name())
                         .anyRequest().authenticated())
                 .httpBasic();
         return http.build();

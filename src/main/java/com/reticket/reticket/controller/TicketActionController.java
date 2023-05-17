@@ -24,7 +24,7 @@ public class TicketActionController {
     }
 
     @PostMapping()
-    public ResponseEntity buyOrReserveTicket(@RequestBody List<TicketActionDto> ticketActionDtoList) {
+    public ResponseEntity<Void> ticketAction(@RequestBody List<TicketActionDto> ticketActionDtoList) {
         this.ticketActionService.ticketAction(ticketActionDtoList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
