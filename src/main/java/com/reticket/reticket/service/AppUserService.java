@@ -7,6 +7,7 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
+import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,18 +64,18 @@ public class AppUserService implements UserDetailsService {
 
     private void createSuperAdmin() {
         AppUser appUser = new AppUser();
-        appUser.setUsername("user");
-        appUser.setPassword(this.passwordEncoder.encode("test"));
-        appUser.setRoles(new HashSet<>(this.userRoleRepository.findAll()) );
+        appUser.setUsername("superUser");
+        appUser.setPassword(this.passwordEncoder.encode("test1234"));
+        appUser.setUserRole(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER_ADMIN));
         this.appUserRepository.save(appUser);
     }
 
     public void save(AppUserSaveDto appUserSaveDto) {
-            AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
-            //If a user is saved, then it will log in automatically
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
+        //If a user is saved, then it will log in automatically
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
     private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto) {

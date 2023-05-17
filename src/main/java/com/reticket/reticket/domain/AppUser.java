@@ -31,8 +31,8 @@ public class AppUser implements UserDetails {
     private String password;
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
     private List<Ticket> tickets = new ArrayList<>();
-    @ManyToMany
-    private Set<UserRole> roles = new HashSet<>();
+    @OneToOne
+    private UserRole userRole;
 
     public AppUser() {
     }
@@ -143,13 +143,16 @@ public class AppUser implements UserDetails {
         this.tickets = tickets;
     }
 
-
-    public Set<UserRole> getRoles() {
-        return roles;
+    public void setAppUserType(AppUserType appUserType) {
+        this.appUserType = appUserType;
     }
 
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public String getEmail() {
