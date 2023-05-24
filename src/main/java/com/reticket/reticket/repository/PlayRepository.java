@@ -1,6 +1,7 @@
 package com.reticket.reticket.repository;
 
 import com.reticket.reticket.domain.AppUser;
+import com.reticket.reticket.domain.Contributor;
 import com.reticket.reticket.domain.Play;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

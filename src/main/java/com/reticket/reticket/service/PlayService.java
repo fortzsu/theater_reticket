@@ -87,17 +87,6 @@ public class PlayService {
         return opt.orElse(null);
     }
 
-    public PlayType findPlayType(String path) {
-        return switch (path) {
-            case "Drama" -> PlayType.DRAMA;
-            case "Tragedy" -> PlayType.TRAGEDY;
-            case "Political" -> PlayType.POLITICAL;
-            case "Crime" -> PlayType.CRIME;
-            case "Comedy" -> PlayType.COMEDY;
-            default -> PlayType.MUSICAL;
-        };
-    }
-
     public List<ListPlaysDto> listPlays(PageableDto dto) {
         return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()))
                 .stream().map(ListPlaysDto::new).collect(Collectors.toList());

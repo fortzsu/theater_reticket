@@ -1,16 +1,17 @@
 package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.Contributor;
+import com.reticket.reticket.domain.PlayContributorTypes;
 import com.reticket.reticket.dto.list.ListContributorsDto;
+import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.repository.ContributorRepository;
+import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -18,10 +19,13 @@ public class ContributorService {
 
     private final ContributorRepository contributorRepository;
 
+    private final PlayContributorTypeRepository playContributorTypeRepository;
+
 
     @Autowired
-    public ContributorService(ContributorRepository contributorRepository) {
+    public ContributorService(ContributorRepository contributorRepository, PlayContributorTypeRepository playContributorTypeRepository) {
         this.contributorRepository = contributorRepository;
+        this.playContributorTypeRepository = playContributorTypeRepository;
     }
 
     public List<Contributor> save(List<ContributorSaveDto> contributorSaveDtoList) {
@@ -44,8 +48,8 @@ public class ContributorService {
     }
 
     public Contributor findById(Long id) {
-            Optional<Contributor> opt = this.contributorRepository.findById(id);
-            return opt.orElse(null);
+        Optional<Contributor> opt = this.contributorRepository.findById(id);
+        return opt.orElse(null);
     }
 
     public List<ListContributorsDto> findContributors() {
@@ -57,5 +61,14 @@ public class ContributorService {
             contributors.add(dto);
         }
         return contributors;
+    }
+
+    public List<ListDetailedContributorsDto> listContributors() {
+        Set<ListDetailedContributorsDto> resultSet = new HashSet<>();
+        List<PlayContributorTypes> playContributorTypesList = this.playContributorTypeRepository.findAllContributors();
+        for (PlayContributorTypes contributorTypes : playContributorTypesList) {
+
+        }
+        return null;
     }
 }

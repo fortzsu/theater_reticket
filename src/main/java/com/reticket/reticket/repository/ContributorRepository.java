@@ -19,4 +19,5 @@ public interface ContributorRepository extends JpaRepository<Contributor, Long> 
             nativeQuery = true)
     List<Contributor> findContributorsByPlay(@Param("playId") Long playId);
 
+
 }

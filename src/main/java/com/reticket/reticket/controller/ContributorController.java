@@ -1,12 +1,15 @@
 package com.reticket.reticket.controller;
 
 
+import com.reticket.reticket.dto.list.ListContributorsDto;
+import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.service.ContributorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +28,14 @@ public class ContributorController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> save(@RequestBody List<ContributorSaveDto> contributorSaveDto) {
+    public ResponseEntity<Void> save(@RequestBody List<ContributorSaveDto> contributorSaveDto) {
         this.contributorService.save(contributorSaveDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ListDetailedContributorsDto>> listContributors() {
+        this.contributorService.listContributors();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
