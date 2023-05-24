@@ -33,7 +33,7 @@ public class ContributorController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<ListDetailedContributorsDto>> listContributors() {
         this.contributorService.listContributors();
         return new ResponseEntity<>(HttpStatus.OK);

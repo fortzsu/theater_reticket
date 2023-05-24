@@ -760,6 +760,7 @@ public class ReticketTest {
 
     // -----------------------  APPUSER TESTS  -----------------------
 
+
     @Test
     public void testSavedAppUser_fromRepository_findAll() {
         Assert.assertEquals(5, this.appUserRepository.findAll().size());

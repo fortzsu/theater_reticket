@@ -52,6 +52,15 @@ public class AppUserController {
         return new ResponseEntity<>(this.appUserService.listLikedPlays(username),HttpStatus.OK);
     }
 
+    @PutMapping("/update/{userName}")
+    public ResponseEntity<Void> updateAppUser(@RequestBody AppUserSaveDto appUserSaveDto, @PathVariable String userName) {
+        if(this.appUserService.updateAppUser(appUserSaveDto, userName) != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 

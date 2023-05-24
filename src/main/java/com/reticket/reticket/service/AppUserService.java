@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -87,6 +88,7 @@ public class AppUserService implements UserDetailsService {
         appUser.setAppUserType(appUserSaveDto.getAppUserType());
         return appUser;
     }
+
 
     public AppUser findByUsername(String username) {
         return this.appUserRepository.findByUsername(username);
@@ -163,5 +165,10 @@ public class AppUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.findByUsername(username);
+    }
+
+    public AppUser updateAppUser(AppUserSaveDto appUserSaveDto, String userName) {
+        AppUser appUser = appUserRepository.findByUsername(userName);
+        return updateValues(appUser, appUserSaveDto);
     }
 }
