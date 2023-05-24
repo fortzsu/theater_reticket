@@ -15,6 +15,12 @@ public class ListDetailedContributorsDto {
 
     private List<String> playNames;
 
+    public ListDetailedContributorsDto(String contributorFirstName, String contributorLastName,
+                                       String introduction) {
+        this.contributorFirstName = contributorFirstName;
+        this.contributorLastName = contributorLastName;
+        this.introduction = introduction;
+    }
 
     public String getContributorFirstName() {
         return contributorFirstName;

@@ -64,11 +64,11 @@ public class ContributorService {
     }
 
     public List<ListDetailedContributorsDto> listContributors() {
-        Set<ListDetailedContributorsDto> resultSet = new HashSet<>();
-        List<PlayContributorTypes> playContributorTypesList = this.playContributorTypeRepository.findAllContributors();
-        for (PlayContributorTypes contributorTypes : playContributorTypesList) {
-
+        List<ListDetailedContributorsDto> resultSet = this.playContributorTypeRepository.findAllContributors();
+        for (ListDetailedContributorsDto dto : resultSet) {
+            dto.setPlayNames(
+                    this.playContributorTypeRepository.findAllPlaysByContributors(dto.getContributorFirstName(), dto.getContributorLastName()));
         }
-        return null;
+        return resultSet;
     }
 }
