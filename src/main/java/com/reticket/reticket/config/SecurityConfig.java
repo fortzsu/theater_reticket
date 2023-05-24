@@ -46,38 +46,41 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(new AntPathRequestMatcher("/api/appUser/api/saveGuest",
                                 HttpMethod.POST.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auditorium/list",
-                                HttpMethod.POST.toString())).permitAll()
+                                HttpMethod.GET.toString())).permitAll()
 
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/tickets")).hasAnyRole(
-                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/{playId}")).hasAnyRole(
-                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/likedPlays")).hasAnyRole(
-                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/ticketAction")).hasAnyRole(
-                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/tickets", HttpMethod.GET.toString())).hasAnyRole(
+                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/{playId}", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/likedPlays", HttpMethod.GET.toString())).hasAnyRole(
+                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/ticketAction", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
 
-                        .requestMatchers(new AntPathRequestMatcher("/api/report")).hasAnyRole(
-                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/report", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
 
-                        .requestMatchers(new AntPathRequestMatcher("/api/theater/create")).hasRole(RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/theater/create", HttpMethod.POST.toString())).hasRole(
+                                RoleEnum.SUPER_ADMIN.name())
 
-                        .requestMatchers(new AntPathRequestMatcher("/api/address")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/saveAssociate")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/auditorium")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/auditorium")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/contributor")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/performance")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/play")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/play/formData/{auditoriumId}")).hasAnyRole(
-                                RoleEnum.THEATRE_ADMIN.name() , RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/address", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/saveAssociate", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/auditorium", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/auditorium/{id}", HttpMethod.PUT.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/auditorium/{id}", HttpMethod.DELETE.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/contributor", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/performance", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/play", HttpMethod.POST.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/play/formData/{auditoriumId}", HttpMethod.GET.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
 
 
                         .anyRequest().authenticated())
