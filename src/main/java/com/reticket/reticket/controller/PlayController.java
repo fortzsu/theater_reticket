@@ -40,7 +40,7 @@ public class PlayController {
     }
 
     @GetMapping("/formData/{auditoriumId}")
-    public ResponseEntity<InitFormDataToPlaySaveDto> getPlayFormData(
+    public ResponseEntity<InitFormDataToPlaySaveDto> getPlayFormDataOfAuditoriumAndContributors(
             @PathVariable(value = "auditoriumId") String auditoriumId) {
         InitFormDataToPlaySaveDto initData = new InitFormDataToPlaySaveDto();
         List<ListContributorsDto> contributors = this.contributorService.findContributors();
