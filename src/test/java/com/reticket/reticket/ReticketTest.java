@@ -763,18 +763,18 @@ public class ReticketTest {
 
 
     @Test
-    public void testUpdateAppUser(){
+    public void testUpdateAppUser() {
         AppUserSaveDto original = new AppUserSaveDto("testFirst1", "testLast1",
                 "testUsername1", "test1", "Guest");
         this.appUserService.save(original);
         AppUserSaveDto updated = new AppUserSaveDto("testModifiedFirst1", "testLast1",
                 "testUsername1", "test1", "Guest");
-        this.appUserService.updateAppUser(updated,"testUsername1");
+        this.appUserService.updateAppUser(updated, "testUsername1");
         Assert.assertEquals("testModifiedFirst1", this.appUserRepository.findByUsername("testUsername1").getFirstName());
     }
 
     @Test
-    public void testDeleteAppUser_true(){
+    public void testDeleteAppUser_true() {
         AppUserSaveDto original = new AppUserSaveDto("testFirst2", "testLast2",
                 "testUsername2", "test2", "Guest2");
         this.appUserService.save(original);
@@ -783,7 +783,7 @@ public class ReticketTest {
     }
 
     @Test
-    public void testDeleteAppUser_false(){
+    public void testDeleteAppUser_false() {
         Assert.assertFalse(this.appUserService.deleteUser("falseName"));
     }
 
@@ -1070,6 +1070,18 @@ public class ReticketTest {
     }
 
     // -----------------------  ADDRESS  TESTS  -----------------------
+
+    @Test
+    public void testUpdateAddress() {
+        AddressSaveDto original = new AddressSaveDto("testCode", "testCity", "testStreet", 1234, 1L);
+        this.addressService.save(List.of(original));
+        AddressSaveDto updated = new AddressSaveDto("Code", "City", "testStreet", 1234, 1L);
+        this.addressService.update(updated, 5L);
+        Assert.assertEquals("City", this.addressRepository.findAll().get(4).getCity());
+        updated.setAuditoriumId(null);
+        this.addressRepository.deleteById(5L);
+    }
+
     @Test
     public void testSaveAddress_checkLast_fromService() {
         Assert.assertEquals(4, (long) this.addressService.findById(4L).getHouseNumber());

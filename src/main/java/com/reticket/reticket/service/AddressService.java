@@ -60,4 +60,14 @@ public class AddressService {
     public AddressEntity findByAuditoriumId(Auditorium auditorium) {
         return this.addressRepository.findByAuditoriumId(auditorium);
     }
+
+    public boolean update(AddressSaveDto addressSaveDto, Long id) {
+        Optional<AddressEntity> address = this.addressRepository.findById(id);
+        if(address.isPresent()) {
+            updateValues(addressSaveDto, address.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
