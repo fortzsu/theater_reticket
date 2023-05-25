@@ -71,4 +71,14 @@ public class ContributorService {
         }
         return resultSet;
     }
+
+    public boolean update(ContributorSaveDto contributorSaveDto, Long id) {
+        Contributor contributor = this.findById(id);
+        if(contributor != null) {
+            this.updateValues(contributor, contributorSaveDto);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

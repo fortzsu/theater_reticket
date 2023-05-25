@@ -1034,6 +1034,16 @@ public class ReticketTest {
     // -----------------------  CONTRIBUTOR TESTS  -----------------------
 
     @Test
+    public void testUpdateContributor() {
+        ContributorSaveDto original = new ContributorSaveDto("testContrFirst","testContrLast", "Intro");
+        this.contributorService.save(List.of(original));
+        ContributorSaveDto updated = new ContributorSaveDto("ContrFirst","testContrLast", "Intro");
+        this.contributorService.update(updated, 17L);
+        Assert.assertEquals("ContrFirst", this.contributorRepository.findAll().get(16).getFirstName());
+        this.contributorRepository.deleteById(17L);
+    }
+
+    @Test
     public void testListContributors_listSize() {
         Assert.assertEquals(16, this.contributorService.listContributors().size());
     }

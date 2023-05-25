@@ -89,6 +89,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
                         .requestMatchers(new AntPathRequestMatcher("/api/contributor", HttpMethod.POST.toString())).hasAnyRole(
                                 RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/contributor/update/{id}", HttpMethod.PUT.toString())).hasAnyRole(
+                                RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
                         .requestMatchers(new AntPathRequestMatcher("/api/performance", HttpMethod.POST.toString())).hasAnyRole(
                                 RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
                         .requestMatchers(new AntPathRequestMatcher("/api/play", HttpMethod.POST.toString())).hasAnyRole(
