@@ -48,6 +48,7 @@ public class TheaterService {
         if(checkIfTheatreNameIsNotTaken(theatreSaveDto.getTheatreName())) {
             theater.setTheaterName(theatreSaveDto.getTheatreName());
             theater.setCapacity(0);
+            theater.setArchived(false);
             return theaterRepository.save(theater);
         } else {
             return null;
@@ -87,4 +88,16 @@ public class TheaterService {
             return false;
         }
     }
+
+    public boolean deleteTheater(String theaterName) {
+        Theater theater = this.theaterRepository.findTheaterByTheaterName(theaterName);
+        if(theater != null) {
+            theater.setArchived(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }

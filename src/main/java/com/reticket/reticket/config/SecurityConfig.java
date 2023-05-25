@@ -55,6 +55,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(new AntPathRequestMatcher("/api/appUser/delete/{username}", HttpMethod.DELETE.toString())).hasAnyRole(
                                 RoleEnum.GUEST.name(), RoleEnum.SUPER_ADMIN.name())
 
+
                         .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/tickets", HttpMethod.GET.toString())).hasAnyRole(
                                 RoleEnum.GUEST.name(), RoleEnum.THEATRE_USER.name(), RoleEnum.THEATRE_ADMIN.name(), RoleEnum.SUPER_ADMIN.name())
                         .requestMatchers(new AntPathRequestMatcher("/api/appUser/{username}/{playId}", HttpMethod.POST.toString())).hasAnyRole(
@@ -70,6 +71,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(new AntPathRequestMatcher("/api/theater/create", HttpMethod.POST.toString())).hasRole(
                                 RoleEnum.SUPER_ADMIN.name())
                         .requestMatchers(new AntPathRequestMatcher("/api/theater/update/{theaterName}", HttpMethod.PUT.toString())).hasRole(
+                                RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString())).hasRole(
                                 RoleEnum.SUPER_ADMIN.name())
 
                         .requestMatchers(new AntPathRequestMatcher("/api/address", HttpMethod.POST.toString())).hasAnyRole(

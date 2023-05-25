@@ -1146,6 +1146,15 @@ public class ReticketTest {
     }
 
     @Test
+    public void testDeleteTheater() {
+        TheaterSaveDto theater = new TheaterSaveDto("testDelete", "Story.");
+        this.theaterService.save(theater);
+        this.theaterService.deleteTheater("testDelete");
+        Assert.assertTrue(this.theaterRepository.findTheaterByTheaterName("testDelete").getArchived());
+        this.theaterRepository.deleteById(3L);
+    }
+
+    @Test
     public void testListTheaters() {
         Assert.assertEquals(2, this.theaterService.listTheaters(new PageableDto(0, 10)).size());
     }

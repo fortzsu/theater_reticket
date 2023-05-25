@@ -27,6 +27,8 @@ public class Theater {
     @OneToMany(mappedBy = "theater", fetch = FetchType.EAGER)
     private List<Auditorium> auditoriums = new ArrayList<>();
 
+    private Boolean isArchived;
+
     public Theater() {
     }
 
@@ -68,6 +70,14 @@ public class Theater {
 
     public void setTheaterStory(String theaterStory) {
         this.theaterStory = theaterStory;
+    }
+
+    public Boolean getArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(Boolean archived) {
+        isArchived = archived;
     }
 }
 
