@@ -1,14 +1,11 @@
 package com.reticket.reticket.domain;
 
-import com.reticket.reticket.domain.enums.AppUserType;
 import com.reticket.reticket.security.UserRole;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 public class AppUser implements UserDetails {
@@ -20,19 +17,18 @@ public class AppUser implements UserDetails {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_type")
-    private AppUserType appUserType;
     @Column(name = "username")
     private String username;
     @Column(name = "user_email")
     private String email;
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "appUser")
     private List<Ticket> tickets = new ArrayList<>();
     @OneToOne
     private UserRole userRole;
+
+    private boolean isDeleted;
 
     public AppUser() {
     }
@@ -122,18 +118,6 @@ public class AppUser implements UserDetails {
         return id;
     }
 
-    public AppUserType getAppUserType() {
-        return appUserType;
-    }
-
-    public void setAppUserType(String appUserType) {
-        switch (appUserType) {
-            case "Super Admin" -> this.appUserType = AppUserType.SUPER_ADMIN;
-            case "Theater Admin" -> this.appUserType = AppUserType.THEATRE_ADMIN;
-            case "Theater User" -> this.appUserType = AppUserType.THEATRE_USER;
-            default -> this.appUserType = AppUserType.GUEST;
-        }
-    }
 
     public List<Ticket> getTickets() {
         return tickets;
@@ -143,9 +127,6 @@ public class AppUser implements UserDetails {
         this.tickets = tickets;
     }
 
-    public void setAppUserType(AppUserType appUserType) {
-        this.appUserType = appUserType;
-    }
 
     public UserRole getUserRole() {
         return userRole;
@@ -161,5 +142,13 @@ public class AppUser implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

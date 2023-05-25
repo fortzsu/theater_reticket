@@ -52,9 +52,18 @@ public class AppUserController {
         return new ResponseEntity<>(this.appUserService.listLikedPlays(username),HttpStatus.OK);
     }
 
-    @PutMapping("/update/{userName}")
-    public ResponseEntity<Void> updateAppUser(@RequestBody AppUserSaveDto appUserSaveDto, @PathVariable String userName) {
-        if(this.appUserService.updateAppUser(appUserSaveDto, userName) != null) {
+    @PutMapping("/update/{username}")
+    public ResponseEntity<Void> updateAppUser(@RequestBody AppUserSaveDto appUserSaveDto, @PathVariable String username) {
+        if(this.appUserService.updateAppUser(appUserSaveDto, username) != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/{username}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
+        if(this.appUserService.deleteUser(username)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

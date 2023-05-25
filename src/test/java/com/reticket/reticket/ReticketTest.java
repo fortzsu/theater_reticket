@@ -1,16 +1,17 @@
 package com.reticket.reticket;
 
 import com.reticket.reticket.controller.*;
-import com.reticket.reticket.domain.enums.AppUserType;
+import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.domain.enums.TicketCondition;
-import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.repository.*;
+import com.reticket.reticket.security.RoleEnum;
+import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.service.*;
 import org.junit.Assert;
@@ -763,21 +764,36 @@ public class ReticketTest {
 
     @Test
     public void testUpdateAppUser(){
-        AppUserSaveDto original = new AppUserSaveDto("testFirst", "testLast",
-                "testUsername", "test", "Guest");
+        AppUserSaveDto original = new AppUserSaveDto("testFirst1", "testLast1",
+                "testUsername1", "test1", "Guest");
         this.appUserService.save(original);
-        AppUserSaveDto updated = new AppUserSaveDto("testModifiedFirst", "testLast",
-                "testUsername", "test", "Guest");
-        this.appUserService.updateAppUser(updated,"testUsername");
-        Assert.assertEquals("testModifiedFirst", this.appUserRepository.findByUsername("testUsername").getFirstName());
-        this.appUserRepository.deleteById(6L);
+        AppUserSaveDto updated = new AppUserSaveDto("testModifiedFirst1", "testLast1",
+                "testUsername1", "test1", "Guest");
+        this.appUserService.updateAppUser(updated,"testUsername1");
+        Assert.assertEquals("testModifiedFirst1", this.appUserRepository.findByUsername("testUsername1").getFirstName());
     }
 
+    @Test
+    public void testDeleteAppUser_true(){
+        AppUserSaveDto original = new AppUserSaveDto("testFirst2", "testLast2",
+                "testUsername2", "test2", "Guest2");
+        this.appUserService.save(original);
+        Assert.assertTrue(this.appUserService.deleteUser("testUsername2"));
+        Assert.assertTrue(this.appUserRepository.findByUsername("testUsername2").isDeleted());
+    }
 
+    @Test
+    public void testDeleteAppUser_false(){
+        Assert.assertFalse(this.appUserService.deleteUser("falseName"));
+    }
 
     @Test
     public void testSavedAppUser_fromRepository_findAll() {
-        Assert.assertEquals(5, this.appUserRepository.findAll().size());
+        List<AppUser> list = this.appUserRepository.findAll();
+        for (AppUser appUser : list) {
+            System.out.println(appUser.getUsername());
+        }
+        Assert.assertEquals(7, this.appUserRepository.findAll().size());
     }
 
     @Test
@@ -791,13 +807,8 @@ public class ReticketTest {
     }
 
     @Test
-    public void testSavedAppUser_fromRepository_checkUserType_guest() {
-        Assert.assertEquals(AppUserType.GUEST, this.appUserRepository.findAll().get(4).getAppUserType());
-    }
-
-    @Test
     public void testSavedAppUser_fromRepository_checkUserType() {
-        Assert.assertEquals(AppUserType.SUPER_ADMIN, this.appUserRepository.findAll().get(1).getAppUserType());
+        Assert.assertEquals(RoleEnum.SUPER_ADMIN, this.appUserRepository.findAll().get(0).getUserRole().getRoleEnum());
     }
 
     @Test

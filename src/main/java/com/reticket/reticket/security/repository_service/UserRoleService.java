@@ -1,10 +1,13 @@
 package com.reticket.reticket.security.repository_service;
 
+import com.reticket.reticket.domain.AppUser;
+import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.security.AuthorityEnum;
 import com.reticket.reticket.security.RoleAuthority;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +20,31 @@ public class UserRoleService {
 
     private final UserRoleRepository userRoleRepository;
     private final RoleAuthorityRepository roleAuthorityRepository;
+    private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserRoleService(UserRoleRepository userRoleRepository, RoleAuthorityRepository roleAuthorityRepository) {
+    public UserRoleService(UserRoleRepository userRoleRepository, RoleAuthorityRepository roleAuthorityRepository,
+                           AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
         this.userRoleRepository = userRoleRepository;
         this.roleAuthorityRepository = roleAuthorityRepository;
+        this.appUserRepository = appUserRepository;
+        this.passwordEncoder = passwordEncoder;
         createRoleAuthorities();
         createGuestUserRole();
         createSuperAdminUserRole();
-        createTheaterUser();
-        createTheaterAdmin();
+        createTheaterUserRole();
+        createTheaterAdminRole();
+        createSuperAdmin();
+    }
+
+    private void createSuperAdmin() {
+        AppUser appUser = new AppUser();
+        appUser.setUsername("superUser");
+        appUser.setPassword(this.passwordEncoder.encode("test1234"));
+        appUser.setUserRole(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER_ADMIN));
+        this.appUserRepository.save(appUser);
     }
 
     private void createRoleAuthorities() {
@@ -43,7 +61,7 @@ public class UserRoleService {
         this.roleAuthorityRepository.save(new RoleAuthority(AuthorityEnum.ADD_NEW_THEATER));
     }
 
-    private void createTheaterAdmin() {
+    private void createTheaterAdminRole() {
         HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(8L));
         authorities.add(findRoleAuthorityById(9L));
@@ -54,7 +72,7 @@ public class UserRoleService {
         this.userRoleRepository.save(userRole);
     }
 
-    private void createTheaterUser() {
+    private void createTheaterUserRole() {
         HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(8L));
         UserRole userRole = new UserRole();

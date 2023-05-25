@@ -39,15 +39,13 @@ public class AppUserService implements UserDetailsService {
     private final PlayRepository playRepository;
     private final ContributorRepository contributorRepository;
     private final PerformanceRepository performanceRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRoleRepository userRoleRepository;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheaterService theaterService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
-                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -58,18 +56,9 @@ public class AppUserService implements UserDetailsService {
         this.playRepository = playRepository;
         this.contributorRepository = contributorRepository;
         this.performanceRepository = performanceRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.userRoleRepository = userRoleRepository;
-        createSuperAdmin();
     }
 
-    private void createSuperAdmin() {
-        AppUser appUser = new AppUser();
-        appUser.setUsername("superUser");
-        appUser.setPassword(this.passwordEncoder.encode("test1234"));
-        appUser.setUserRole(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER_ADMIN));
-        this.appUserRepository.save(appUser);
-    }
+
 
     public void save(AppUserSaveDto appUserSaveDto) {
         AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
@@ -85,7 +74,8 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(appUserSaveDto.getPassword());
         appUser.setUsername(appUserSaveDto.getUsername());
         appUser.setEmail(appUserSaveDto.getEmail());
-        appUser.setAppUserType(appUserSaveDto.getAppUserType());
+//        appUser.setAppUserType(appUserSaveDto.getAppUserType());
+        appUser.setDeleted(false);
         return appUser;
     }
 
@@ -170,5 +160,15 @@ public class AppUserService implements UserDetailsService {
     public AppUser updateAppUser(AppUserSaveDto appUserSaveDto, String userName) {
         AppUser appUser = appUserRepository.findByUsername(userName);
         return updateValues(appUser, appUserSaveDto);
+    }
+
+    public boolean deleteUser(String username) {
+        AppUser appUser = this.appUserRepository.findByUsername(username);
+        if(appUser != null) {
+            appUser.setDeleted(true);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
