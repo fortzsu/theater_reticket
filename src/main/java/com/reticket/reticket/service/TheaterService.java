@@ -77,4 +77,14 @@ public class TheaterService {
         }
         return resultList;
     }
+
+    public boolean updateTheater(TheaterSaveDto theatreSaveDto, String theaterName) {
+        Theater theater = this.theaterRepository.findTheaterByTheaterName(theaterName);
+        if(theater != null) {
+            this.updateValues(theater, theatreSaveDto);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

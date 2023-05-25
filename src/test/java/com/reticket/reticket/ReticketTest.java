@@ -1136,6 +1136,16 @@ public class ReticketTest {
     // -----------------------  THEATRE TESTS  -----------------------
 
     @Test
+    public void testUpdateTheater() {
+        TheaterSaveDto original = new TheaterSaveDto("TestTheaterOriginal", "Story.");
+        this.theaterService.save(original);
+        TheaterSaveDto updated = new TheaterSaveDto("TestTheaterUpdated", "Story.");
+        this.theaterService.updateTheater(updated, "TestTheaterOriginal");
+        Assert.assertEquals("TestTheaterUpdated", this.theaterRepository.findTheaterByTheaterName("TestTheaterUpdated").getTheaterName());
+        this.theaterRepository.deleteById(3L);
+    }
+
+    @Test
     public void testListTheaters() {
         Assert.assertEquals(2, this.theaterService.listTheaters(new PageableDto(0, 10)).size());
     }
