@@ -762,6 +762,20 @@ public class ReticketTest {
 
 
     @Test
+    public void testUpdateAppUser(){
+        AppUserSaveDto original = new AppUserSaveDto("testFirst", "testLast",
+                "testUsername", "test", "Guest");
+        this.appUserService.save(original);
+        AppUserSaveDto updated = new AppUserSaveDto("testModifiedFirst", "testLast",
+                "testUsername", "test", "Guest");
+        this.appUserService.updateAppUser(updated,"testUsername");
+        Assert.assertEquals("testModifiedFirst", this.appUserRepository.findByUsername("testUsername").getFirstName());
+        this.appUserRepository.deleteById(6L);
+    }
+
+
+
+    @Test
     public void testSavedAppUser_fromRepository_findAll() {
         Assert.assertEquals(5, this.appUserRepository.findAll().size());
     }
