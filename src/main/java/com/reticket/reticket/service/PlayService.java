@@ -6,6 +6,7 @@ import com.reticket.reticket.dto.list.ListPlaysDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.ContributorsSaveForPlaySaveDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
+import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.repository.PriceRepository;
@@ -90,5 +91,24 @@ public class PlayService {
     public List<ListPlaysDto> listPlays(PageableDto dto) {
         return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()))
                 .stream().map(ListPlaysDto::new).collect(Collectors.toList());
+    }
+
+    public boolean updatePlay(UpdatePlayDto updatePlayDto, Long id) {
+        Play play = this.findById(id);
+        if(play != null) {
+            if(updatePlayDto.getPlayName() != null) {
+                play.setPlayName(updatePlayDto.getPlayName());
+            }
+            if(updatePlayDto.getPlot() != null) {
+                play.setPlot(updatePlayDto.getPlot());
+            }
+            if(!play.getAuditorium().getId().equals(updatePlayDto.getAuditoriumId())) {
+                Auditorium auditorium = this.auditoriumService.findAuditoriumById(updatePlayDto.getAuditoriumId());
+                play.setAuditorium(auditorium);
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

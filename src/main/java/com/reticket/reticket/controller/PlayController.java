@@ -6,6 +6,7 @@ import com.reticket.reticket.dto.list.ListContributorsDto;
 import com.reticket.reticket.dto.list.ListPlaysDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
+import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.ContributorService;
 import com.reticket.reticket.service.PlayService;
@@ -51,5 +52,14 @@ public class PlayController {
     @GetMapping("/listPlays")
     public ResponseEntity<List<ListPlaysDto>> listPlays(@RequestBody PageableDto pageableDto) {
         return new ResponseEntity<>(this.playService.listPlays(pageableDto), HttpStatus.OK);
+    }
+
+    @PutMapping("/updatePlay/{id}")
+    public ResponseEntity<Boolean> updatePlay(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
+        if(this.playService.updatePlay(updatePlayDto, id))  {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

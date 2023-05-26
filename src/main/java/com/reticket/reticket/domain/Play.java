@@ -34,17 +34,13 @@ public class Play {
 
     @Column(name = "premiere")
     private LocalDateTime premiere;
-
     @Column(name = "archived")
     private Boolean isArchived;
-
     @OneToOne
     @JoinColumn(name = "auditorium_id")
     private Auditorium auditorium;
-
     @OneToMany(mappedBy = "play")
     private List<Price> prices = new ArrayList<>();
-
     @Enumerated(EnumType.STRING)
     @Column(name = "play_type")
     private PlayType playType;

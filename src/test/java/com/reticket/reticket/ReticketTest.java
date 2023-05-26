@@ -11,6 +11,7 @@ import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
+import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.repository.*;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
@@ -1020,6 +1021,15 @@ public class ReticketTest {
     // -----------------------  PERFORMANCE TESTS  -----------------------
 
     // -----------------------  PLAY TESTS  -----------------------
+
+    @Test
+    public void testUpdatePlay() {
+        UpdatePlayDto updatePlayDto = new UpdatePlayDto(null, "This is a new plot for the play.", 1L);
+        this.playService.updatePlay(updatePlayDto, 1L);
+        Assert.assertEquals("This is a new plot for the play.", this.playService.findById(1L).getPlot());
+        Assert.assertEquals("Standing at the Sky's Edge", this.playService.findById(1L).getPlayName());
+        Assert.assertEquals(1L, (long) this.playService.findById(1L).getAuditorium().getId());
+    }
 
     @Test
     public void testListPlays() {
