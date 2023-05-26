@@ -111,4 +111,14 @@ public class PlayService {
             return false;
         }
     }
+
+    public boolean deletePlay(Long id) {
+        Play play = this.findById(id);
+        if(play != null) {
+            play.setArchived(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

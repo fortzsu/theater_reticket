@@ -1023,6 +1023,13 @@ public class ReticketTest {
     // -----------------------  PLAY TESTS  -----------------------
 
     @Test
+    public void testDeletePlay() {
+        this.playService.deletePlay(8L);
+        Assert.assertEquals(true, this.playService.findById(8L).getArchived());
+    }
+
+
+    @Test
     public void testUpdatePlay() {
         UpdatePlayDto updatePlayDto = new UpdatePlayDto(null, "This is a new plot for the play.", 1L);
         this.playService.updatePlay(updatePlayDto, 1L);

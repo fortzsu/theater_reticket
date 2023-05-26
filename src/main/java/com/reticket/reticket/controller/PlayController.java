@@ -62,4 +62,13 @@ public class PlayController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> deletePlay(@PathVariable Long id) {
+        if(this.playService.deletePlay(id)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
