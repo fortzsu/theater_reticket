@@ -25,7 +25,7 @@ public class PerformanceListDto {
     }
 
     public PerformanceListDto(Performance performance) {
-        this.performanceDateTime = performance.getPerformanceDateTime();
+        this.performanceDateTime = performance.getOriginalPerformanceDateTime();
         this.playName = performance.getPlay().getPlayName();
         this.theatreName = performance.getPlay().getAuditorium().getTheater().getTheaterName();
         this.auditoriumName = performance.getPlay().getAuditorium().getAuditoriumName();

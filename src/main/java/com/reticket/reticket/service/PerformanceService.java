@@ -6,8 +6,8 @@ import com.reticket.reticket.domain.enums.PlayType;
 import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
-import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
+import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -55,7 +54,7 @@ public class PerformanceService {
 
     private Performance updateValue(Performance performance, PerformanceSaveDto performanceSaveDto) {
         Play play = this.playService.findById(performanceSaveDto.getPlayId());
-        performance.setPerformanceDateTime(performanceSaveDto.getPerformanceDateTime().minusHours(1));
+        performance.setOriginalPerformanceDateTime(performanceSaveDto.getPerformanceDateTime().minusHours(1));
         performance.setPlay(play);
         performance.setAvailableOnline(true);
         performance.setCancelled(false);
@@ -84,7 +83,7 @@ public class PerformanceService {
 
         List<PerformanceListDto> result = entityManager.createQuery(
                         criteriaQuery.multiselect(
-                                performanceRoot.get("performanceDateTime"),
+                                performanceRoot.get("originalPerformanceDateTime"),
                                 criteriaJoinDto.getPlayJoin().get("playName"),
                                 criteriaJoinDto.getTheaterJoin().get("theaterName"),
                                 criteriaJoinDto.getAuditoriumJoin().get("auditoriumName")).where(fillPredicateList(dto, performanceRoot,
@@ -119,9 +118,22 @@ public class PerformanceService {
                 criteriaBuilder.isFalse(performanceRoot.get("isCancelled")),
                 criteriaBuilder.isFalse(performanceRoot.get("isSold"))));
 
-        predicateList.add(criteriaBuilder.greaterThan(performanceRoot.get("performanceDateTime"), queryStart));
-        predicateList.add(criteriaBuilder.lessThan(performanceRoot.get("performanceDateTime"), queryEnd));
+        predicateList.add(criteriaBuilder.greaterThan(performanceRoot.get("originalPerformanceDateTime"), queryStart));
+        predicateList.add(criteriaBuilder.lessThan(performanceRoot.get("originalPerformanceDateTime"), queryEnd));
 
         return predicateList;
+    }
+
+    public boolean updatePerformance(UpdatePerformanceDto updatePerformanceDto, Long id) {
+        Performance performance = this.findPerformanceById(id);
+        if(performance != null) {
+            performance.setNewDateTime(updatePerformanceDto.getModifiedDateTime());
+            performance.setAvailableOnline(updatePerformanceDto.isAvailableOnline());
+            performance.setCancelled(updatePerformanceDto.isCancelled());
+            performance.setSeenOnline(updatePerformanceDto.isSeenOnline());
+            return true;
+        } else {
+            return false;
+        }
     }
 }

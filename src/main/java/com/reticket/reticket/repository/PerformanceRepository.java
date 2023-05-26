@@ -17,7 +17,7 @@ import java.util.List;
 public interface PerformanceRepository extends JpaRepository<Performance, Long> {
 
     @Query(value = "SELECT p FROM Performance p WHERE p.play = :play AND p.isAvailableOnline = true " +
-            "AND p.isCancelled = false AND p.isSeenOnline = true AND p.isSold = false ORDER BY p.performanceDateTime")
+            "AND p.isCancelled = false AND p.isSeenOnline = true AND p.isSold = false ORDER BY p.originalPerformanceDateTime")
     List<Performance> findUpcomingPerformancesByPlayId(Play play);
 
 

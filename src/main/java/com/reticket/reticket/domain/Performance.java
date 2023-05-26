@@ -14,7 +14,7 @@ public class Performance {
     private Long id;
 
     @Column(name = "performance_date_time")
-    private LocalDateTime performanceDateTime;
+    private LocalDateTime originalPerformanceDateTime;
 
     @Column(name = "online_availability")
     private boolean isAvailableOnline;
@@ -27,6 +27,9 @@ public class Performance {
 
     @Column(name = "cancelled")
     private boolean isCancelled;
+
+    @Column(name = "newDateTime")
+    private LocalDateTime newDateTime;
 
     @ManyToOne
     @JoinColumn(name = "play_id")
@@ -78,12 +81,12 @@ public class Performance {
         isCancelled = cancelled;
     }
 
-    public LocalDateTime getPerformanceDateTime() {
-        return performanceDateTime;
+    public LocalDateTime getOriginalPerformanceDateTime() {
+        return originalPerformanceDateTime;
     }
 
-    public void setPerformanceDateTime(LocalDateTime performanceDateTime) {
-        this.performanceDateTime = performanceDateTime;
+    public void setOriginalPerformanceDateTime(LocalDateTime performanceDateTime) {
+        this.originalPerformanceDateTime = performanceDateTime;
     }
 
     public void setId(Long id) {
@@ -103,4 +106,11 @@ public class Performance {
         this.tickets = tickets;
     }
 
+    public LocalDateTime getNewDateTime() {
+        return newDateTime;
+    }
+
+    public void setNewDateTime(LocalDateTime newDateTime) {
+        this.newDateTime = newDateTime;
+    }
 }

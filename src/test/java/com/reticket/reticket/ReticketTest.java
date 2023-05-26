@@ -2,6 +2,7 @@ package com.reticket.reticket;
 
 import com.reticket.reticket.controller.*;
 import com.reticket.reticket.domain.AppUser;
+import com.reticket.reticket.domain.Performance;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.domain.enums.TicketCondition;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
@@ -9,9 +10,9 @@ import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
+import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.repository.*;
 import com.reticket.reticket.security.RoleEnum;
-import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.service.*;
 import org.junit.Assert;
@@ -983,8 +984,22 @@ public class ReticketTest {
     // -----------------------  PERFORMANCE TESTS  -----------------------
 
     @Test
+    public void testUpdatePerformance() {
+        PerformanceSaveDto original = new PerformanceSaveDto(LocalDateTime.of(
+                LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), 17, 20, 0), 1L);
+        this.performanceService.save(List.of(original));
+        UpdatePerformanceDto update = new UpdatePerformanceDto(LocalDateTime.of(
+                LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), 18, 20, 0), false, false, true);
+        this.performanceService.updatePerformance(update, 17L);
+        Assert.assertEquals(LocalDateTime.of(
+                LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), 18, 20, 0), this.performanceService.findPerformanceById(17L).getNewDateTime());
+        this.performanceService.findPerformanceById(17L).setPlay(null);
+        this.performanceRepository.deleteById(17L);
+    }
+
+    @Test
     public void testSavePerformance_checkDateTime_fromService() {
-        Assert.assertEquals(19, this.performanceService.findPerformanceById(8L).getPerformanceDateTime().getHour());
+        Assert.assertEquals(19, this.performanceService.findPerformanceById(8L).getOriginalPerformanceDateTime().getHour());
     }
 
     @Test

@@ -83,7 +83,7 @@ public class ReportService {
         CriteriaJoinDto criteriaJoinDtoPerformances = createJoinDto(ticketRoot);
         return entityManager.createQuery(
                         criteriaQueryPerformances.multiselect(
-                                        criteriaJoinDtoPerformances.getPerformanceJoin().get("performanceDateTime"),
+                                        criteriaJoinDtoPerformances.getPerformanceJoin().get("originalPerformanceDateTime"),
                                         criteriaBuilderPerformances.count(ticketRoot),
                                         criteriaBuilderPerformances.sum(criteriaJoinDtoPerformances.getPriceJoin().get("amount")),
                                         criteriaJoinDtoPerformances.getTheaterJoin().get("theaterName"),
@@ -129,8 +129,8 @@ public class ReportService {
             predicateList.add(criteriaBuilder.equal(root.get("ticketCondition"),
                     ticketCondition));
         }
-        predicateList.add(criteriaBuilder.greaterThan(criteriaJoinDto.getPerformanceJoin().get("performanceDateTime"), queryStart));
-        predicateList.add(criteriaBuilder.lessThan(criteriaJoinDto.getPerformanceJoin().get("performanceDateTime"), queryEnd));
+        predicateList.add(criteriaBuilder.greaterThan(criteriaJoinDto.getPerformanceJoin().get("originalPerformanceDateTime"), queryStart));
+        predicateList.add(criteriaBuilder.lessThan(criteriaJoinDto.getPerformanceJoin().get("originalPerformanceDateTime"), queryEnd));
 
         return predicateList;
     }
