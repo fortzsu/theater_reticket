@@ -8,7 +8,6 @@ import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.service.PerformanceService;
 import com.reticket.reticket.service.TicketService;
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -53,7 +51,7 @@ public class PerformanceController {
         return new ResponseEntity<>(this.performanceService.searchFilteredPerformances(dto), HttpStatus.OK);
     }
 
-    @PostMapping("updatePerformance")
+    @PostMapping("/updatePerformance/{id}")
     public ResponseEntity<Boolean> updatePerformance(@RequestBody UpdatePerformanceDto updatePerformanceDto, @PathVariable Long id) {
         if(this.performanceService.updatePerformance(updatePerformanceDto, id)) {
             return new ResponseEntity<>(HttpStatus.OK);
