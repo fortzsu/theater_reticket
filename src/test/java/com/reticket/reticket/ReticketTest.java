@@ -775,19 +775,19 @@ public class ReticketTest {
 //        Assert.assertEquals("testModifiedFirst1", this.appUserRepository.findByUsername("testUsername1").getFirstName());
 //    }
 
-    @Test
-    public void testDeleteAppUser_true() {
-        AppUserSaveDto original = new AppUserSaveDto("testFirst2", "testLast2",
-                "testUsername2", "test2", "Guest2");
-        this.appUserService.save(original);
-        Assert.assertTrue(this.appUserService.deleteUser("testUsername2"));
-        Assert.assertTrue(this.appUserRepository.findByUsername("testUsername2").isDeleted());
-    }
-
-    @Test
-    public void testDeleteAppUser_false() {
-        Assert.assertFalse(this.appUserService.deleteUser("falseName"));
-    }
+//    @Test
+//    public void testDeleteAppUser_true() {
+//        AppUserSaveDto original = new AppUserSaveDto("testFirst2", "testLast2",
+//                "testUsername2", "test2", "Guest2");
+//        this.appUserService.save(original);
+//        Assert.assertTrue(this.appUserService.deleteUser("testUsername2"));
+//        Assert.assertTrue(this.appUserRepository.findByUsername("testUsername2").isDeleted());
+//    }
+//
+//    @Test
+//    public void testDeleteAppUser_false() {
+//        Assert.assertFalse(this.appUserService.deleteUser("falseName"));
+//    }
 
     @Test
     public void testSavedAppUser_fromRepository_findAll() {

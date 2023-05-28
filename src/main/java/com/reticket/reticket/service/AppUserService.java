@@ -60,7 +60,6 @@ public class AppUserService implements UserDetailsService {
     }
 
 
-
     public void save(AppUserSaveDto appUserSaveDto) {
         AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
         //If a user is saved, then it will log in automatically
@@ -157,18 +156,30 @@ public class AppUserService implements UserDetailsService {
         return this.findByUsername(username);
     }
 
-    public Boolean updateAppUser(UpdateAppUser updateAppUser, String username, Authentication authentication) {
+    public Boolean updateAppUser(UpdateAppUser updateAppUser, Authentication authentication, String username) {
         AppUser appUser = appUserRepository.findByUsername(username);
-        if(appUser != null && (authentication.getName().equals("superUser") || username.equals(authentication.getName()))) {
-            appUser.setEmail(updateAppUser.getEmail());
-            appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
+        if (appUser != null) {
+            if (username.equals(authentication.getName())) {
+                appUser.setEmail(updateAppUser.getEmail());
+                appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
+                return true;
+            } else {
+                if (authentication.getName().equals("superUser")) {
+                    appUser.setEmail(updateAppUser.getEmail());
+                    appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
         }
-        return true;
     }
 
-    public boolean deleteUser(String username) {
+    public boolean deleteUser(String username, Authentication authentication) {
         AppUser appUser = this.appUserRepository.findByUsername(username);
-        if(appUser != null) {
+        if (appUser != null && (authentication.getName().equals("superUser") || username.equals(authentication.getName()))) {
             appUser.setDeleted(true);
             return true;
         } else {

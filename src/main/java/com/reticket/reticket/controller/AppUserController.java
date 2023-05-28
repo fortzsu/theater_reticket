@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,18 +57,25 @@ public class AppUserController {
     }
 
     @PutMapping("/update/{username}")
-    public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUser updateAppUser, @PathVariable String username,
-                                              Authentication authentication) {
-        if(this.appUserService.updateAppUser(updateAppUser, username, authentication) != null) {
+    public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUser updateAppUser,
+                                              @PathVariable String username) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if(this.appUserService.updateAppUser(updateAppUser, context.getAuthentication(), username)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+
+
+
+
+
+
     @DeleteMapping("/delete/{username}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
-        if(this.appUserService.deleteUser(username)) {
+    public ResponseEntity<Boolean> deleteUser(@PathVariable String username, Authentication authentication) {
+        if(this.appUserService.deleteUser(username, authentication)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
