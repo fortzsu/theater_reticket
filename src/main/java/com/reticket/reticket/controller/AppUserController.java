@@ -67,15 +67,10 @@ public class AppUserController {
         }
     }
 
-
-
-
-
-
-
     @DeleteMapping("/delete/{username}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable String username, Authentication authentication) {
-        if(this.appUserService.deleteUser(username, authentication)) {
+    public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if(this.appUserService.deleteUser(username, context.getAuthentication())) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

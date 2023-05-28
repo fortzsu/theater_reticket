@@ -53,7 +53,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
                         .requestMatchers(new AntPathRequestMatcher("/api/appUser/update", HttpMethod.PUT.toString())).hasAnyRole(
                                 RoleEnum.GUEST.name(), RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/delete/{username}", HttpMethod.DELETE.toString())).hasAnyRole(
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/delete", HttpMethod.DELETE.toString())).hasAnyRole(
                                 RoleEnum.GUEST.name(), RoleEnum.SUPER_ADMIN.name())
 
 

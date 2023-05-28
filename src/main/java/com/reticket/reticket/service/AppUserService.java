@@ -181,10 +181,19 @@ public class AppUserService implements UserDetailsService {
     }
 
     public boolean deleteUser(String username, Authentication authentication) {
-        AppUser appUser = this.appUserRepository.findByUsername(username);
-        if (appUser != null && (authentication.getName().equals("superUser") || username.equals(authentication.getName()))) {
-            appUser.setDeleted(true);
-            return true;
+        AppUser appUser = appUserRepository.findByUsername(username);
+        if (appUser != null) {
+            if (username.equals(authentication.getName())) {
+                appUser.setDeleted(true);
+                return true;
+            } else {
+                if (authentication.getName().equals("superUser")) {
+                    appUser.setDeleted(true);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
             return false;
         }
