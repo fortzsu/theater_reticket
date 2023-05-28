@@ -160,13 +160,11 @@ public class AppUserService implements UserDetailsService {
         AppUser appUser = appUserRepository.findByUsername(username);
         if (appUser != null) {
             if (username.equals(authentication.getName())) {
-                appUser.setEmail(updateAppUser.getEmail());
-                appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
+                setUpdatedData(appUser, updateAppUser);
                 return true;
             } else {
                 if (authentication.getName().equals("superUser")) {
-                    appUser.setEmail(updateAppUser.getEmail());
-                    appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
+                    setUpdatedData(appUser, updateAppUser);
                     return true;
                 } else {
                     return false;
@@ -175,6 +173,11 @@ public class AppUserService implements UserDetailsService {
         } else {
             return false;
         }
+    }
+
+    private void setUpdatedData(AppUser appUser, UpdateAppUser updateAppUser) {
+        appUser.setEmail(updateAppUser.getEmail());
+        appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
     }
 
     public boolean deleteUser(String username, Authentication authentication) {
