@@ -3,10 +3,12 @@ package com.reticket.reticket.controller;
 import com.reticket.reticket.dto.list.LikedPlaysListDto;
 import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
+import com.reticket.reticket.dto.update.UpdateAppUser;
 import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,8 +55,9 @@ public class AppUserController {
     }
 
     @PutMapping("/update/{username}")
-    public ResponseEntity<Void> updateAppUser(@RequestBody AppUserSaveDto appUserSaveDto, @PathVariable String username) {
-        if(this.appUserService.updateAppUser(appUserSaveDto, username) != null) {
+    public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUser updateAppUser, @PathVariable String username,
+                                              Authentication authentication) {
+        if(this.appUserService.updateAppUser(updateAppUser, username, authentication) != null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

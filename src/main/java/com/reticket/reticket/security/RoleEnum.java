@@ -4,7 +4,7 @@ public enum RoleEnum {
 
     GUEST,
     THEATRE_USER,
-    THEATRE_ADMIN,
+    THEATER_ADMIN,
     SUPER_ADMIN;
 
     private static final String ROLE_PREFIX = "ROLE_";

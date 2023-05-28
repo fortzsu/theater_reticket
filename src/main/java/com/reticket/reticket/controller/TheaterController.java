@@ -28,7 +28,7 @@ public class TheaterController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/listTheater")
+    @PostMapping("/list")
     public ResponseEntity<List<ListTheatersDto>> listTheaters(@RequestBody PageableDto pageableDto) {
         return new ResponseEntity<>(this.theaterService.listTheaters(pageableDto), HttpStatus.OK);
     }

@@ -39,6 +39,7 @@ public class UserRoleService {
         createSuperAdmin();
     }
 
+
     private void createSuperAdmin() {
         AppUser appUser = new AppUser();
         appUser.setUsername("superUser");
@@ -67,7 +68,7 @@ public class UserRoleService {
         authorities.add(findRoleAuthorityById(9L));
         authorities.add(findRoleAuthorityById(10L));
         UserRole userRole = new UserRole();
-        userRole.setRoleEnum(RoleEnum.THEATRE_ADMIN);
+        userRole.setRoleEnum(RoleEnum.THEATER_ADMIN);
         userRole.setAuthorities(authorities);
         this.userRoleRepository.save(userRole);
     }

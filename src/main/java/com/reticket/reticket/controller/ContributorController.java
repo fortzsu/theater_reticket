@@ -32,8 +32,7 @@ public class ContributorController {
 
     @GetMapping("/list")
     public ResponseEntity<List<ListDetailedContributorsDto>> listContributors() {
-        this.contributorService.listContributors();
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(this.contributorService.listContributors(), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")

@@ -36,7 +36,7 @@ public class PerformanceController {
         this.ticketService = ticketService;
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performance = this.performanceService.save(performanceSaveDtoList);
         for (int i = 0; i < performanceSaveDtoList.size(); i++) {
@@ -45,7 +45,7 @@ public class PerformanceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/searchPerformance")
+    @PostMapping("/search")
     public ResponseEntity<Page<PerformanceListDto>> searchFilteredPerformances (
             @RequestBody FilterPerformancesDto dto) {
         return new ResponseEntity<>(this.performanceService.searchFilteredPerformances(dto), HttpStatus.OK);

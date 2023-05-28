@@ -3,16 +3,20 @@ package com.reticket.reticket.service;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.*;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
+import com.reticket.reticket.dto.update.UpdateAppUser;
 import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,12 +38,14 @@ public class AppUserService implements UserDetailsService {
     private final ContributorRepository contributorRepository;
     private final PerformanceRepository performanceRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheaterService theaterService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
-                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository) {
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -50,6 +56,7 @@ public class AppUserService implements UserDetailsService {
         this.playRepository = playRepository;
         this.contributorRepository = contributorRepository;
         this.performanceRepository = performanceRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -65,10 +72,9 @@ public class AppUserService implements UserDetailsService {
     private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto) {
         appUser.setFirstName(appUserSaveDto.getFirstName());
         appUser.setLastName(appUserSaveDto.getLastName());
-        appUser.setPassword(appUserSaveDto.getPassword());
+        appUser.setPassword(this.passwordEncoder.encode(appUserSaveDto.getPassword()));
         appUser.setUsername(appUserSaveDto.getUsername());
         appUser.setEmail(appUserSaveDto.getEmail());
-//        appUser.setAppUserType(appUserSaveDto.getAppUserType());
         appUser.setDeleted(false);
         return appUser;
     }
@@ -151,9 +157,13 @@ public class AppUserService implements UserDetailsService {
         return this.findByUsername(username);
     }
 
-    public AppUser updateAppUser(AppUserSaveDto appUserSaveDto, String userName) {
-        AppUser appUser = appUserRepository.findByUsername(userName);
-        return updateValues(appUser, appUserSaveDto);
+    public Boolean updateAppUser(UpdateAppUser updateAppUser, String username, Authentication authentication) {
+        AppUser appUser = appUserRepository.findByUsername(username);
+        if(appUser != null && (authentication.getName().equals("superUser") || username.equals(authentication.getName()))) {
+            appUser.setEmail(updateAppUser.getEmail());
+            appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
+        }
+        return true;
     }
 
     public boolean deleteUser(String username) {

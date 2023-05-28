@@ -49,7 +49,7 @@ public class PlayController {
         return new ResponseEntity<>(initData, HttpStatus.CREATED);
     }
 
-    @GetMapping("/listPlays")
+    @PostMapping("/list")
     public ResponseEntity<List<ListPlaysDto>> listPlays(@RequestBody PageableDto pageableDto) {
         return new ResponseEntity<>(this.playService.listPlays(pageableDto), HttpStatus.OK);
     }
