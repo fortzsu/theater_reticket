@@ -8,9 +8,13 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
+import com.reticket.reticket.security.RoleEnum;
+import com.reticket.reticket.security.repository_service.UserRoleRepository;
+import com.reticket.reticket.security.repository_service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,15 +41,15 @@ public class AppUserService implements UserDetailsService {
     private final PlayRepository playRepository;
     private final ContributorRepository contributorRepository;
     private final PerformanceRepository performanceRepository;
-
     private final PasswordEncoder passwordEncoder;
+    private final UserRoleRepository userRoleRepository;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheaterService theaterService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
-                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder) {
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -57,15 +61,21 @@ public class AppUserService implements UserDetailsService {
         this.contributorRepository = contributorRepository;
         this.performanceRepository = performanceRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userRoleRepository = userRoleRepository;
     }
 
 
-    public void save(AppUserSaveDto appUserSaveDto) {
-        AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
-        //If a user is saved, then it will log in automatically
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    public boolean save(AppUserSaveDto appUserSaveDto) {
+        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
+            AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
+            //If a user is saved, then it will log in automatically
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto) {
@@ -74,6 +84,8 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(this.passwordEncoder.encode(appUserSaveDto.getPassword()));
         appUser.setUsername(appUserSaveDto.getUsername());
         appUser.setEmail(appUserSaveDto.getEmail());
+        appUser.setUserRole(this.userRoleRepository.findUserRoleByRoleEnum(
+                UserRoleService.createUserRoleFromString(appUserSaveDto.getAppUserType())));
         appUser.setDeleted(false);
         return appUser;
     }
@@ -81,6 +93,10 @@ public class AppUserService implements UserDetailsService {
 
     public AppUser findByUsername(String username) {
         return this.appUserRepository.findByUsername(username);
+    }
+
+    private boolean checkIfUsernameIsTaken(String username) {
+        return this.findByUsername(username) != null;
     }
 
     public void likePlay(String username, Long playId) {

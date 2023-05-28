@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,38 +30,44 @@ public class AppUserController {
 
     @PostMapping("/saveGuest")
     public ResponseEntity<Void> saveGuest(@RequestBody AppUserSaveDto appUserSaveDto) {
-        this.appUserService.save(appUserSaveDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (this.appUserService.save(appUserSaveDto)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //TODO
+        }
     }
 
     @PostMapping("/saveAssociate")
     public ResponseEntity<Void> saveAssociate(@RequestBody AppUserSaveDto appUserSaveDto) {
-        this.appUserService.save(appUserSaveDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (this.appUserService.save(appUserSaveDto)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //TODO
+        }
     }
 
     @GetMapping("/{username}/tickets")
     public ResponseEntity<List<ListTicketDto>> listTickets(@PathVariable(value = "username") String username) {
-        return new ResponseEntity<>(this.appUserService.listTickets(username),HttpStatus.OK);
+        return new ResponseEntity<>(this.appUserService.listTickets(username), HttpStatus.OK);
     }
 
     @PostMapping("/{username}/{playId}")
     public ResponseEntity<Void> likePlay(@PathVariable(value = "username") String username,
-                                   @PathVariable(value = "playId") Long playId) {
+                                         @PathVariable(value = "playId") Long playId) {
         this.appUserService.likePlay(username, playId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{username}/likedPlays")
     public ResponseEntity<List<LikedPlaysListDto>> listLikedPlays(@PathVariable String username) {
-        return new ResponseEntity<>(this.appUserService.listLikedPlays(username),HttpStatus.OK);
+        return new ResponseEntity<>(this.appUserService.listLikedPlays(username), HttpStatus.OK);
     }
 
     @PutMapping("/update/{username}")
     public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUser updateAppUser,
                                               @PathVariable String username) {
         SecurityContext context = SecurityContextHolder.getContext();
-        if(this.appUserService.updateAppUser(updateAppUser, context.getAuthentication(), username)) {
+        if (this.appUserService.updateAppUser(updateAppUser, context.getAuthentication(), username)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,14 +77,12 @@ public class AppUserController {
     @DeleteMapping("/delete/{username}")
     public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
         SecurityContext context = SecurityContextHolder.getContext();
-        if(this.appUserService.deleteUser(username, context.getAuthentication())) {
+        if (this.appUserService.deleteUser(username, context.getAuthentication())) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
 
 
 }

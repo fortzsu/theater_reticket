@@ -795,7 +795,7 @@ public class ReticketTest {
         for (AppUser appUser : list) {
             System.out.println(appUser.getUsername());
         }
-        Assert.assertEquals(7, this.appUserRepository.findAll().size());
+        Assert.assertEquals(5, this.appUserRepository.findAll().size());
     }
 
     @Test

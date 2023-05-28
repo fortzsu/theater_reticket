@@ -23,7 +23,6 @@ public class UserRoleService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     @Autowired
     public UserRoleService(UserRoleRepository userRoleRepository, RoleAuthorityRepository roleAuthorityRepository,
                            AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
@@ -37,6 +36,20 @@ public class UserRoleService {
         createTheaterUserRole();
         createTheaterAdminRole();
         createSuperAdmin();
+    }
+
+    public static RoleEnum createUserRoleFromString(String userRole) {
+        switch (userRole) {
+            case "guest" -> {
+                return RoleEnum.GUEST;
+            }
+            case "theater_admin" -> {
+                return RoleEnum.THEATER_ADMIN;
+            }
+            default ->  {
+                return RoleEnum.THEATRE_USER;
+            }
+        }
     }
 
 
