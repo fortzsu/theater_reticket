@@ -39,11 +39,12 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
+                .httpBasic()
+                .and()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auditorium/list").hasAuthority("SUPER_ADMIN")
-                        .anyRequest().authenticated()
-                );
+                        .requestMatchers("/api/auditorium/list").hasAuthority("ROLE_SUPER")
+                .anyRequest().authenticated());
         return http.build();
     }
 
@@ -57,12 +58,12 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("http://localhost:3000", "http://localhost:4200")
-//                .allowedMethods("GET", "POST", "DELETE", "PUT");
-//    }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000", "http://localhost:4200")
+                .allowedMethods("GET", "POST", "DELETE", "PUT");
+    }
 
 
 }

@@ -12,7 +12,6 @@ import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.repository.*;
-import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.service.*;
 import org.junit.Assert;
@@ -23,10 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -90,6 +93,7 @@ public class ReticketTest {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
 
     private static boolean init = true;
 
@@ -291,6 +295,8 @@ public class ReticketTest {
     public void testUserRole_findFirst_authoritiesList() {
         Assert.assertEquals(11, this.userRoleRepository.findAll().get(1).getAuthorities().size());
     }
+
+
 
 
     // -----------------------  USERROLE TESTS  -----------------------

@@ -1,6 +1,5 @@
 package com.reticket.reticket.security.repository_service;
 
-import com.github.javafaker.App;
 import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.security.AuthorityEnum;
@@ -9,13 +8,13 @@ import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -34,8 +33,8 @@ public class UserRoleService {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         createRoleAuthorities();
-        createGuestUserRole();
         createSuperAdminUserRole();
+        createGuestUserRole();
         createTheaterUserRole();
         createTheaterAdminRole();
         createSuperAdmin();
@@ -58,10 +57,13 @@ public class UserRoleService {
 
     private void createSuperAdmin() {
         AppUser appUser = new AppUser();
-        appUser.setUsername("superUser");
-        appUser.setPassword(this.passwordEncoder.encode("test1234"));
-        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER_ADMIN));
+        appUser.setUsername("super");
+        appUser.setPassword(this.passwordEncoder.encode("test"));
+        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER));
         AppUser saved = this.appUserRepository.save(appUser);
+        for (UserRole userRole : saved.getUserRoles()) {
+            System.out.println(userRole.getRoleEnum().name());
+        }
         for (GrantedAuthority authority : saved.getAuthorities()) {
             System.out.println(authority.getAuthority());
         }
@@ -82,7 +84,7 @@ public class UserRoleService {
     }
 
     private void createTheaterAdminRole() {
-        HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
+        Set<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(8L));
         authorities.add(findRoleAuthorityById(9L));
         authorities.add(findRoleAuthorityById(10L));
@@ -93,7 +95,7 @@ public class UserRoleService {
     }
 
     private void createTheaterUserRole() {
-        HashSet<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
+        Set<RoleAuthority> authorities = new HashSet<>(fillBasicRoleAuthorities());
         authorities.add(findRoleAuthorityById(8L));
         UserRole userRole = new UserRole();
         userRole.setRoleEnum(RoleEnum.THEATRE_USER);
@@ -102,7 +104,7 @@ public class UserRoleService {
     }
 
     private void createGuestUserRole() {
-        HashSet<RoleAuthority> authorities = new HashSet<>();
+        Set<RoleAuthority> authorities = new HashSet<>();
         authorities.add(findRoleAuthorityById(1L));
         authorities.add(findRoleAuthorityById(2L));
         authorities.add(findRoleAuthorityById(3L));
@@ -124,7 +126,7 @@ public class UserRoleService {
         authorities.add(findRoleAuthorityById(10L));
         authorities.add(findRoleAuthorityById(11L));
         UserRole userRole = new UserRole();
-        userRole.setRoleEnum(RoleEnum.SUPER_ADMIN);
+        userRole.setRoleEnum(RoleEnum.SUPER);
         userRole.setAuthorities(authorities);
         this.userRoleRepository.save(userRole);
     }
