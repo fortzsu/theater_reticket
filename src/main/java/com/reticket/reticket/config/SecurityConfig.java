@@ -52,8 +52,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 HttpMethod.POST.toString())).permitAll()
 
 
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/update")).hasRole(
-                                RoleEnum.GUEST.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/update/**")).hasAuthority(
+                                RoleEnum.GUEST.toString())
 
 
 

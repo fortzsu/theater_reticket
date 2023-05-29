@@ -1,5 +1,6 @@
 package com.reticket.reticket.controller;
 
+import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.dto.list.LikedPlaysListDto;
 import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.save.AppUserSaveDto;

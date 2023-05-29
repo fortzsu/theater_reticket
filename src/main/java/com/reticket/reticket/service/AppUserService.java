@@ -15,6 +15,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -71,6 +72,10 @@ public class AppUserService implements UserDetailsService {
         if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
             AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
             //If a user is saved, then it will log in automatically
+            System.out.println("APPUS " + saved.getUsername());
+            for (GrantedAuthority authority : saved.getAuthorities()) {
+                System.out.println("APPUS " + authority);
+            }
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -89,11 +94,6 @@ public class AppUserService implements UserDetailsService {
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(
                 UserRoleService.createUserRoleFromString(appUserSaveDto.getAppUserType())));
         appUser.setDeleted(false);
-        System.out.println(appUser.getUsername());
-        Set<UserRole> roles = appUser.getUserRoles();
-        for (UserRole role : roles) {
-            System.out.println(role.getRoleEnum());
-        }
         return appUser;
     }
 

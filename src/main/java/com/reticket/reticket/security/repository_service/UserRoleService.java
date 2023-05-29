@@ -102,6 +102,7 @@ public class UserRoleService {
         authorities.add(findRoleAuthorityById(2L));
         authorities.add(findRoleAuthorityById(3L));
         authorities.add(findRoleAuthorityById(4L));
+        authorities.add(findRoleAuthorityById(12L));
         UserRole userRole = new UserRole();
         userRole.setRoleEnum(RoleEnum.GUEST);
         userRole.setAuthorities(authorities);
