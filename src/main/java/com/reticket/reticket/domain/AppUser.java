@@ -1,14 +1,26 @@
 package com.reticket.reticket.domain;
 
+import com.github.javafaker.App;
 import com.reticket.reticket.security.UserRole;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
+@NamedQueries(
+        @NamedQuery(
+                name = AppUser.FIND_BY_USERNAME,
+                query = "SELECT a FROM AppUser a JOIN FETCH a.userRoles roles JOIN FETCH roles.authorities WHERE a.username = :username"
+        )
+)
 public class AppUser implements UserDetails {
+
+    private static final String ENTITY_NAME = "AppUser";
+    public static final String FIND_BY_USERNAME = ENTITY_NAME + "." + "findByUsername";
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +37,8 @@ public class AppUser implements UserDetails {
     private String password;
     @OneToMany(mappedBy = "appUser")
     private List<Ticket> tickets = new ArrayList<>();
-    @OneToOne
-    private UserRole userRole;
+    @ManyToMany
+    private Set<UserRole> userRoles = new HashSet<>();
 
     private boolean isDeleted;
 
@@ -62,18 +74,18 @@ public class AppUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-//        List<GrantedAuthority> userRoles = this.roles.stream()
-//                .map(role -> role.getRoleEnum().toString())
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
-//
-//        List<GrantedAuthority> userAuthorities = this.roles.stream()
-//                .flatMap(role -> role.getAuthorities().stream()
-//                        .map(authority -> authority.getAuthorityEnum().toString())
-//                        .map(SimpleGrantedAuthority::new)).collect(Collectors.toList());
+        List<GrantedAuthority> userRoles = this.userRoles.stream()
+                .map(role -> role.getRoleEnum().toString())
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
-//        authorities.addAll(userRoles);
-//        authorities.addAll(userAuthorities);
+        List<GrantedAuthority> userAuthorities = this.userRoles.stream()
+                .flatMap(role -> role.getAuthorities().stream()
+                        .map(authority -> authority.getAuthorityEnum().toString())
+                        .map(SimpleGrantedAuthority::new)).collect(Collectors.toList());
+
+        authorities.addAll(userRoles);
+        authorities.addAll(userAuthorities);
 
         return authorities;
     }
@@ -127,13 +139,16 @@ public class AppUser implements UserDetails {
         this.tickets = tickets;
     }
 
-
-    public UserRole getUserRole() {
-        return userRole;
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public void addUserRoles(UserRole userRole) {
+        this.userRoles.add(userRole);
     }
 
     public String getEmail() {

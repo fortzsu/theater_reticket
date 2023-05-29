@@ -1,5 +1,6 @@
 package com.reticket.reticket.config;
 
+import com.reticket.reticket.security.AuthorityEnum;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 HttpMethod.POST.toString())).permitAll()
 
 
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/update", HttpMethod.PUT.toString())).hasAnyRole(
-                                RoleEnum.GUEST.name(), RoleEnum.SUPER_ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/delete", HttpMethod.DELETE.toString())).hasAnyRole(
-                                RoleEnum.GUEST.name(), RoleEnum.SUPER_ADMIN.name())
+                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/update")).hasRole(
+                                RoleEnum.GUEST.name())
+
 
 
 

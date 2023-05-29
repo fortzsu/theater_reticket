@@ -8,15 +8,14 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
-import com.reticket.reticket.security.RoleEnum;
+import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -43,13 +43,15 @@ public class AppUserService implements UserDetailsService {
     private final PerformanceRepository performanceRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
+    EntityManager entityManager;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, TicketService ticketService,
                           PerformanceService performanceService, PlayService playService,
                           TheaterService theaterService, AuditoriumService auditoriumService,
                           AddressService addressService, PlayRepository playRepository,
-                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
+                          ContributorRepository contributorRepository, PerformanceRepository performanceRepository,
+                          PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
         this.appUserRepository = appUserRepository;
         this.ticketService = ticketService;
         this.performanceService = performanceService;
@@ -84,9 +86,14 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(this.passwordEncoder.encode(appUserSaveDto.getPassword()));
         appUser.setUsername(appUserSaveDto.getUsername());
         appUser.setEmail(appUserSaveDto.getEmail());
-        appUser.setUserRole(this.userRoleRepository.findUserRoleByRoleEnum(
+        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(
                 UserRoleService.createUserRoleFromString(appUserSaveDto.getAppUserType())));
         appUser.setDeleted(false);
+        System.out.println(appUser.getUsername());
+        Set<UserRole> roles = appUser.getUserRoles();
+        for (UserRole role : roles) {
+            System.out.println(role.getRoleEnum());
+        }
         return appUser;
     }
 
@@ -169,7 +176,9 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.findByUsername(username);
+        return entityManager.createNamedQuery(AppUser.FIND_BY_USERNAME, AppUser.class).setParameter(
+                "username", username)
+                .getSingleResult();
     }
 
     public Boolean updateAppUser(UpdateAppUser updateAppUser, Authentication authentication, String username) {

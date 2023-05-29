@@ -1,5 +1,6 @@
 package com.reticket.reticket.security;
 
+import com.reticket.reticket.domain.AppUser;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -19,6 +20,9 @@ public class UserRole {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleAuthority> authorities = new HashSet<>();
+
+    @ManyToMany
+    private Set<AppUser> appUsers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -42,5 +46,13 @@ public class UserRole {
 
     public void setAuthorities(Set<RoleAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<AppUser> getAppUsers() {
+        return appUsers;
+    }
+
+    public void setAppUsers(Set<AppUser> appUsers) {
+        this.appUsers = appUsers;
     }
 }

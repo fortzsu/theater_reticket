@@ -7,6 +7,7 @@ import com.reticket.reticket.security.RoleAuthority;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,7 @@ public class UserRoleService {
         AppUser appUser = new AppUser();
         appUser.setUsername("superUser");
         appUser.setPassword(this.passwordEncoder.encode("test1234"));
-        appUser.setUserRole(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER_ADMIN));
+        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER_ADMIN));
         this.appUserRepository.save(appUser);
     }
 
@@ -119,7 +120,8 @@ public class UserRoleService {
         UserRole userRole = new UserRole();
         userRole.setRoleEnum(RoleEnum.SUPER_ADMIN);
         userRole.setAuthorities(authorities);
-        this.userRoleRepository.save(userRole);
+        UserRole userRole1 = this.userRoleRepository.save(userRole);
+        System.out.println(userRole1.getRoleEnum());
     }
 
     private RoleAuthority findRoleAuthorityById(Long id) {
