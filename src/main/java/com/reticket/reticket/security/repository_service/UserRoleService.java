@@ -1,5 +1,6 @@
 package com.reticket.reticket.security.repository_service;
 
+import com.github.javafaker.App;
 import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.security.AuthorityEnum;
@@ -7,6 +8,7 @@ import com.reticket.reticket.security.RoleAuthority;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,7 +61,10 @@ public class UserRoleService {
         appUser.setUsername("superUser");
         appUser.setPassword(this.passwordEncoder.encode("test1234"));
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER_ADMIN));
-        this.appUserRepository.save(appUser);
+        AppUser saved = this.appUserRepository.save(appUser);
+        for (GrantedAuthority authority : saved.getAuthorities()) {
+            System.out.println(authority.getAuthority());
+        }
     }
 
     private void createRoleAuthorities() {
@@ -121,8 +126,7 @@ public class UserRoleService {
         UserRole userRole = new UserRole();
         userRole.setRoleEnum(RoleEnum.SUPER_ADMIN);
         userRole.setAuthorities(authorities);
-        UserRole userRole1 = this.userRoleRepository.save(userRole);
-        System.out.println(userRole1.getRoleEnum());
+        this.userRoleRepository.save(userRole);
     }
 
     private RoleAuthority findRoleAuthorityById(Long id) {

@@ -71,14 +71,14 @@ public class AppUserService implements UserDetailsService {
     public boolean save(AppUserSaveDto appUserSaveDto) {
         if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
             AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
-            //If a user is saved, then it will log in automatically
             System.out.println("APPUS " + saved.getUsername());
             for (GrantedAuthority authority : saved.getAuthorities()) {
                 System.out.println("APPUS " + authority);
             }
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            //If a user is saved, then it will log in automatically
+//            UsernamePasswordAuthenticationToken authenticationToken =
+//                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             return true;
         } else {
             return false;

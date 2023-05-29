@@ -6,11 +6,15 @@ import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -36,40 +40,10 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/api/contributor/list",
-                                HttpMethod.GET.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/auditorium/list",
-                                HttpMethod.GET.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/saveGuest",
-                                HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/play/list",
-                                HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/theater/list",
-                                HttpMethod.POST.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/performance/search",
-                                HttpMethod.POST.toString())).permitAll()
-
-
-                        .requestMatchers(new AntPathRequestMatcher("/api/appUser/update/**")).hasAuthority(
-                                RoleEnum.GUEST.toString())
-
-
-
-
-
-                        .anyRequest().authenticated())
-                .httpBasic();
-
-        http.logout()
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutUrl("/api/logout") //TODO
-                .logoutSuccessHandler(new LogoutSuccessHandlerImpl());
-
-        //40
-
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/api/auditorium/list").hasAuthority("SUPER_ADMIN")
+                        .anyRequest().authenticated()
+                );
         return http.build();
     }
 
@@ -83,12 +57,12 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://localhost:4200")
-                .allowedMethods("GET", "POST", "DELETE", "PUT");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("http://localhost:3000", "http://localhost:4200")
+//                .allowedMethods("GET", "POST", "DELETE", "PUT");
+//    }
 
 
 }
