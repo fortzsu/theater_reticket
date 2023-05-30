@@ -34,6 +34,8 @@ spring:
 logging:
   level:
     web: trace
+    springframework:
+        security: trace
 #  security:
 #    user:
 #      name: user

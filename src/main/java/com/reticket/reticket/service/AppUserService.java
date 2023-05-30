@@ -12,6 +12,7 @@ import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,6 +45,7 @@ public class AppUserService implements UserDetailsService {
     private final PerformanceRepository performanceRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
+    @PersistenceContext
     EntityManager entityManager;
 
     @Autowired
@@ -70,11 +72,7 @@ public class AppUserService implements UserDetailsService {
 
     public boolean save(AppUserSaveDto appUserSaveDto) {
         if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
-            AppUser saved = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
-            System.out.println("APPUS " + saved.getUsername());
-            for (GrantedAuthority authority : saved.getAuthorities()) {
-                System.out.println("APPUS " + authority);
-            }
+            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
 //                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
@@ -177,8 +175,7 @@ public class AppUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return entityManager.createNamedQuery(AppUser.FIND_BY_USERNAME, AppUser.class).setParameter(
-                "username", username)
-                .getSingleResult();
+                "username", username).getSingleResult();
     }
 
     public Boolean updateAppUser(UpdateAppUser updateAppUser, Authentication authentication, String username) {

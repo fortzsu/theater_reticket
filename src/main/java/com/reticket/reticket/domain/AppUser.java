@@ -14,7 +14,10 @@ import java.util.stream.Collectors;
 @NamedQueries(
         @NamedQuery(
                 name = AppUser.FIND_BY_USERNAME,
-                query = "SELECT a FROM AppUser a JOIN FETCH a.userRoles roles JOIN FETCH roles.authorities WHERE a.username = :username"
+                query = "SELECT au FROM AppUser au " +
+                        "LEFT JOIN FETCH au.userRoles roles " +
+                        "LEFT JOIN FETCH roles.authorities " +
+                        "WHERE au.username = :username"
         )
 )
 public class AppUser implements UserDetails {
@@ -86,6 +89,10 @@ public class AppUser implements UserDetails {
 
         authorities.addAll(userRoles);
         authorities.addAll(userAuthorities);
+
+        for (GrantedAuthority authority : authorities) {
+            System.out.println(authority.getAuthority());
+        }
 
         return authorities;
     }

@@ -43,7 +43,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .httpBasic()
                 .and()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auditorium/list").hasAuthority("ROLE_SUPER")
+                        .requestMatchers("/api/auditorium/list").hasRole(RoleEnum.SUPER.name())
                 .anyRequest().authenticated());
         return http.build();
     }

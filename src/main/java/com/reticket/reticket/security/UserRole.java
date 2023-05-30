@@ -18,11 +18,9 @@ public class UserRole {
     @Column(name = "role_name", nullable = false, unique = true)
     private RoleEnum roleEnum;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<RoleAuthority> authorities = new HashSet<>();
 
-    @ManyToMany
-    private Set<AppUser> appUsers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -48,11 +46,4 @@ public class UserRole {
         this.authorities = authorities;
     }
 
-    public Set<AppUser> getAppUsers() {
-        return appUsers;
-    }
-
-    public void setAppUsers(Set<AppUser> appUsers) {
-        this.appUsers = appUsers;
-    }
 }

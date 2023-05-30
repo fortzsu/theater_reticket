@@ -10,7 +10,7 @@ public class RoleAuthority {
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "authority_name", nullable = false, unique = true)
+    @Column(name = "authority_name")
     private AuthorityEnum authorityEnum;
 
     public RoleAuthority(AuthorityEnum authorityEnum) {
