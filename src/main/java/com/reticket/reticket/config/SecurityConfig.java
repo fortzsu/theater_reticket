@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -43,8 +44,39 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .httpBasic()
                 .and()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auditorium/list").hasRole(RoleEnum.SUPER.name())
-                .anyRequest().authenticated());
+                        .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
+                        .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
+                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).permitAll()
+                        .requestMatchers("/api/contributor/list",HttpMethod.GET.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
+                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).permitAll()
+                        .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
+                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/play/list", HttpMethod.POST.toString()).permitAll()
+                        .requestMatchers("/api/play/list", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
+                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).permitAll()
+                        .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
+                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).permitAll()
+                        .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
+                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+
+
+
+
+                        .anyRequest().authenticated());
+
+
+        http.logout()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "JWT-TOKEN")
+                .logoutUrl("/api/logout") //TODO
+                .logoutSuccessHandler(new LogoutSuccessHandlerImpl() {
+                });
+
+
         return http.build();
     }
 
