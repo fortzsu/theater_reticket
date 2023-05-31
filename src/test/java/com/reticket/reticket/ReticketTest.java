@@ -12,6 +12,7 @@ import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.repository.*;
+import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.service.*;
 import org.junit.Assert;
@@ -293,7 +294,7 @@ public class ReticketTest {
 
     @Test
     public void testUserRole_findFirst_authoritiesList() {
-        Assert.assertEquals(11, this.userRoleRepository.findAll().get(1).getAuthorities().size());
+        Assert.assertEquals(5, this.userRoleRepository.findAll().get(1).getAuthorities().size());
     }
 
 
@@ -805,18 +806,13 @@ public class ReticketTest {
 
     @Test
     public void testSavedAppUser_fromRepository_checkUserName() {
-        Assert.assertEquals("superUser", this.appUserRepository.findAll().get(0).getUsername());
+        Assert.assertEquals("super", this.appUserRepository.findAll().get(0).getUsername());
     }
 
     @Test
     public void testSavedAppUser_fromRepository_checkUserName_Last() {
         Assert.assertEquals("1_username", this.appUserRepository.findAll().get(4).getUsername());
     }
-
-//    @Test
-//    public void testSavedAppUser_fromRepository_checkUserType() {
-//        Assert.assertEquals(RoleEnum.SUPER_ADMIN, this.appUserRepository.findAll().get(0).getUserRoles().getRoleEnum());
-//    }
 
     @Test
     public void testSavedAppUser_checkTicketListByUsername() {

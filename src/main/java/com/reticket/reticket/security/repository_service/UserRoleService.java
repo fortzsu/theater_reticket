@@ -47,12 +47,9 @@ public class UserRoleService {
     private void createSuperAdminUserRole() {
         UserRole userRole = new UserRole();
         HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
-        authorities.add(new RoleAuthority(AuthorityEnum.SELL_TICKET));
+        authorities.add(new RoleAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS));
         authorities.add(new RoleAuthority(AuthorityEnum.ACCESS_REPORT));
-        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_THEATER));
-        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ADDRESS_AUDITORIUM));
-        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_CONTRIBUTOR_PRICE_PLAY_PERFORMANCE));
-        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ASSOCIATE));
+        authorities.add(new RoleAuthority(AuthorityEnum.MODIFY_IN_THEATER));
         userRole.setAuthorities(authorities);
         userRole.setRoleEnum(RoleEnum.SUPER);
         this.userRoleRepository.save(userRole);
@@ -61,11 +58,8 @@ public class UserRoleService {
     private void createTheaterAdminUserRole() {
         UserRole userRole = new UserRole();
         HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
-        authorities.add(new RoleAuthority(AuthorityEnum.SELL_TICKET));
         authorities.add(new RoleAuthority(AuthorityEnum.ACCESS_REPORT));
-        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ASSOCIATE));
-        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ADDRESS_AUDITORIUM));
-        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_CONTRIBUTOR_PRICE_PLAY_PERFORMANCE));
+        authorities.add(new RoleAuthority(AuthorityEnum.MODIFY_IN_THEATER));
         userRole.setAuthorities(authorities);
         userRole.setRoleEnum(RoleEnum.THEATER_ADMIN);
         this.userRoleRepository.save(userRole);
@@ -74,7 +68,6 @@ public class UserRoleService {
     private void createTheaterUserRole() {
         UserRole userRole = new UserRole();
         HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
-        authorities.add(new RoleAuthority(AuthorityEnum.SELL_TICKET));
         authorities.add(new RoleAuthority(AuthorityEnum.ACCESS_REPORT));
         userRole.setAuthorities(authorities);
         userRole.setRoleEnum(RoleEnum.THEATRE_USER);
@@ -84,6 +77,7 @@ public class UserRoleService {
     private void createGuestUserRole() {
         UserRole userRole = new UserRole();
         HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
+        authorities.add(new RoleAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS));
         userRole.setAuthorities(authorities);
         userRole.setRoleEnum(RoleEnum.GUEST);
         this.userRoleRepository.save(userRole);
@@ -91,11 +85,8 @@ public class UserRoleService {
 
     private HashSet<RoleAuthority> addCoreAuthorities( ) {
         HashSet<RoleAuthority> authorities = new HashSet<>();
-        authorities.add(new RoleAuthority(AuthorityEnum.LIKE_LIST_PLAY));
-        authorities.add(new RoleAuthority(AuthorityEnum.RESERVE_TICKET));
-        authorities.add(new RoleAuthority(AuthorityEnum.RETURN_TICKET));
-        authorities.add(new RoleAuthority(AuthorityEnum.BUY_TICKET));
-        authorities.add(new RoleAuthority(AuthorityEnum.LIST_TICKETS));
+        authorities.add(new RoleAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH));
+        authorities.add(new RoleAuthority(AuthorityEnum.TICKET_ACTIONS));
         return authorities;
     }
 

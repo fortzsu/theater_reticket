@@ -6,19 +6,13 @@ import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -45,26 +39,46 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .and()
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
-                        .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
-                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                         .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).permitAll()
-                        .requestMatchers("/api/contributor/list",HttpMethod.GET.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
-                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
-                        .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).permitAll()
-                        .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
-                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                         .requestMatchers("/api/play/list", HttpMethod.POST.toString()).permitAll()
-                        .requestMatchers("/api/play/list", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
-                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/play/list", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                         .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).permitAll()
-                        .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
-                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                         .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).permitAll()
-                        .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).hasAnyRole(RoleEnum.SUPER.name(), RoleEnum.GUEST.name(),
-                                RoleEnum.THEATRE_USER.name(), RoleEnum.THEATER_ADMIN.name())
+                        .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
+                        .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).permitAll()
+                        .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
 
+                        .requestMatchers("/api/theater/create", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
+                        .requestMatchers("/api/theater/update/{theaterName}", HttpMethod.PUT.toString()).hasRole(RoleEnum.SUPER.name())
+                        .requestMatchers("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString()).hasRole(RoleEnum.SUPER.name())
 
+                        .requestMatchers("/api/appUser/update/", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+                        .requestMatchers("/api/appUser/delete/", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+                        .requestMatchers("/api/appUser/{username}/tickets", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+                        .requestMatchers("/api/appUser/{username}/{playId}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+                        .requestMatchers("/api/appUser/{username}/likedPlays", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
 
+                        .requestMatchers("/api/ticketAction", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.TICKET_ACTIONS.name())
+
+                        .requestMatchers("/api/report", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.ACCESS_REPORT.name())
+
+                        .requestMatchers("/api/address", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/address/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/appUser/saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/auditorium", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/auditorium/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/auditorium/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/contributor", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/contributor/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/performance", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/play", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/play/formData/{auditoriumId}", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/performance/updatePerformance/{id}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/play/updatePlay/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/play/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
 
                         .anyRequest().authenticated());
 
