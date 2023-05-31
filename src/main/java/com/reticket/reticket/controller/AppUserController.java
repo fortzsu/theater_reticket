@@ -1,16 +1,14 @@
 package com.reticket.reticket.controller;
 
-import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.dto.list.LikedPlaysListDto;
 import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
-import com.reticket.reticket.dto.update.UpdateAppUser;
+import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -65,20 +63,10 @@ public class AppUserController {
         return new ResponseEntity<>(this.appUserService.listLikedPlays(username), HttpStatus.OK);
     }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUser updateAppUser,
+    @PutMapping("/update/{username}")
+    public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUserDto updateAppUserDto,
                                               @PathVariable String username) {
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = context.getAuthentication();
-        User principal = (User) authentication.getPrincipal();
-//        if(principal != null){
-//            for (GrantedAuthority authority : principal.getAuthorities()) {
-//                System.out.println(authority);
-//
-//            }
-//        }
-
-        if (this.appUserService.updateAppUser(updateAppUser, context.getAuthentication(), username)) {
+        if (this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

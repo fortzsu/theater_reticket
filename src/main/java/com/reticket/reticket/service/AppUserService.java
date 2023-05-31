@@ -3,21 +3,17 @@ package com.reticket.reticket.service;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.*;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
-import com.reticket.reticket.dto.update.UpdateAppUser;
+import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
-import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -178,15 +173,15 @@ public class AppUserService implements UserDetailsService {
                 "username", username).getSingleResult();
     }
 
-    public Boolean updateAppUser(UpdateAppUser updateAppUser, Authentication authentication, String username) {
+    public Boolean updateAppUser(UpdateAppUserDto updateAppUserDto, Authentication authentication, String username) {
         AppUser appUser = appUserRepository.findByUsername(username);
         if (appUser != null) {
             if (username.equals(authentication.getName())) {
-                setUpdatedData(appUser, updateAppUser);
+                setUpdatedData(appUser, updateAppUserDto);
                 return true;
             } else {
                 if (authentication.getName().equals("superUser")) {
-                    setUpdatedData(appUser, updateAppUser);
+                    setUpdatedData(appUser, updateAppUserDto);
                     return true;
                 } else {
                     return false;
@@ -197,9 +192,9 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
-    private void setUpdatedData(AppUser appUser, UpdateAppUser updateAppUser) {
-        appUser.setEmail(updateAppUser.getEmail());
-        appUser.setPassword(this.passwordEncoder.encode(updateAppUser.getPassword()));
+    private void setUpdatedData(AppUser appUser, UpdateAppUserDto updateAppUserDto) {
+        appUser.setEmail(updateAppUserDto.getEmail());
+        appUser.setPassword(this.passwordEncoder.encode(updateAppUserDto.getPassword()));
     }
 
     public boolean deleteUser(String username, Authentication authentication) {

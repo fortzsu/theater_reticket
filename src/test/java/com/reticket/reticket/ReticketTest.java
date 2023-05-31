@@ -9,10 +9,10 @@ import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
+import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.repository.*;
-import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.service.*;
 import org.junit.Assert;
@@ -23,14 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -252,10 +250,10 @@ public class ReticketTest {
 
             // ************* APPUSER *************
 
-            this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsi", "Fort", "fortzsu", "test1234", "Super Admin"));
-            this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsanna", "Bozso", "bozsofortzsu", "test1234", "Super Admin"));
-            this.appUserController.saveGuest(new AppUserSaveDto("Daniel", "Bozso", "danielb", "test1234", "Super Admin"));
-            this.appUserController.saveGuest(new AppUserSaveDto("User", "Name", "1_username", "test1234", "Guest"));
+            this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsi", "Fort", "fortzsu", "test1234", "Super Admin", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsanna", "Bozso", "bozsofortzsu", "test1234", "Super Admin", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("Daniel", "Bozso", "danielb", "test1234", "Super Admin", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("User", "Name", "1_username", "test1234", "Guest", "email@gmail.com"));
 
             List<TicketActionDto> ticketActionDtoList = new ArrayList<>();
 
@@ -768,32 +766,6 @@ public class ReticketTest {
     // -----------------------  TICKET ACTIONS TESTS  -----------------------
 
     // -----------------------  APPUSER TESTS  -----------------------
-
-
-//    @Test
-//    public void testUpdateAppUser() {
-//        AppUserSaveDto original = new AppUserSaveDto("testFirst1", "testLast1",
-//                "testUsername1", "test1", "Guest");
-//        this.appUserService.save(original);
-//        AppUserSaveDto updated = new AppUserSaveDto("testModifiedFirst1", "testLast1",
-//                "testUsername1", "test1", "Guest");
-//        this.appUserController.updateAppUser(updated);
-//        Assert.assertEquals("testModifiedFirst1", this.appUserRepository.findByUsername("testUsername1").getFirstName());
-//    }
-
-//    @Test
-//    public void testDeleteAppUser_true() {
-//        AppUserSaveDto original = new AppUserSaveDto("testFirst2", "testLast2",
-//                "testUsername2", "test2", "Guest2");
-//        this.appUserService.save(original);
-//        Assert.assertTrue(this.appUserService.deleteUser("testUsername2"));
-//        Assert.assertTrue(this.appUserRepository.findByUsername("testUsername2").isDeleted());
-//    }
-//
-//    @Test
-//    public void testDeleteAppUser_false() {
-//        Assert.assertFalse(this.appUserService.deleteUser("falseName"));
-//    }
 
     @Test
     public void testSavedAppUser_fromRepository_findAll() {
