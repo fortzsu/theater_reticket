@@ -7,13 +7,11 @@ import com.reticket.reticket.security.RoleAuthority;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,6 +28,9 @@ public class UserRoleService {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         createSuperAdminUserRole();
+        createGuestUserRole();
+        createTheaterUserRole();
+        createTheaterAdminUserRole();
         createSuperAdmin();
     }
 
@@ -44,13 +45,58 @@ public class UserRoleService {
     }
 
     private void createSuperAdminUserRole() {
-        HashSet<RoleAuthority> authorities = new HashSet<>();
-        RoleAuthority roleAuthority = new RoleAuthority(AuthorityEnum.SELL);
-        authorities.add(roleAuthority);
         UserRole userRole = new UserRole();
+        HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
+        authorities.add(new RoleAuthority(AuthorityEnum.SELL_TICKET));
+        authorities.add(new RoleAuthority(AuthorityEnum.ACCESS_REPORT));
+        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_THEATER));
+        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ADDRESS_AUDITORIUM));
+        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_CONTRIBUTOR_PRICE_PLAY_PERFORMANCE));
+        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ASSOCIATE));
         userRole.setAuthorities(authorities);
         userRole.setRoleEnum(RoleEnum.SUPER);
         this.userRoleRepository.save(userRole);
+    }
+
+    private void createTheaterAdminUserRole() {
+        UserRole userRole = new UserRole();
+        HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
+        authorities.add(new RoleAuthority(AuthorityEnum.SELL_TICKET));
+        authorities.add(new RoleAuthority(AuthorityEnum.ACCESS_REPORT));
+        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ASSOCIATE));
+        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_ADDRESS_AUDITORIUM));
+        authorities.add(new RoleAuthority(AuthorityEnum.CREATE_AND_UPDATE_CONTRIBUTOR_PRICE_PLAY_PERFORMANCE));
+        userRole.setAuthorities(authorities);
+        userRole.setRoleEnum(RoleEnum.THEATER_ADMIN);
+        this.userRoleRepository.save(userRole);
+    }
+
+    private void createTheaterUserRole() {
+        UserRole userRole = new UserRole();
+        HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
+        authorities.add(new RoleAuthority(AuthorityEnum.SELL_TICKET));
+        authorities.add(new RoleAuthority(AuthorityEnum.ACCESS_REPORT));
+        userRole.setAuthorities(authorities);
+        userRole.setRoleEnum(RoleEnum.THEATRE_USER);
+        this.userRoleRepository.save(userRole);
+    }
+
+    private void createGuestUserRole() {
+        UserRole userRole = new UserRole();
+        HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
+        userRole.setAuthorities(authorities);
+        userRole.setRoleEnum(RoleEnum.GUEST);
+        this.userRoleRepository.save(userRole);
+    }
+
+    private HashSet<RoleAuthority> addCoreAuthorities( ) {
+        HashSet<RoleAuthority> authorities = new HashSet<>();
+        authorities.add(new RoleAuthority(AuthorityEnum.LIKE_LIST_PLAY));
+        authorities.add(new RoleAuthority(AuthorityEnum.RESERVE_TICKET));
+        authorities.add(new RoleAuthority(AuthorityEnum.RETURN_TICKET));
+        authorities.add(new RoleAuthority(AuthorityEnum.BUY_TICKET));
+        authorities.add(new RoleAuthority(AuthorityEnum.LIST_TICKETS));
+        return authorities;
     }
 
     public static RoleEnum createUserRoleFromString(String userRole) {
