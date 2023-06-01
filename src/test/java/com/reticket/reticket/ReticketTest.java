@@ -9,7 +9,6 @@ import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
-import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.repository.*;
@@ -18,6 +17,8 @@ import com.reticket.reticket.service.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,14 +29,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ReticketTest {
 
-    @Autowired
-    private TheaterController theaterController;
     @Autowired
     private TheaterService theaterService;
     @Autowired

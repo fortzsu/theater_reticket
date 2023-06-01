@@ -25,7 +25,7 @@ public class TheaterController {
     @PostMapping("/create")
     public ResponseEntity<Void> createTheatre(@RequestBody TheaterSaveDto theatreSaveDto) {
         theaterService.save(theatreSaveDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/list")
