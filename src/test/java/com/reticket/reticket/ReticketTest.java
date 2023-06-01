@@ -86,13 +86,10 @@ public class ReticketTest {
     private TicketActionController ticketActionController;
     @Autowired
     private ReportService reportService;
-
     @Autowired
     private TicketActionFollowerRepository ticketActionFollowerRepository;
-
     @Autowired
     private UserRoleRepository userRoleRepository;
-
 
     private static boolean init = true;
 
