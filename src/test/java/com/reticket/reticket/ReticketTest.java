@@ -103,7 +103,6 @@ public class ReticketTest {
             this.theaterService.save(new TheaterSaveDto("Harold Pinter Theater", "theatreHistory"));
 
             // ************* THEATRE *************
-
             // ************* AUDITORIUM *************
             List<AuditoriumSaveDto> auditoriumSaveDtoList = new ArrayList<>();
 
