@@ -1,5 +1,7 @@
 package com.reticket.reticket;
 
+import com.reticket.reticket.dto.list.LikedPlaysListDto;
+import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
@@ -14,6 +16,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -195,7 +199,7 @@ public class ReticketControllerTest {
     }
 
     @Test
-    public void testCreateTheater_withWrongUser_400() {
+    public void testCreateTheater_withWrongUser_401() {
         TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
@@ -215,7 +219,7 @@ public class ReticketControllerTest {
     }
 
     @Test
-    public void testUpdateTheater_withWrongUser_400() {
+    public void testUpdateTheater_withWrongUser_401() {
         TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
@@ -234,7 +238,7 @@ public class ReticketControllerTest {
     }
 
     @Test
-    public void testDeleteTheater_withWrongUser_400() {
+    public void testDeleteTheater_withWrongUser_401() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
@@ -275,7 +279,7 @@ public class ReticketControllerTest {
     }
 
     @Test
-    public void testUpdateAppUser_withWrongUser_400() {
+    public void testUpdateAppUser_withWrongUser_401() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_4", "password",
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
@@ -331,9 +335,119 @@ public class ReticketControllerTest {
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
         HttpEntity<Boolean> updateRequest = new HttpEntity<>(updateHeaders);
-        ResponseEntity<String> updateResult = template.withBasicAuth("super", "password")
+        ResponseEntity<String> updateResult = template.withBasicAuth("super", "test")
                 .exchange("/api/appUser/delete/username_7", HttpMethod.DELETE, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
+
+    @Test
+    public void testAppUserListTickets_withSuper_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_8", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders listHeaders = new HttpHeaders();
+        HttpEntity<List<ListTicketDto>> listRequest = new HttpEntity<>(listHeaders);
+        ResponseEntity<String> listResult = template.withBasicAuth("super", "test")
+                .exchange("/api/appUser/username_8/tickets", HttpMethod.GET, listRequest, String.class);
+        assertEquals(HttpStatus.OK, listResult.getStatusCode());
+    }
+
+    @Test
+    public void testAppUserListTickets_withGuest_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_9", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders listHeaders = new HttpHeaders();
+        HttpEntity<List<ListTicketDto>> listRequest = new HttpEntity<>(listHeaders);
+        ResponseEntity<String> listResult = template.withBasicAuth("username_9", "password")
+                .exchange("/api/appUser/username_9/tickets", HttpMethod.GET, listRequest, String.class);
+        assertEquals(HttpStatus.OK, listResult.getStatusCode());
+    }
+
+    @Test
+    public void testAppUserListTickets_withWrongUser_401() {
+        HttpHeaders listHeaders = new HttpHeaders();
+        HttpEntity<List<ListTicketDto>> listRequest = new HttpEntity<>(listHeaders);
+        ResponseEntity<String> listResult = template.withBasicAuth("wrong", "password")
+                .exchange("/api/appUser/username_9/tickets", HttpMethod.GET, listRequest, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, listResult.getStatusCode());
+    }
+
+    @Test
+    public void testAppUserListLikedPlays_withSuper_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_10", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders listHeaders = new HttpHeaders();
+        HttpEntity<List<LikedPlaysListDto>> listRequest = new HttpEntity<>(listHeaders);
+        ResponseEntity<String> listResult = template.withBasicAuth("super", "test")
+                .exchange("/api/appUser/username_10/likedPlays", HttpMethod.GET, listRequest, String.class);
+        assertEquals(HttpStatus.OK, listResult.getStatusCode());
+    }
+
+    @Test
+    public void testAppUserListLikedPlays_withGuest_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_11", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders listHeaders = new HttpHeaders();
+        HttpEntity<List<LikedPlaysListDto>> listRequest = new HttpEntity<>(listHeaders);
+        ResponseEntity<String> listResult = template.withBasicAuth("username_11", "password")
+                .exchange("/api/appUser/username_11/likedPlays", HttpMethod.GET, listRequest, String.class);
+        assertEquals(HttpStatus.OK, listResult.getStatusCode());
+    }
+
+    @Test
+    public void testAppUserListLikedPlays_withWrongUser_401() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_11", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders listHeaders = new HttpHeaders();
+        HttpEntity<List<LikedPlaysListDto>> listRequest = new HttpEntity<>(listHeaders);
+        ResponseEntity<String> listResult = template.withBasicAuth("wrong", "password")
+                .exchange("/api/appUser/username_11/likedPlays", HttpMethod.GET, listRequest, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, listResult.getStatusCode());
+    }
+
+//    @Test
+//    public void testAppUserLikePlay_withGuest_200() {
+//        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_12", "password",
+//                "guest", "email@gmail.com");
+//        HttpHeaders headers = new HttpHeaders();
+//        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+//        template.withBasicAuth("super", "test")
+//                .postForEntity("/api/appUser/saveGuest", request, String.class);
+//        HttpHeaders listHeaders = new HttpHeaders();
+//        HttpEntity<Void> listRequest = new HttpEntity<>(listHeaders);
+//        ResponseEntity<String> listResult = template.withBasicAuth("username_12", "password")
+//                .exchange("/api/appUser/username_12/1", HttpMethod.POST, listRequest, String.class);
+//        assertEquals(HttpStatus.OK, listResult.getStatusCode());
+//    }
+//
+//    @Test
+//    public void testAppUserLikePlay_withSuper_401() {
+//        HttpHeaders listHeaders = new HttpHeaders();
+//        HttpEntity<Void> listRequest = new HttpEntity<>(listHeaders);
+//        ResponseEntity<String> listResult = template.withBasicAuth("super", "test")
+//                .exchange("/api/appUser/username_12/1", HttpMethod.POST, listRequest, String.class);
+//        assertEquals(HttpStatus.UNAUTHORIZED, listResult.getStatusCode());
+//    }
+
+
 
 }

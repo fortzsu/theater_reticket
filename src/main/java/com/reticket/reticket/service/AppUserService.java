@@ -99,10 +99,15 @@ public class AppUserService implements UserDetailsService {
         return this.findByUsername(username) != null;
     }
 
-    public void likePlay(String username, Long playId) {
+    public boolean likePlay(String username, Long playId) {
         AppUser appUser = findByUsername(username);
-        Play play = this.playService.findById(playId);
-        play.addAppUser(appUser);
+        if(appUser != null) {
+            Play play = this.playService.findById(playId);
+            play.addAppUser(appUser);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<LikedPlaysListDto> listLikedPlays(String username) {
@@ -204,7 +209,7 @@ public class AppUserService implements UserDetailsService {
                 appUser.setDeleted(true);
                 return true;
             } else {
-                if (authentication.getName().equals("superUser")) {
+                if (authentication.getName().equals("super")) {
                     appUser.setDeleted(true);
                     return true;
                 } else {

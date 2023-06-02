@@ -54,8 +54,11 @@ public class AppUserController {
     @PostMapping("/{username}/{playId}")
     public ResponseEntity<Void> likePlay(@PathVariable(value = "username") String username,
                                          @PathVariable(value = "playId") Long playId) {
-        this.appUserService.likePlay(username, playId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if(this.appUserService.likePlay(username, playId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{username}/likedPlays")

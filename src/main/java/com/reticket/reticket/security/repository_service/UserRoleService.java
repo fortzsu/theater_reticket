@@ -95,6 +95,7 @@ public class UserRoleService {
         UserRole userRole = new UserRole();
         HashSet<RoleAuthority> authorities = new HashSet<>(addCoreAuthorities());
         authorities.add(new RoleAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS));
+        authorities.add(new RoleAuthority(AuthorityEnum.LIKE_PLAY));
         userRole.setAuthorities(authorities);
         userRole.setRoleEnum(RoleEnum.GUEST);
         this.userRoleRepository.save(userRole);
