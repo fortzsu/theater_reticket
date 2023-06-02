@@ -84,7 +84,7 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(this.passwordEncoder.encode(appUserSaveDto.getPassword()));
         appUser.setUsername(appUserSaveDto.getUsername());
         appUser.setEmail(appUserSaveDto.getEmail());
-        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(
+        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum( //TODO Check auth User to save Associate
                 UserRoleService.createUserRoleFromString(appUserSaveDto.getAppUserType())));
         appUser.setDeleted(false);
         return appUser;

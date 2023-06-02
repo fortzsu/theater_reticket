@@ -244,25 +244,25 @@ public class ReticketTest {
 
             // ************* APPUSER *************
 
-            this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsi", "Fort", "fortzsu", "test1234", "Super Admin", "email@gmail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("Zsuzsanna", "Bozso", "bozsofortzsu", "test1234", "Super Admin", "email@gmail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("Daniel", "Bozso", "danielb", "test1234", "Super Admin", "email@gmail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("User", "Name", "1_username", "test1234", "Guest", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestOne", "LastName_GuestOne", "guestOne", "test", "guest", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestTwo", "LastName_GuestTwo", "guestTwo", "test", "guest", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestThree", "LastName_GuestThree", "guestThree", "test", "guest", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestFour", "LastName_GuestFour", "guestFour", "test", "guest", "email@gmail.com"));
 
             List<TicketActionDto> ticketActionDtoList = new ArrayList<>();
 
-            TicketActionDto ticketActionDto_buy = new TicketActionDto("buy", "bozsofortzsu", Arrays.asList(1L, 2L, 3L));
+            TicketActionDto ticketActionDto_buy = new TicketActionDto("buy", "guestTwo", Arrays.asList(1L, 2L, 3L));
             ticketActionDtoList.add(ticketActionDto_buy);
 
-            TicketActionDto ticketActionDto_reserve = new TicketActionDto("reserve", "bozsofortzsu", Arrays.asList(4L, 5L, 6L));
+            TicketActionDto ticketActionDto_reserve = new TicketActionDto("reserve", "guestTwo", Arrays.asList(4L, 5L, 6L));
             ticketActionDtoList.add(ticketActionDto_reserve);
 
-            TicketActionDto ticketActionDto_buy2 = new TicketActionDto("buy", "danielb", Arrays.asList(10L, 11L, 12L));
+            TicketActionDto ticketActionDto_buy2 = new TicketActionDto("buy", "guestThree", Arrays.asList(10L, 11L, 12L));
             ticketActionDtoList.add(ticketActionDto_buy2);
-            TicketActionDto ticketActionDto_return = new TicketActionDto("return", "danielb", Arrays.asList(11L, 12L));
+            TicketActionDto ticketActionDto_return = new TicketActionDto("return", "guestThree", Arrays.asList(11L, 12L));
             ticketActionDtoList.add(ticketActionDto_return);
 
-            TicketActionDto ticketActionDto_buyAll = new TicketActionDto("buy", "1_username",
+            TicketActionDto ticketActionDto_buyAll = new TicketActionDto("buy", "guestFour",
                     Arrays.asList(100L, 101L, 200L, 201L, 300L, 301L, 400L, 401L,
                             500L, 501L, 600L, 601L, 700L, 701L, 800L, 801L,
                             2500L, 2501L, 2600L, 2601L, 2700L, 2701L));
@@ -703,7 +703,7 @@ public class ReticketTest {
 
     @Test
     public void testCreateFollower_testUser() {
-        Assert.assertEquals(3, (long) this.ticketActionFollowerRepository.findAll().get(0).getAppUser().getId());
+        Assert.assertEquals(5, (long) this.ticketActionFollowerRepository.findAll().get(0).getAppUser().getId());
     }
 
     @Test
@@ -723,37 +723,37 @@ public class ReticketTest {
 
     @Test
     public void testReturnTest_withAppUser_listTickets() {
-        Assert.assertEquals(3, this.appUserService.listTickets("danielb").size());
+        Assert.assertEquals(3, this.appUserService.listTickets("guestThree").size());
     }
 
     @Test
     public void testReserveTest_withAppUser_ticketList() {
-        Assert.assertEquals(6, this.appUserService.listTickets("bozsofortzsu").size());
+        Assert.assertEquals(6, this.appUserService.listTickets("guestTwo").size());
     }
 
     @Test
     public void testReserveTest_withAppUser_sold() {
-        Assert.assertEquals("Sold", this.appUserService.listTickets("bozsofortzsu").get(0).getTicketCondition());
+        Assert.assertEquals("Sold", this.appUserService.listTickets("guestTwo").get(0).getTicketCondition());
     }
 
     @Test
     public void testReserveTest_withAppUser_reserved() {
-        Assert.assertEquals("Reserved", this.appUserService.listTickets("bozsofortzsu").get(3).getTicketCondition());
+        Assert.assertEquals("Reserved", this.appUserService.listTickets("guestTwo").get(3).getTicketCondition());
     }
 
     @Test
     public void testReserveTest_withAppUser_playName() {
-        Assert.assertEquals("Standing at the Sky's Edge", this.appUserService.listTickets("bozsofortzsu").get(0).getPlayName());
+        Assert.assertEquals("Standing at the Sky's Edge", this.appUserService.listTickets("guestTwo").get(0).getPlayName());
     }
 
     @Test
     public void testReserveTest_withAppUser_theatreName() {
-        Assert.assertEquals("The Royal National Theater", this.appUserService.listTickets("bozsofortzsu").get(0).getTheatreName());
+        Assert.assertEquals("The Royal National Theater", this.appUserService.listTickets("guestTwo").get(0).getTheatreName());
     }
 
     @Test
     public void testReserveTest_withAppUser_ticketPrice() {
-        Assert.assertEquals(100, (long) this.appUserService.listTickets("bozsofortzsu").get(0).getTicketPrice());
+        Assert.assertEquals(100, (long) this.appUserService.listTickets("guestTwo").get(0).getTicketPrice());
     }
 
 
@@ -767,7 +767,7 @@ public class ReticketTest {
         for (AppUser appUser : list) {
             System.out.println(appUser.getUsername());
         }
-        Assert.assertEquals(5, this.appUserRepository.findAll().size());
+        Assert.assertEquals(7, this.appUserRepository.findAll().size());
     }
 
     @Test
@@ -777,24 +777,24 @@ public class ReticketTest {
 
     @Test
     public void testSavedAppUser_fromRepository_checkUserName_Last() {
-        Assert.assertEquals("1_username", this.appUserRepository.findAll().get(4).getUsername());
+        Assert.assertEquals("guestFour", this.appUserRepository.findAll().get(6).getUsername());
     }
 
     @Test
     public void testSavedAppUser_checkTicketListByUsername() {
-        Assert.assertEquals(HttpStatus.OK, this.appUserController.listTickets("fortzsu").getStatusCode());
+        Assert.assertEquals(HttpStatus.OK, this.appUserController.listTickets("guestOne").getStatusCode());
     }
 
     @Test
     public void testSaveAppUser_listTickets_Empty() {
-        Assert.assertEquals(0, this.appUserService.listTickets("fortzsu").size());
+        Assert.assertEquals(0, this.appUserService.listTickets("guestOne").size());
     }
 
     @Test
     public void testSaveAppUser_likedPlays() {
-        Assert.assertEquals(0, this.appUserService.listLikedPlays("fortzsu").size());
-        this.appUserService.likePlay("fortzsu", 1L);
-        Assert.assertEquals(1, this.appUserService.listLikedPlays("fortzsu").size());
+        Assert.assertEquals(0, this.appUserService.listLikedPlays("guestOne").size());
+        this.appUserService.likePlay("guestOne", 1L);
+        Assert.assertEquals(1, this.appUserService.listLikedPlays("guestOne").size());
     }
 
 

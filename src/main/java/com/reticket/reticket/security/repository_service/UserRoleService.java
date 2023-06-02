@@ -32,6 +32,8 @@ public class UserRoleService {
         createTheaterUserRole();
         createTheaterAdminUserRole();
         createSuperAdmin();
+        createTheaterAdmin();
+        createTheaterUser();
     }
 
 
@@ -41,7 +43,22 @@ public class UserRoleService {
         appUser.setPassword(this.passwordEncoder.encode("test"));
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER));
         this.appUserRepository.save(appUser);
-        appUser.getAuthorities();
+    }
+
+    private void createTheaterAdmin() {
+        AppUser appUser = new AppUser();
+        appUser.setUsername("theaterAdmin");
+        appUser.setPassword(this.passwordEncoder.encode("test"));
+        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.THEATER_ADMIN));
+        this.appUserRepository.save(appUser);
+    }
+
+    private void createTheaterUser() {
+        AppUser appUser = new AppUser();
+        appUser.setUsername("theaterUser");
+        appUser.setPassword(this.passwordEncoder.encode("test"));
+        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.THEATRE_USER));
+        this.appUserRepository.save(appUser);
     }
 
     private void createSuperAdminUserRole() {
