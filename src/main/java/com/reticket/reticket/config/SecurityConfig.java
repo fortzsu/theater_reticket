@@ -50,9 +50,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                         .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).permitAll()
                         .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
-
                         .requestMatchers("/api/theater/create", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
                         .requestMatchers("/api/theater/update/{theaterName}", HttpMethod.PUT.toString()).hasRole(RoleEnum.SUPER.name())
+
+
                         .requestMatchers("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString()).hasRole(RoleEnum.SUPER.name())
 
                         .requestMatchers("/api/appUser/update/{username}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())

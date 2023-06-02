@@ -187,16 +187,62 @@ public class ReticketControllerTest {
     }
 
 
-
-
     @Test
-    public void testCreateTheater_withSuper_ok() {
+    public void testCreateTheater_withSuper_200() {
         TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("super", "test")
                 .postForEntity("/api/theater/create", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void testCreateTheater_withWrongUser_400() {
+        TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .postForEntity("/api/theater/create", request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateTheater_withSuper_authOk_NOT_FOUND() {
+        TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
+        ResponseEntity<Boolean> result = template.withBasicAuth("super", "test")
+                        .exchange("/api/theater/update/theaterName", HttpMethod.PUT, request, Boolean.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateTheater_withWrongUser_400() {
+        TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/theater/update/theaterName", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteTheater_withSuper_authOk_NOT_FOUND() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/theater/delete/theaterName", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteTheater_withWrongUser_400() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/theater/delete/theaterName", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
 }

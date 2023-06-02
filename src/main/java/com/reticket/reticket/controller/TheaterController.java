@@ -42,7 +42,7 @@ public class TheaterController {
         }
     }
 
-    @PutMapping("/delete/{theaterName}")
+    @DeleteMapping("/delete/{theaterName}")
     public ResponseEntity<Boolean> deleteTheater(@PathVariable String theaterName) {
         if(this.theaterService.deleteTheater(theaterName)) {
             return new ResponseEntity<>(HttpStatus.OK);
