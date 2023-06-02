@@ -180,7 +180,7 @@ public class AppUserService implements UserDetailsService {
                 setUpdatedData(appUser, updateAppUserDto);
                 return true;
             } else {
-                if (authentication.getName().equals("superUser")) {
+                if (authentication.getName().equals("super")) {
                     setUpdatedData(appUser, updateAppUserDto);
                     return true;
                 } else {

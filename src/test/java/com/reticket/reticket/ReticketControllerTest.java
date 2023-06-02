@@ -5,6 +5,7 @@ import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
+import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.net.HttpRetryException;
 import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -160,7 +157,7 @@ public class ReticketControllerTest {
 
     @Test
     public void testSaveGuest_withSuper_200() {
-        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username", "password", "Guest", "email@gmail.com");
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_1", "password", "Guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("super", "test")
@@ -243,6 +240,40 @@ public class ReticketControllerTest {
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/theater/delete/theaterName", HttpMethod.DELETE, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAppUser_withSuper_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_2", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        HttpHeaders updateHeaders = new HttpHeaders();
+        UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
+        HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
+        ResponseEntity<String> updateResult = template.withBasicAuth("super", "test")
+                .exchange("/api/appUser/update/username_2", HttpMethod.PUT, updateRequest, String.class);
+        assertEquals(HttpStatus.OK, updateResult.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAppUser_withGuest_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_3", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        HttpHeaders updateHeaders = new HttpHeaders();
+        UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
+        HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
+        ResponseEntity<String> updateResult = template.withBasicAuth("username_3", "password")
+                .exchange("/api/appUser/update/username_3", HttpMethod.PUT, updateRequest, String.class);
+        assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
 
 }
