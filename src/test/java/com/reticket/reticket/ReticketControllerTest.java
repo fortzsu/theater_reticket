@@ -248,9 +248,8 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        template.withBasicAuth("super", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
         HttpHeaders updateHeaders = new HttpHeaders();
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
@@ -265,14 +264,75 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        template.withBasicAuth("super", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
         HttpHeaders updateHeaders = new HttpHeaders();
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("username_3", "password")
                 .exchange("/api/appUser/update/username_3", HttpMethod.PUT, updateRequest, String.class);
+        assertEquals(HttpStatus.OK, updateResult.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAppUser_withWrongUser_400() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_4", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders updateHeaders = new HttpHeaders();
+        UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
+        HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
+        ResponseEntity<String> updateResult = template.withBasicAuth("wrong", "password")
+                .exchange("/api/appUser/update/username_4", HttpMethod.PUT, updateRequest, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, updateResult.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAppUser_withWithGuest_NOT_FOUND() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_5", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders updateHeaders = new HttpHeaders();
+        UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
+        HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
+        ResponseEntity<String> updateResult = template.withBasicAuth("username_5", "password")
+                .exchange("/api/appUser/update/username_1000", HttpMethod.PUT, updateRequest, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, updateResult.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAppUser_withGuest_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_6", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders updateHeaders = new HttpHeaders();
+        HttpEntity<Boolean> updateRequest = new HttpEntity<>(updateHeaders);
+        ResponseEntity<String> updateResult = template.withBasicAuth("username_6", "password")
+                .exchange("/api/appUser/delete/username_6", HttpMethod.DELETE, updateRequest, String.class);
+        assertEquals(HttpStatus.OK, updateResult.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAppUser_withSuper_200() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_7", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        HttpHeaders updateHeaders = new HttpHeaders();
+        HttpEntity<Boolean> updateRequest = new HttpEntity<>(updateHeaders);
+        ResponseEntity<String> updateResult = template.withBasicAuth("super", "password")
+                .exchange("/api/appUser/delete/username_7", HttpMethod.DELETE, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
 

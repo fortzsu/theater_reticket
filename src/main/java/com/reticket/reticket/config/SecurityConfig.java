@@ -53,9 +53,12 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/theater/create", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
                         .requestMatchers("/api/theater/update/{theaterName}", HttpMethod.PUT.toString()).hasRole(RoleEnum.SUPER.name())
                         .requestMatchers("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString()).hasRole(RoleEnum.SUPER.name())
-
                         .requestMatchers("/api/appUser/update/{username}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+
+
+
                         .requestMatchers("/api/appUser/delete/{username}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+
                         .requestMatchers("/api/appUser/{username}/tickets", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
                         .requestMatchers("/api/appUser/{username}/likedPlays", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
                         .requestMatchers("/api/appUser/{username}/{playId}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
