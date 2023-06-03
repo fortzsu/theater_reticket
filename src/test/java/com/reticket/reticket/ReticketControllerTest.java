@@ -820,6 +820,26 @@ public class ReticketControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
+    @Test
+    public void testSavePerformance_withTheaterUser_403() {
+        List<PerformanceSaveDto> saveDtos = List.of(new PerformanceSaveDto(LocalDateTime.now(), 100L));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testSavePerformance_withWrongUser_401() {
+        List<PerformanceSaveDto> saveDtos = List.of(new PerformanceSaveDto(LocalDateTime.now(), 100L));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
 
 
 
