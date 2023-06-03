@@ -740,6 +740,46 @@ public class ReticketControllerTest {
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
+    @Test
+    public void testSaveContributor_withSuper_200() {
+        List<ContributorSaveDto> listDtos = List.of(new ContributorSaveDto("First", "Last", "Introduction"));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<ContributorSaveDto>> request = new HttpEntity<>(listDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/contributor", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void testSaveContributor_withTheaterAdmin_200() {
+        List<ContributorSaveDto> listDtos = List.of(new ContributorSaveDto("First", "Last", "Introduction"));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<ContributorSaveDto>> request = new HttpEntity<>(listDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterAdmin", "test")
+                .exchange("/api/contributor", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void testSaveContributor_withTheaterAdmin_403() {
+        List<ContributorSaveDto> listDtos = List.of(new ContributorSaveDto("First", "Last", "Introduction"));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<ContributorSaveDto>> request = new HttpEntity<>(listDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/contributor", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testSaveContributor_withTheaterAdmin_401() {
+        List<ContributorSaveDto> listDtos = List.of(new ContributorSaveDto("First", "Last", "Introduction"));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<ContributorSaveDto>> request = new HttpEntity<>(listDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/contributor", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
 
 
 

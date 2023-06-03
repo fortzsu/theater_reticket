@@ -27,7 +27,7 @@ public class ContributorController {
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody List<ContributorSaveDto> contributorSaveDto) {
         this.contributorService.save(contributorSaveDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/list")
