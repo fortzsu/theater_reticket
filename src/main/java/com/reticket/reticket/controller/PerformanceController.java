@@ -39,8 +39,8 @@ public class PerformanceController {
     @PostMapping("/save")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
-        if(!performanceList.isEmpty()) {
-            if(this.performanceService.generateTickets(performanceList, performanceSaveDtoList, this.ticketService)) {
+        if (!performanceList.isEmpty()) {
+            if (this.performanceService.generateTickets(performanceList, performanceSaveDtoList, this.ticketService)) {
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,14 +51,14 @@ public class PerformanceController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<PerformanceListDto>> searchFilteredPerformances (
+    public ResponseEntity<Page<PerformanceListDto>> searchFilteredPerformances(
             @RequestBody FilterPerformancesDto dto) {
         return new ResponseEntity<>(this.performanceService.searchFilteredPerformances(dto), HttpStatus.OK);
     }
 
     @PostMapping("/updatePerformance/{id}")
     public ResponseEntity<Boolean> updatePerformance(@RequestBody UpdatePerformanceDto updatePerformanceDto, @PathVariable Long id) {
-        if(this.performanceService.updatePerformance(updatePerformanceDto, id)) {
+        if (this.performanceService.updatePerformance(updatePerformanceDto, id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -139,9 +139,9 @@ public class PerformanceService {
 
     public boolean generateTickets(List<Performance> performanceList, List<PerformanceSaveDto> performanceSaveDtoList,
                                    TicketService ticketService) {
-        boolean flag = true;
+        boolean flag = false;
         for (int i = 0; i < performanceSaveDtoList.size(); i++) {
-            flag = !ticketService.generateTicketsToPerformance(performanceList.get(i).getId(), performanceSaveDtoList.get(i));
+            flag = ticketService.generateTicketsToPerformance(performanceList.get(i).getId(), performanceSaveDtoList.get(i));
         }
         return flag;
     }
