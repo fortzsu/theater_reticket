@@ -28,13 +28,16 @@ public class AuditoriumController {
 
     @PostMapping
     public ResponseEntity<Void> createAuditorium(@RequestBody List<AuditoriumSaveDto> auditoriumSaveDto) {
-        auditoriumService.save(auditoriumSaveDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if (auditoriumService.save(auditoriumSaveDto) != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>  deleteAuditorium(@PathVariable Long id) {
-        if(auditoriumService.deleteAuditorium(id)) {
+    public ResponseEntity<Void> deleteAuditorium(@PathVariable Long id) {
+        if (auditoriumService.deleteAuditorium(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -42,8 +45,8 @@ public class AuditoriumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void>  updateAuditorium(@PathVariable Long id, @RequestBody AuditoriumSaveDto auditoriumSaveDto) {
-        if(auditoriumService.update(auditoriumSaveDto, id) != null) {
+    public ResponseEntity<Void> updateAuditorium(@PathVariable Long id, @RequestBody AuditoriumSaveDto auditoriumSaveDto) {
+        if (auditoriumService.update(auditoriumSaveDto, id) != null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

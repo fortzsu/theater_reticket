@@ -6,10 +6,7 @@ import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
-import com.reticket.reticket.dto.save.AddressSaveDto;
-import com.reticket.reticket.dto.save.AppUserSaveDto;
-import com.reticket.reticket.dto.save.TheaterSaveDto;
-import com.reticket.reticket.dto.save.TicketActionDto;
+import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -616,6 +613,96 @@ public class ReticketControllerTest {
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("username_14", "password")
                 .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testSaveAuditorium_withSuper_200() {
+        List<AuditoriumSaveDto> saveDtos = List.of(new AuditoriumSaveDto(
+                "Name",1L,100,10,
+                List.of(new AuditoriumPriceCategorySaveDto(3,4))));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<AuditoriumSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/auditorium", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void testSaveAuditorium_withWrongUser_401() {
+        List<AuditoriumSaveDto> saveDtos = List.of(new AuditoriumSaveDto(
+                "Name",1L,100,10,List.of(new AuditoriumPriceCategorySaveDto())));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<AuditoriumSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/auditorium", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testSaveAuditorium_withGuestUser_403() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_15", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders guestHeaders = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
+        List<AuditoriumSaveDto> saveDtos = List.of(new AuditoriumSaveDto(
+                "Name",1L,100,10,List.of(new AuditoriumPriceCategorySaveDto())));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<AuditoriumSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("username_15", "password")
+                .exchange("/api/auditorium", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAuditorium_withSuper_NOT_FOUND() {
+        AuditoriumSaveDto saveDto = new AuditoriumSaveDto("Name",1L,100,10,
+                List.of(new AuditoriumPriceCategorySaveDto(3,4)));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/auditorium/100", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAuditorium_withTheaterAdmin_NOT_FOUND() {
+        AuditoriumSaveDto saveDto = new AuditoriumSaveDto("Name",1L,100,10,
+                List.of(new AuditoriumPriceCategorySaveDto(3,4)));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterAdmin", "test")
+                .exchange("/api/auditorium/100", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAuditorium_withWrongUser_401() {
+        AuditoriumSaveDto saveDto = new AuditoriumSaveDto("Name",1L,100,10,
+                List.of(new AuditoriumPriceCategorySaveDto(3,4)));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/auditorium/100", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateAuditorium_withGuestUser_403() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_16", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders guestHeaders = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
+        AuditoriumSaveDto saveDto = new AuditoriumSaveDto("Name",1L,100,10,
+                List.of(new AuditoriumPriceCategorySaveDto(3,4)));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("username_16", "password")
+                .exchange("/api/auditorium/100", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 

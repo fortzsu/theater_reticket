@@ -32,10 +32,14 @@ public class AuditoriumService {
         List<Auditorium> auditoriumList =  new ArrayList<>();
         for (AuditoriumSaveDto dto : auditoriumSaveDtoList) {
             Theater tempTheater = this.theaterService.findById(dto.getTheatreId());
-            Auditorium savedAuditorium = updateValues(dto, new Auditorium());
-            auditoriumList.add(savedAuditorium);
-            tempTheater.setCapacity(tempTheater.getCapacity() + savedAuditorium.getCapacity());
-            this.seatService.generateSeats(savedAuditorium, dto);
+            if(tempTheater != null) {
+                Auditorium savedAuditorium = updateValues(dto, new Auditorium());
+                auditoriumList.add(savedAuditorium);
+                tempTheater.setCapacity(tempTheater.getCapacity() + savedAuditorium.getCapacity());
+                this.seatService.generateSeats(savedAuditorium, dto);
+            } else {
+                return auditoriumList;
+            }
         }
         return auditoriumList;
     }

@@ -63,10 +63,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/address", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/address/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/appUser/saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-
-
-
                         .requestMatchers("/api/auditorium", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+
+
+
+
                         .requestMatchers("/api/auditorium/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/auditorium/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
 
