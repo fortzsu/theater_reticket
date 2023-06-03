@@ -707,4 +707,40 @@ public class ReticketControllerTest {
     }
 
 
+    @Test
+    public void testDeleteAuditorium_withSuper_NOT_FOUND() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/auditorium/100", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAuditorium_withWrongUser_401() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/auditorium/100", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteAuditorium_withGuestUser_403() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_17", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders guestHeaders = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("username_17", "password")
+                .exchange("/api/auditorium/100", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+
+
+
 }
