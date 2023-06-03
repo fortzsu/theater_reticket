@@ -103,8 +103,12 @@ public class AppUserService implements UserDetailsService {
         AppUser appUser = findByUsername(username);
         if(appUser != null) {
             Play play = this.playService.findById(playId);
-            play.addAppUser(appUser);
-            return true;
+            if(play != null) {
+                play.addAppUser(appUser);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

@@ -24,7 +24,11 @@ public class ReportController {
 
     @PostMapping
     public ResponseEntity<ReportResultDto> report(@RequestBody FilterReportDto filterReportDto) {
-        return new ResponseEntity<>(this.reportService.report(filterReportDto), HttpStatus.OK);
+        if(this.reportService.report(filterReportDto) != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

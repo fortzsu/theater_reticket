@@ -25,8 +25,11 @@ public class TicketActionController {
 
     @PostMapping()
     public ResponseEntity<Void> ticketAction(@RequestBody List<TicketActionDto> ticketActionDtoList) {
-        this.ticketActionService.ticketAction(ticketActionDtoList);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if(this.ticketActionService.ticketAction(ticketActionDtoList)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

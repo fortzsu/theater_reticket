@@ -57,17 +57,13 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/appUser/delete/{username}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
                         .requestMatchers("/api/appUser/{username}/tickets", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
                         .requestMatchers("/api/appUser/{username}/likedPlays", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
-
-
-
                         .requestMatchers("/api/appUser/{username}/{playId}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.LIKE_PLAY.name())
-
                         .requestMatchers("/api/ticketAction", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.TICKET_ACTIONS.name())
-
                         .requestMatchers("/api/report", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.ACCESS_REPORT.name())
-
                         .requestMatchers("/api/address", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/address/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+
+
 
                         .requestMatchers("/api/appUser/saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
 

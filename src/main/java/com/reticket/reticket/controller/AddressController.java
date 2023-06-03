@@ -24,8 +24,12 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody List<AddressSaveDto> addressSaveDto) {
-        this.addressService.save(addressSaveDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if(this.addressService.save(addressSaveDto) != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PutMapping("/update/{id}")

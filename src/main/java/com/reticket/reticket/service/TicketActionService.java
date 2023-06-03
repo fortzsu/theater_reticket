@@ -31,24 +31,29 @@ public class TicketActionService {
         this.ticketActionFollowerRepository = ticketActionFollowerRepository;
     }
 
-    public void ticketAction(List<TicketActionDto> ticketActionDtoList) {
+    public boolean ticketAction(List<TicketActionDto> ticketActionDtoList) {
+        boolean flag = false;
         for (TicketActionDto ticketActionDto : ticketActionDtoList) {
             AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
-            for (Long ticketId : ticketActionDto.getTicketId()) {
-                Ticket ticket = this.ticketService.findByTicketId(ticketId);
-                ticket.setAppUser(appUser);
-                if (ticketActionDto.getPath().equals("buy")) {
-                    ticket.setTicketCondition(TicketCondition.SOLD);
-                } else if (ticketActionDto.getPath().equals("reserve")) {
-                    ticket.setTicketCondition(TicketCondition.RESERVED);
-                } else {
-                    if (ticket.getTicketCondition().equals(TicketCondition.SOLD) && ticket.getAppUser().getUsername().equals(ticketActionDto.getUsername())) {
-                        ticket.setTicketCondition(TicketCondition.RETURNED);
+            if (appUser != null) {
+                for (Long ticketId : ticketActionDto.getTicketId()) {
+                    Ticket ticket = this.ticketService.findByTicketId(ticketId);
+                    ticket.setAppUser(appUser);
+                    if (ticketActionDto.getPath().equals("buy")) {
+                        ticket.setTicketCondition(TicketCondition.SOLD);
+                    } else if (ticketActionDto.getPath().equals("reserve")) {
+                        ticket.setTicketCondition(TicketCondition.RESERVED);
+                    } else {
+                        if (ticket.getTicketCondition().equals(TicketCondition.SOLD) && ticket.getAppUser().getUsername().equals(ticketActionDto.getUsername())) {
+                            ticket.setTicketCondition(TicketCondition.RETURNED);
+                        }
                     }
+                    createTicketActionFollower(appUser, ticket);
                 }
-                createTicketActionFollower(appUser, ticket);
+                flag = true;
             }
         }
+        return flag;
     }
 
     private void createTicketActionFollower(AppUser appUser, Ticket ticket) {
