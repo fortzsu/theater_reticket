@@ -38,11 +38,16 @@ public class PerformanceController {
 
     @PostMapping("/save")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
-        List<Performance> performance = this.performanceService.save(performanceSaveDtoList);
-        for (int i = 0; i < performanceSaveDtoList.size(); i++) {
-            this.ticketService.generateTicketsToPerformance(performance.get(i).getId(), performanceSaveDtoList.get(i));
+        List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
+        if(!performanceList.isEmpty()) {
+            if(this.performanceService.generateTickets(performanceList, performanceSaveDtoList, this.ticketService)) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/search")

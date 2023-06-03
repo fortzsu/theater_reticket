@@ -780,6 +780,46 @@ public class ReticketControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
+    @Test
+    public void testUpdateContributor_withSuper_NOT_FOUND() {
+        ContributorSaveDto dto = new ContributorSaveDto("First", "Last", "Introduction");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/contributor/update/1000", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateContributor_withTheaterUser_403() {
+        ContributorSaveDto dto = new ContributorSaveDto("First", "Last", "Introduction");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/contributor/update/1000", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateContributor_withWrongUser_401() {
+        ContributorSaveDto dto = new ContributorSaveDto("First", "Last", "Introduction");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/contributor/update/1000", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testSavePerformance_withSuper_NOT_FOUND() {
+        List<PerformanceSaveDto> saveDtos = List.of(new PerformanceSaveDto(LocalDateTime.now(), 100L));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
 
 
 

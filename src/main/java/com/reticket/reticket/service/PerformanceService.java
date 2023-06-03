@@ -126,7 +126,7 @@ public class PerformanceService {
 
     public boolean updatePerformance(UpdatePerformanceDto updatePerformanceDto, Long id) {
         Performance performance = this.findPerformanceById(id);
-        if(performance != null) {
+        if (performance != null) {
             performance.setNewDateTime(updatePerformanceDto.getModifiedDateTime());
             performance.setAvailableOnline(updatePerformanceDto.isAvailableOnline());
             performance.setCancelled(updatePerformanceDto.isCancelled());
@@ -135,5 +135,14 @@ public class PerformanceService {
         } else {
             return false;
         }
+    }
+
+    public boolean generateTickets(List<Performance> performanceList, List<PerformanceSaveDto> performanceSaveDtoList,
+                                   TicketService ticketService) {
+        boolean flag = true;
+        for (int i = 0; i < performanceSaveDtoList.size(); i++) {
+            flag = !ticketService.generateTicketsToPerformance(performanceList.get(i).getId(), performanceSaveDtoList.get(i));
+        }
+        return flag;
     }
 }
