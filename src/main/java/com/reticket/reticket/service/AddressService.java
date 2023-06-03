@@ -64,6 +64,7 @@ public class AddressService {
     public boolean update(AddressSaveDto addressSaveDto, Long id) {
         Optional<AddressEntity> address = this.addressRepository.findById(id);
         if(address.isPresent()) {
+            System.out.println(address.get().getCity());
             updateValues(addressSaveDto, address.get());
             return true;
         } else {

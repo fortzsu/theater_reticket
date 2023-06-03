@@ -563,10 +563,10 @@ public class ReticketControllerTest {
     @Test
     public void testUpdateAddress_withSuper_NOT_FOUND() {
         HttpHeaders headers = new HttpHeaders();
-        AddressSaveDto saveDto = new AddressSaveDto();
+        AddressSaveDto saveDto = new AddressSaveDto("1000", "City", "Street", 123, 1L);
         HttpEntity<AddressSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("super", "test")
-                .exchange("/api/address/update/1", HttpMethod.PUT, request, String.class);
+                .exchange("/api/address/update/2", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
@@ -580,10 +580,44 @@ public class ReticketControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
+    @Test
+    public void testSaveAssociate_withSuper_200() {
+        HttpHeaders headers = new HttpHeaders();
+        AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
+        "password", "theater_user", "email@gmail.com");
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
 
+    @Test
+    public void testSaveAssociate_withWrongUser_401() {
+        HttpHeaders headers = new HttpHeaders();
+        AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
+                "password", "theater_user", "email@gmail.com");
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
 
-
-
+    @Test
+    public void testSaveAssociate_withGuestUser_403() {
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_14", "password",
+                "guest", "email@gmail.com");
+        HttpHeaders guestHeaders = new HttpHeaders();
+        HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
+        template.withBasicAuth("super", "test")
+                .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
+        HttpHeaders headers = new HttpHeaders();
+        AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
+                "password", "theater_user", "email@gmail.com");
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("username_14", "password")
+                .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
 
 
 }
