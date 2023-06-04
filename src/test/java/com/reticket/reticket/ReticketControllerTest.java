@@ -8,6 +8,7 @@ import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
+import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -837,6 +838,36 @@ public class ReticketControllerTest {
         HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdatePerformance_withSuper_NOT_FOUND() {
+        UpdatePerformanceDto dto = new UpdatePerformanceDto(LocalDateTime.now(), false, false, false);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<UpdatePerformanceDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/performance/updatePerformance/1000", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdatePerformance_withTheaterUser_403() {
+        UpdatePerformanceDto dto = new UpdatePerformanceDto(LocalDateTime.now(), false, false, false);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<UpdatePerformanceDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/performance/updatePerformance/1000", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdatePerformance_withTheaterUser_401() {
+        UpdatePerformanceDto dto = new UpdatePerformanceDto(LocalDateTime.now(), false, false, false);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<UpdatePerformanceDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/performance/updatePerformance/1000", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
