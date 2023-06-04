@@ -1,7 +1,6 @@
 package com.reticket.reticket.service;
 
-import com.reticket.reticket.domain.Performance;
-import com.reticket.reticket.domain.Play;
+import com.reticket.reticket.domain.*;
 import com.reticket.reticket.domain.enums.PlayType;
 import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
@@ -9,6 +8,7 @@ import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.repository.PerformanceRepository;
+import com.reticket.reticket.repository.TicketRepository;
 import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -61,6 +61,7 @@ public class PerformanceService {
         performance.setSeenOnline(true);
         return performance;
     }
+
 
     public Performance findPerformanceById(Long id) {
         Optional<Performance> opt = this.performanceRepository.findById(id);
@@ -137,12 +138,5 @@ public class PerformanceService {
         }
     }
 
-    public boolean generateTickets(List<Performance> performanceList, List<PerformanceSaveDto> performanceSaveDtoList,
-                                   TicketService ticketService) {
-        boolean flag = false;
-        for (int i = 0; i < performanceSaveDtoList.size(); i++) {
-            flag = ticketService.generateTicketsToPerformance(performanceList.get(i).getId(), performanceSaveDtoList.get(i));
-        }
-        return flag;
-    }
+
 }

@@ -25,9 +25,7 @@ import java.util.List;
 public class PerformanceController {
 
     private final PerformanceService performanceService;
-
     private final TicketService ticketService;
-
 
     @Autowired
     public PerformanceController(PerformanceService performanceService,
@@ -39,12 +37,12 @@ public class PerformanceController {
     @PostMapping("/save")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
-        if (!performanceList.isEmpty()) {
-            if (this.performanceService.generateTickets(performanceList, performanceSaveDtoList, this.ticketService)) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+        boolean flag = false;
+        for (int i = 0; i < performanceSaveDtoList.size(); i++) {
+            flag = this.ticketService.generateTicketsToPerformance(performanceList.get(i), performanceSaveDtoList.get(i));
+        }
+        if(flag) {
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
