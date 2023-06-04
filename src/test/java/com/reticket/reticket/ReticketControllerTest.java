@@ -10,6 +10,7 @@ import com.reticket.reticket.dto.report_search.SearchDateDto;
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
+import com.reticket.reticket.dto.update.UpdatePlayDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -929,7 +930,62 @@ public class ReticketControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
+    @Test
+    public void testUpdatePlay_withTheaterAdmin_NOT_FOUND() {
+        UpdatePlayDto updatePlayDto = new UpdatePlayDto("PlayName", "Plot", 1L);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<UpdatePlayDto> request = new HttpEntity<>(updatePlayDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterAdmin", "test")
+                .exchange("/api/play/updatePlay/1000", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
 
+    @Test
+    public void testUpdatePlay_withTheaterUser_403() {
+        UpdatePlayDto updatePlayDto = new UpdatePlayDto("PlayName", "Plot", 1L);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<UpdatePlayDto> request = new HttpEntity<>(updatePlayDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/play/updatePlay/1000", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testUpdatePlay_withTheaterUser_401() {
+        UpdatePlayDto updatePlayDto = new UpdatePlayDto("PlayName", "Plot", 1L);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<UpdatePlayDto> request = new HttpEntity<>(updatePlayDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/play/updatePlay/1000", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testDeletePlay_withTheaterAdmin_NOT_FOUND() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterAdmin", "test")
+                .exchange("/api/play/1000", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testDeletePlay_withTheaterUser_403() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/play/1000", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testDeletePlay_withWrongUser_401() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/play/1000", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
 
 
 }
