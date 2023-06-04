@@ -70,12 +70,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/contributor/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/performance/save", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/performance/updatePerformance/{id}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-
-
-
-
-                        .requestMatchers("/api/play", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                        .requestMatchers("/api/play/save", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/play/formData/{auditoriumId}", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+
+
                         .requestMatchers("/api/play/updatePlay/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/play/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
 

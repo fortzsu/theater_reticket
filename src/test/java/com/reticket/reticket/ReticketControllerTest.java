@@ -1,5 +1,6 @@
 package com.reticket.reticket;
 
+import com.reticket.reticket.domain.Price;
 import com.reticket.reticket.dto.list.LikedPlaysListDto;
 import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
@@ -868,6 +869,63 @@ public class ReticketControllerTest {
         HttpEntity<UpdatePerformanceDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/performance/updatePerformance/1000", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testSavePlay_withSuper_NOT_FOUND() {
+        List<PlaySaveDto> playSaveDtoList = List.of(new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1,2,3), "drama"));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/play/save", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testSavePlay_withTheaterUser_403() {
+        List<PlaySaveDto> playSaveDtoList = List.of(new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1,2,3), "drama"));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/play/save", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testSavePlay_withTheaterUser_401() {
+        List<PlaySaveDto> playSaveDtoList = List.of(new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1,2,3), "drama"));
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/play/save", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+    @Test
+    public void testGetFormDataPlay_withSuper_NOT_FOUND() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+                .exchange("/api/play/formData/1000", HttpMethod.GET, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void testGetFormDataPlay_withTheaterUser_403() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("theaterUser", "test")
+                .exchange("/api/play/formData/1000", HttpMethod.GET, request, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
+    }
+
+    @Test
+    public void testGetFormDataPlay_withWrongUser_403() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .exchange("/api/play/formData/1000", HttpMethod.GET, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 

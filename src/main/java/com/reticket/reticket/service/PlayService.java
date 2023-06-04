@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -41,24 +42,35 @@ public class PlayService {
         this.playContributorTypeRepository = playContributorTypeRepository;
     }
 
-    public List<Play> save(List<PlaySaveDto> playSaveDtoList) {
-        List<Play> plays = new ArrayList<>();
+    public boolean save(List<PlaySaveDto> playSaveDtoList) {
+        boolean flag = true;
         for (PlaySaveDto dto : playSaveDtoList) {
-            Play play = new Play();
-            this.playRepository.save(updateValues(play, dto));
-            savePricesOfPlay(play.getId(), dto.getPrices());
-            connectContributorWithPlayAndContributorType(play.getId(), dto.getContributorsSaveForPlaySaveDtoList());
+            Play play = updateValues(dto);
+            if (play != null) {
+                this.playRepository.save(play);
+                savePricesOfPlay(play.getId(), dto.getPrices());
+                connectContributorWithPlayAndContributorType(play.getId(), dto.getContributorsSaveForPlaySaveDtoList());
+            } else {
+                flag = false;
+            }
+
         }
-        return plays;
+        return flag;
     }
 
-    private Play updateValues(Play play, PlaySaveDto playSaveDto) {
+    private Play updateValues(PlaySaveDto playSaveDto) {
+        Play play = new Play();
         play.setPlayName(playSaveDto.getPlayName());
         play.setPlot(playSaveDto.getPlot());
         play.setPremiere(playSaveDto.getPremiere().plusHours(1));
         play.setArchived(false);
-        play.setAuditorium(this.auditoriumService.findAuditoriumById(playSaveDto.getAuditoriumId()));
         play.setPlayType(playSaveDto.getPlayType());
+        Auditorium auditorium = this.auditoriumService.findAuditoriumById(playSaveDto.getAuditoriumId());
+        if (auditorium != null) {
+            play.setAuditorium(auditorium);
+        } else {
+            play = null;
+        }
         return play;
     }
 
@@ -73,9 +85,10 @@ public class PlayService {
             this.playContributorTypeRepository.save(playContributorTypes);
         }
     }
+
     private void savePricesOfPlay(Long id, List<Integer> prices) {
         Play play = findById(id);
-        for(Integer price: prices) {
+        for (Integer price : prices) {
             Price newPrice = new Price();
             newPrice.setAmount(price);
             newPrice.setPlay(play);
@@ -95,14 +108,14 @@ public class PlayService {
 
     public boolean updatePlay(UpdatePlayDto updatePlayDto, Long id) {
         Play play = this.findById(id);
-        if(play != null) {
-            if(updatePlayDto.getPlayName() != null) {
+        if (play != null) {
+            if (updatePlayDto.getPlayName() != null) {
                 play.setPlayName(updatePlayDto.getPlayName());
             }
-            if(updatePlayDto.getPlot() != null) {
+            if (updatePlayDto.getPlot() != null) {
                 play.setPlot(updatePlayDto.getPlot());
             }
-            if(!play.getAuditorium().getId().equals(updatePlayDto.getAuditoriumId())) {
+            if (!play.getAuditorium().getId().equals(updatePlayDto.getAuditoriumId())) {
                 Auditorium auditorium = this.auditoriumService.findAuditoriumById(updatePlayDto.getAuditoriumId());
                 play.setAuditorium(auditorium);
             }
@@ -114,7 +127,7 @@ public class PlayService {
 
     public boolean deletePlay(Long id) {
         Play play = this.findById(id);
-        if(play != null) {
+        if (play != null) {
             play.setArchived(true);
             return true;
         } else {

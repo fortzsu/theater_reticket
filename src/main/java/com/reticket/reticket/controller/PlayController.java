@@ -1,6 +1,7 @@
 package com.reticket.reticket.controller;
 
 
+import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.dto.list.InitFormDataToPlaySaveDto;
 import com.reticket.reticket.dto.list.ListContributorsDto;
 import com.reticket.reticket.dto.list.ListPlaysDto;
@@ -34,10 +35,13 @@ public class PlayController {
         this.auditoriumService = auditoriumService;
     }
 
-    @PostMapping
-    public ResponseEntity<HttpStatus> save(@RequestBody List<PlaySaveDto> playSaveDto) {
-        this.playService.save(playSaveDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/save")
+    public ResponseEntity<HttpStatus> save(@RequestBody List<PlaySaveDto> playSaveDtoList) {
+        if(this.playService.save(playSaveDtoList)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/formData/{auditoriumId}")
@@ -45,8 +49,13 @@ public class PlayController {
             @PathVariable(value = "auditoriumId") String auditoriumId) {
         InitFormDataToPlaySaveDto initData = new InitFormDataToPlaySaveDto();
         initData.setContributorsList(this.contributorService.findContributors());
-        initData.setNumberOfPriceCategories(this.auditoriumService.findAuditoriumById(Long.valueOf(auditoriumId)).getNumberOfPriceCategories());
-        return new ResponseEntity<>(initData, HttpStatus.CREATED);
+        Auditorium auditorium = this.auditoriumService.findAuditoriumById(Long.valueOf(auditoriumId));
+        if(auditorium != null) {
+                initData.setNumberOfPriceCategories(auditorium.getNumberOfPriceCategories());
+            return new ResponseEntity<>(initData, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/list")
