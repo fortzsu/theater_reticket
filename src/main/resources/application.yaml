@@ -34,13 +34,16 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 660403773133-ukksog7511lkf3d4flrgecmipjafpltv.apps.googleusercontent.com
+            client-secret: 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
 logging:
   level:
     web: trace
     springframework:
         security: trace
 
-#  security:
-#    user:
-#      name: user
-#      password: f2aefde0-6aae-4618-a5cf-a42d9bc70f98

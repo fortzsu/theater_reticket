@@ -36,6 +36,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .httpBasic()
+                .and().oauth2Login()
                 .and()
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
@@ -74,6 +75,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/play/formData/{auditoriumId}", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/play/updatePlay/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                         .requestMatchers("/api/play/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+
 
                         .anyRequest().authenticated());
 
