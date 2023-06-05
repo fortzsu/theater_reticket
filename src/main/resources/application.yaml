@@ -1,5 +1,8 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 1800 #after 30 minutes of waiting, the session is closed
 
 #spring:
 #  datasource:
@@ -36,6 +39,7 @@ logging:
     web: trace
     springframework:
         security: trace
+
 #  security:
 #    user:
 #      name: user

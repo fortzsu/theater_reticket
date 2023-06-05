@@ -12,6 +12,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println("Logged out!");
-        response.sendRedirect("/api/home"); //TODO
+        response.setStatus(302);
+        response.sendRedirect("/api/theater");
     }
 }

@@ -81,9 +81,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.logout()
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "JWT-TOKEN")
-                .logoutUrl("/api/logout") //TODO
-                .logoutSuccessHandler(new LogoutSuccessHandlerImpl() {
-                });
+                .logoutUrl("/api/logout")
+                .logoutSuccessHandler(new LogoutSuccessHandlerImpl() {});
 
 
         return http.build();
