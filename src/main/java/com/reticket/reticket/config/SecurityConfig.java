@@ -56,6 +56,10 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private void setUpEndpointPermissions(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/auth/**").permitAll()
+
+
+
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                 .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).permitAll()
