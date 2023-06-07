@@ -1,5 +1,6 @@
 package com.reticket.reticket.config;
 
+import com.reticket.reticket.config.oauth2.Oauth2SuccessHandler;
 import com.reticket.reticket.security.AuthorityEnum;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.service.AppUserService;
@@ -25,10 +26,13 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final Oauth2SuccessHandler oauth2SuccessHandler;
+
     @Autowired
-    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder, Oauth2SuccessHandler oauth2SuccessHandler) {
         this.appUserService = appUserService;
         this.passwordEncoder = passwordEncoder;
+        this.oauth2SuccessHandler = oauth2SuccessHandler;
     }
 
 
@@ -40,7 +44,10 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
     private void setUpOAuth2(HttpSecurity http) throws Exception {
-        http.oauth2Login();
+        http.oauth2Login()
+                .authorizationEndpoint()
+                    .baseUri("/api/oauth2/authorization")
+                .and().successHandler(oauth2SuccessHandler);
     }
 
     private void setUpBasicAuth(HttpSecurity http) throws Exception {
