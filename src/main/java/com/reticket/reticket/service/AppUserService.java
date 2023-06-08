@@ -179,10 +179,12 @@ public class AppUserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            return entityManager.createNamedQuery(AppUser.FIND_BY_USERNAME, AppUser.class).setParameter(
-                    "username", username).getSingleResult();
+//            return entityManager.createNamedQuery(AppUser.FIND_BY_USERNAME, AppUser.class).setParameter(
+//                    "username", username).getSingleResult();
+            return entityManager.createNamedQuery(AppUser.FIND_BY_EMAIL, AppUser.class).setParameter(
+                    "email", email).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

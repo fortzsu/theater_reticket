@@ -40,6 +40,7 @@ public class UserRoleService {
     private void createSuperAdmin() {
         AppUser appUser = new AppUser();
         appUser.setUsername("super");
+        appUser.setEmail("reticket23@gmail.com");
         appUser.setPassword(this.passwordEncoder.encode("test"));
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER));
         this.appUserRepository.save(appUser);

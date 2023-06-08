@@ -38,8 +38,8 @@ public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
         if (authentication instanceof OAuth2AuthenticationToken token) {
             OAuth2User principal = token.getPrincipal();
             String email = principal.getAttribute("email");
-            UserDetails userDetails = appUserService.loadUserByUsername(email);
-            if(userDetails == null) {
+            AppUser appUser = (AppUser) this.appUserService.loadUserByUsername(email);
+            if(appUser == null) {
                 //TODO register User
                 System.out.println("There is no user with email: " + email);
             }
