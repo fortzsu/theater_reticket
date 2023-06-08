@@ -1,5 +1,7 @@
 package com.reticket.reticket.config.oauth2;
 
+import com.github.javafaker.App;
+import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.service.AppUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
@@ -29,6 +35,15 @@ public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String name = authentication.getName();
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
+            OAuth2User principal = token.getPrincipal();
+            String email = principal.getAttribute("email");
+            String name = principal.getAttribute("name");
+            AppUser appUser = (AppUser) appUserService.loadUserByUsername(name);
+            if(appUser == null) {
+                //TODO register User
+            }
+        }
     }
 }
