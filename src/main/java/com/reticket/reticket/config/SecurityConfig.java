@@ -1,5 +1,6 @@
 package com.reticket.reticket.config;
 
+import com.reticket.reticket.config.oauth2.CustomOidcUserService;
 import com.reticket.reticket.config.oauth2.Oauth2SuccessHandler;
 import com.reticket.reticket.security.AuthorityEnum;
 import com.reticket.reticket.security.RoleEnum;
@@ -27,12 +28,14 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final PasswordEncoder passwordEncoder;
 
     private final Oauth2SuccessHandler oauth2SuccessHandler;
+    private final CustomOidcUserService customOidcUserService;
 
     @Autowired
-    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder, Oauth2SuccessHandler oauth2SuccessHandler) {
+    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder, Oauth2SuccessHandler oauth2SuccessHandler, CustomOidcUserService customOidcUserService) {
         this.appUserService = appUserService;
         this.passwordEncoder = passwordEncoder;
         this.oauth2SuccessHandler = oauth2SuccessHandler;
+        this.customOidcUserService = customOidcUserService;
     }
 
 
@@ -45,8 +48,10 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private void setUpOAuth2(HttpSecurity http) throws Exception {
         http.oauth2Login()
-                .authorizationEndpoint()
-                    .baseUri("/api/oauth2/authorization")
+                .authorizationEndpoint().baseUri("/api/oauth2/authorization")
+                .and().userInfoEndpoint()
+                    .oidcUserService(customOidcUserService)
+//                    .userService(null)
                 .and().successHandler(oauth2SuccessHandler);
     }
 
@@ -63,9 +68,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private void setUpEndpointPermissions(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/auth/**").permitAll()
-
-
+                .requestMatchers("/api/auth/**").permitAll() //TODO
 
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())

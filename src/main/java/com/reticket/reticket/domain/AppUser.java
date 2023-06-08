@@ -10,27 +10,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@NamedQueries({
+@NamedQueries(
         @NamedQuery(
                 name = AppUser.FIND_BY_USERNAME,
                 query = "SELECT au FROM AppUser au " +
                         "LEFT JOIN FETCH au.userRoles roles " +
                         "LEFT JOIN FETCH roles.authorities " +
                         "WHERE au.username = :username"
-        ),
-        @NamedQuery(
-        name = AppUser.FIND_BY_EMAIL,
-        query = "SELECT au FROM AppUser au " +
-                "LEFT JOIN FETCH au.userRoles roles " +
-                "LEFT JOIN FETCH roles.authorities " +
-                "WHERE au.email = :email"
-        )}
+        )
 )
 public class AppUser implements UserDetails {
 
     private static final String ENTITY_NAME = "AppUser";
     public static final String FIND_BY_USERNAME = ENTITY_NAME + "." + "findByUsername";
-    public static final String FIND_BY_EMAIL = ENTITY_NAME + "." + "findByEmail";
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

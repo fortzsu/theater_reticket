@@ -1,5 +1,6 @@
 package com.reticket.reticket.service;
 
+import com.github.javafaker.App;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.*;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
@@ -67,7 +68,7 @@ public class AppUserService implements UserDetailsService {
 
 
     public boolean save(AppUserSaveDto appUserSaveDto) {
-        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
+        if (!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
             this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
@@ -102,9 +103,9 @@ public class AppUserService implements UserDetailsService {
 
     public boolean likePlay(String username, Long playId) {
         AppUser appUser = findByUsername(username);
-        if(appUser != null) {
+        if (appUser != null) {
             Play play = this.playService.findById(playId);
-            if(play != null) {
+            if (play != null) {
                 play.addAppUser(appUser);
                 return true;
             } else {
@@ -179,8 +180,12 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return entityManager.createNamedQuery(AppUser.FIND_BY_USERNAME, AppUser.class).setParameter(
-                "username", username).getSingleResult();
+        try {
+            return entityManager.createNamedQuery(AppUser.FIND_BY_USERNAME, AppUser.class).setParameter(
+                    "username", username).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public Boolean updateAppUser(UpdateAppUserDto updateAppUserDto, Authentication authentication, String username) {

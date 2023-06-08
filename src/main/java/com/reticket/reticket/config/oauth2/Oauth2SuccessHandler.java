@@ -41,7 +41,7 @@ public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
             UserDetails userDetails = appUserService.loadUserByUsername(email);
             if(userDetails == null) {
                 //TODO register User
-                System.out.println("OK");
+                System.out.println("There is no user with email: " + email);
             }
         }
     }
