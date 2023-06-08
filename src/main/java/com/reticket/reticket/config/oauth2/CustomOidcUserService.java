@@ -11,7 +11,7 @@ public class CustomOidcUserService extends OidcUserService {
     @Override
     public OidcUser loadUser(OidcUserRequest oidcUserRequest) {
         OidcUser oidcUser = super.loadUser(oidcUserRequest);
-        return oidcUser;
+        return new CustomOidcUSer();
     }
 
 
