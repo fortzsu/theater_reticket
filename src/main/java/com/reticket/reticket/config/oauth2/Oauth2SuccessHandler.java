@@ -35,14 +35,13 @@ public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        if (authentication instanceof OAuth2AuthenticationToken) {
-            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
+        if (authentication instanceof OAuth2AuthenticationToken token) {
             OAuth2User principal = token.getPrincipal();
             String email = principal.getAttribute("email");
-            String name = principal.getAttribute("name");
-            AppUser appUser = (AppUser) appUserService.loadUserByUsername(name);
-            if(appUser == null) {
+            UserDetails userDetails = appUserService.loadUserByUsername(email);
+            if(userDetails == null) {
                 //TODO register User
+                System.out.println("OK");
             }
         }
     }
