@@ -41,15 +41,17 @@ public class AppUser implements UserDetails {
     private List<Ticket> tickets = new ArrayList<>();
     @ManyToMany
     private Set<UserRole> userRoles = new HashSet<>();
-
+    private UUID uuid;
     private boolean isDeleted;
 
     public AppUser() {
+        setUuid();
     }
 
     public AppUser(String username, String password) {
         this.username = username;
         this.password = password;
+        setUuid();
     }
 
     @Override
@@ -171,5 +173,13 @@ public class AppUser implements UserDetails {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid() {
+        this.uuid = UUID.randomUUID();
     }
 }
