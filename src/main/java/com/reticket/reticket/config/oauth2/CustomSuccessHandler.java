@@ -1,6 +1,5 @@
 package com.reticket.reticket.config.oauth2;
 
-import com.github.javafaker.App;
 import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.service.AppUserService;
 import jakarta.servlet.FilterChain;
@@ -10,8 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -19,12 +16,12 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import java.io.IOException;
 
 @Configuration
-public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
+public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     private final AppUserService appUserService;
 
     @Autowired
-    public Oauth2SuccessHandler(AppUserService appUserService) {
+    public CustomSuccessHandler(AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 

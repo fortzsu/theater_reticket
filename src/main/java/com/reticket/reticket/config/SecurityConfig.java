@@ -1,7 +1,7 @@
 package com.reticket.reticket.config;
 
 import com.reticket.reticket.config.oauth2.CustomOidcUserService;
-import com.reticket.reticket.config.oauth2.Oauth2SuccessHandler;
+import com.reticket.reticket.config.oauth2.CustomSuccessHandler;
 import com.reticket.reticket.security.AuthorityEnum;
 import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.service.AppUserService;
@@ -27,14 +27,14 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final Oauth2SuccessHandler oauth2SuccessHandler;
+    private final CustomSuccessHandler customSuccessHandler;
     private final CustomOidcUserService customOidcUserService;
 
     @Autowired
-    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder, Oauth2SuccessHandler oauth2SuccessHandler, CustomOidcUserService customOidcUserService) {
+    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder, CustomSuccessHandler customSuccessHandler, CustomOidcUserService customOidcUserService) {
         this.appUserService = appUserService;
         this.passwordEncoder = passwordEncoder;
-        this.oauth2SuccessHandler = oauth2SuccessHandler;
+        this.customSuccessHandler = customSuccessHandler;
         this.customOidcUserService = customOidcUserService;
     }
 
@@ -51,12 +51,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizationEndpoint().baseUri("/api/oauth2/authorization")
                 .and().userInfoEndpoint()
                     .oidcUserService(customOidcUserService)
-//                    .userService(null)
-                .and().successHandler(oauth2SuccessHandler);
+                .and().successHandler(customSuccessHandler);
     }
 
     private void setUpBasicAuth(HttpSecurity http) throws Exception {
-        http.csrf().disable().httpBasic();
+        http.csrf().disable().cors().and().httpBasic();
         setUpEndpointPermissions(http);
         http.logout()
                 .invalidateHttpSession(true)

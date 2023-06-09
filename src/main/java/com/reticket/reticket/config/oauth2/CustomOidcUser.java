@@ -20,13 +20,18 @@ public class CustomOidcUser implements OidcUser {
     private final Long userId;
 
     public CustomOidcUser(AppUser appUser, OidcUser oidcUser) {
-        this.userId = appUser.getId();
-        this.claims = oidcUser.getClaims();
-        this.oidcUserInfo = oidcUser.getUserInfo();
-        this.oidcIdToken = oidcUser.getIdToken();
-        this.attributes = oidcUser.getAttributes();
-        this.name = oidcUser.getName();
-        this.authorities = appUser.getAuthorities();
+        if (appUser != null) {
+            this.userId = appUser.getId();
+            this.authorities = appUser.getAuthorities();
+        } else {
+            this.userId = null;
+            this.authorities = oidcUser.getAuthorities();
+        }
+        claims = oidcUser.getClaims();
+        oidcUserInfo = oidcUser.getUserInfo();
+        oidcIdToken = oidcUser.getIdToken();
+        attributes = oidcUser.getAttributes();
+        name = oidcUser.getName();
     }
 
     @Override
