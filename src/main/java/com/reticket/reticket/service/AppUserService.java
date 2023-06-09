@@ -1,5 +1,6 @@
 package com.reticket.reticket.service;
 
+import com.github.javafaker.App;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.*;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
@@ -66,7 +67,7 @@ public class AppUserService implements UserDetailsService {
 
 
     public boolean save(AppUserSaveDto appUserSaveDto) {
-        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
+        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
             this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
@@ -76,6 +77,10 @@ public class AppUserService implements UserDetailsService {
         } else {
             return false;
         }
+    }
+
+    private boolean checkIfEmailIsTaken(String email) {
+        return this.appUserRepository.findByEmail(email) != null;
     }
 
     private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto) {
@@ -89,7 +94,6 @@ public class AppUserService implements UserDetailsService {
         appUser.setDeleted(false);
         return appUser;
     }
-
 
     public AppUser findByUsername(String username) {
         return this.appUserRepository.findByUsername(username);
