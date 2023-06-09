@@ -1,6 +1,5 @@
 package com.reticket.reticket;
 
-import com.reticket.reticket.domain.Price;
 import com.reticket.reticket.dto.list.LikedPlaysListDto;
 import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
@@ -33,7 +32,7 @@ public class ReticketControllerTest {
 
     @Test
     public void testListAuditorium_withSuper_200() {
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .getForEntity("/api/auditorium/list", String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -52,7 +51,7 @@ public class ReticketControllerTest {
 
     @Test
     public void testListContributor_withSuper_200() {
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .getForEntity("/api/contributor/list", String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -74,7 +73,7 @@ public class ReticketControllerTest {
         PageableDto pageableDto = new PageableDto(0,5);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/play/list", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -102,7 +101,7 @@ public class ReticketControllerTest {
         PageableDto pageableDto = new PageableDto(0,5);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/theater/list", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -133,7 +132,7 @@ public class ReticketControllerTest {
         FilterPerformancesDto dto = new FilterPerformancesDto("theater", 1L, dateDto, pageableDto);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<FilterPerformancesDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/performance/search", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -167,7 +166,7 @@ public class ReticketControllerTest {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_1", "password", "Guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -196,7 +195,7 @@ public class ReticketControllerTest {
         TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/theater/create", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -216,7 +215,7 @@ public class ReticketControllerTest {
         TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
-        ResponseEntity<Boolean> result = template.withBasicAuth("super", "test")
+        ResponseEntity<Boolean> result = template.withBasicAuth("reticket23@gmail.com", "test")
                         .exchange("/api/theater/update/theaterName", HttpMethod.PUT, request, Boolean.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -235,7 +234,7 @@ public class ReticketControllerTest {
     public void testDeleteTheater_withSuper_authOk_NOT_FOUND() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/theater/delete/theaterName", HttpMethod.DELETE, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -255,12 +254,12 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
-        ResponseEntity<String> updateResult = template.withBasicAuth("super", "test")
+        ResponseEntity<String> updateResult = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/appUser/update/username_2", HttpMethod.PUT, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
@@ -271,7 +270,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
@@ -287,7 +286,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
@@ -303,7 +302,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
@@ -319,7 +318,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
         HttpEntity<Boolean> updateRequest = new HttpEntity<>(updateHeaders);
@@ -334,11 +333,11 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
         HttpEntity<Boolean> updateRequest = new HttpEntity<>(updateHeaders);
-        ResponseEntity<String> updateResult = template.withBasicAuth("super", "test")
+        ResponseEntity<String> updateResult = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/appUser/delete/username_7", HttpMethod.DELETE, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
@@ -349,11 +348,11 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<List<ListTicketDto>> listRequest = new HttpEntity<>(listHeaders);
-        ResponseEntity<String> listResult = template.withBasicAuth("super", "test")
+        ResponseEntity<String> listResult = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/appUser/username_8/tickets", HttpMethod.GET, listRequest, String.class);
         assertEquals(HttpStatus.OK, listResult.getStatusCode());
     }
@@ -364,7 +363,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<List<ListTicketDto>> listRequest = new HttpEntity<>(listHeaders);
@@ -388,11 +387,11 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<List<LikedPlaysListDto>> listRequest = new HttpEntity<>(listHeaders);
-        ResponseEntity<String> listResult = template.withBasicAuth("super", "test")
+        ResponseEntity<String> listResult = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/appUser/username_10/likedPlays", HttpMethod.GET, listRequest, String.class);
         assertEquals(HttpStatus.OK, listResult.getStatusCode());
     }
@@ -403,7 +402,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<List<LikedPlaysListDto>> listRequest = new HttpEntity<>(listHeaders);
@@ -418,7 +417,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<List<LikedPlaysListDto>> listRequest = new HttpEntity<>(listHeaders);
@@ -433,7 +432,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<Void> listRequest = new HttpEntity<>(listHeaders);
@@ -446,7 +445,7 @@ public class ReticketControllerTest {
     public void testAppUserLikePlay_withSuper_403() {
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<Void> listRequest = new HttpEntity<>(listHeaders);
-        ResponseEntity<String> listResult = template.withBasicAuth("super", "test")
+        ResponseEntity<String> listResult = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/appUser/username_12/1", HttpMethod.POST, listRequest, String.class);
         assertEquals(HttpStatus.FORBIDDEN, listResult.getStatusCode());
     }
@@ -465,7 +464,7 @@ public class ReticketControllerTest {
         HttpHeaders headers = new HttpHeaders();
         List<TicketActionDto> dtoList = List.of(new TicketActionDto("buy", "user", List.of(1L,2L)));
         HttpEntity<List<TicketActionDto>> listRequest = new HttpEntity<>(dtoList, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/ticketAction", HttpMethod.POST, listRequest, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -486,7 +485,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
         HttpHeaders headers = new HttpHeaders();
         FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
@@ -503,7 +502,7 @@ public class ReticketControllerTest {
         FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
                 new SearchDateDto(2023,5,1,2023,5,1), true, false);
         HttpEntity<FilterReportDto> request = new HttpEntity<>(filterReportDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/report", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -535,7 +534,7 @@ public class ReticketControllerTest {
         HttpHeaders headers = new HttpHeaders();
         List<AddressSaveDto> saveDtos = List.of(new AddressSaveDto("1000", "City", "Street", 123, 1L));
         HttpEntity<List<AddressSaveDto>> request = new HttpEntity<>(saveDtos, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/address", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -565,7 +564,7 @@ public class ReticketControllerTest {
         HttpHeaders headers = new HttpHeaders();
         AddressSaveDto saveDto = new AddressSaveDto("1000", "City", "Street", 123, 1L);
         HttpEntity<AddressSaveDto> request = new HttpEntity<>(saveDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/address/update/2", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -586,7 +585,7 @@ public class ReticketControllerTest {
         AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
         "password", "theater_user", "email@gmail.com");
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -608,7 +607,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
         HttpHeaders headers = new HttpHeaders();
         AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
@@ -626,7 +625,7 @@ public class ReticketControllerTest {
                 List.of(new AuditoriumPriceCategorySaveDto(3,4))));
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<AuditoriumSaveDto>> request = new HttpEntity<>(saveDtos, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/auditorium", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -648,7 +647,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
         List<AuditoriumSaveDto> saveDtos = List.of(new AuditoriumSaveDto(
                 "Name",1L,100,10,List.of(new AuditoriumPriceCategorySaveDto())));
@@ -665,7 +664,7 @@ public class ReticketControllerTest {
                 List.of(new AuditoriumPriceCategorySaveDto(3,4)));
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/auditorium/100", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -698,7 +697,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
         AuditoriumSaveDto saveDto = new AuditoriumSaveDto("Name",1L,100,10,
                 List.of(new AuditoriumPriceCategorySaveDto(3,4)));
@@ -714,7 +713,7 @@ public class ReticketControllerTest {
     public void testDeleteAuditorium_withSuper_NOT_FOUND() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/auditorium/100", HttpMethod.DELETE, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -734,7 +733,7 @@ public class ReticketControllerTest {
                 "guest", "email@gmail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
-        template.withBasicAuth("super", "test")
+        template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
@@ -748,7 +747,7 @@ public class ReticketControllerTest {
         List<ContributorSaveDto> listDtos = List.of(new ContributorSaveDto("First", "Last", "Introduction"));
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<ContributorSaveDto>> request = new HttpEntity<>(listDtos, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/contributor", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
@@ -788,7 +787,7 @@ public class ReticketControllerTest {
         ContributorSaveDto dto = new ContributorSaveDto("First", "Last", "Introduction");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/contributor/update/1000", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -818,7 +817,7 @@ public class ReticketControllerTest {
         List<PerformanceSaveDto> saveDtos = List.of(new PerformanceSaveDto(LocalDateTime.now(), 100L));
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -848,7 +847,7 @@ public class ReticketControllerTest {
         UpdatePerformanceDto dto = new UpdatePerformanceDto(LocalDateTime.now(), false, false, false);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<UpdatePerformanceDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/performance/updatePerformance/1000", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -878,7 +877,7 @@ public class ReticketControllerTest {
         List<PlaySaveDto> playSaveDtoList = List.of(new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1,2,3), "drama"));
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/play/save", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
@@ -907,7 +906,7 @@ public class ReticketControllerTest {
     public void testGetFormDataPlay_withSuper_NOT_FOUND() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        ResponseEntity<String> result = template.withBasicAuth("super", "test")
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/play/formData/1000", HttpMethod.GET, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
