@@ -164,7 +164,7 @@ public class ReticketControllerTest {
     @Test
     public void testSaveGuest_withSuper_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_1", "password",
-                "Guest", "username_1@testemail.com");
+                 "username_1@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
@@ -174,7 +174,7 @@ public class ReticketControllerTest {
     @Test
     public void testSaveGuest_withNoUser_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username1",
-                "password", "Guest", "username1@testemail.com");
+                "password", "username1@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.postForEntity("/api/appUser/saveGuest", request, String.class);
@@ -184,7 +184,7 @@ public class ReticketControllerTest {
     @Test
     public void testSaveGuest_withWrongUser_401() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username2",
-                "password", "Guest", "username2@testemail.com");
+                "password", "username2@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
@@ -254,7 +254,7 @@ public class ReticketControllerTest {
     @Test
     public void testUpdateAppUser_withSuper_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_2", "password",
-                "guest", "username_2@testemail.com");
+                "username_2@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -270,7 +270,7 @@ public class ReticketControllerTest {
     @Test
     public void testUpdateAppUser_withGuest_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_3", "password",
-                "guest", "username_3@testemail.com");
+                "username_3@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -286,7 +286,7 @@ public class ReticketControllerTest {
     @Test
     public void testUpdateAppUser_withWrongUser_401() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_4", "password",
-                "guest", "username_4@testemail.com");
+                 "username_4@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -302,7 +302,7 @@ public class ReticketControllerTest {
     @Test
     public void testUpdateAppUser_withWithGuest_NOT_FOUND() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_5", "password",
-                "guest", "username_5@testemail.com");
+                "username_5@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -318,7 +318,7 @@ public class ReticketControllerTest {
     @Test
     public void testDeleteAppUser_withGuest_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_6", "password",
-                "guest", "username_6@testemail.com");
+                 "username_6@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -333,7 +333,7 @@ public class ReticketControllerTest {
     @Test
     public void testDeleteAppUser_withSuper_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_7", "password",
-                "guest", "username_7@testemail.com");
+                 "username_7@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -348,7 +348,7 @@ public class ReticketControllerTest {
     @Test
     public void testAppUserListTickets_withSuper_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_8", "password",
-                "guest", "username_8@testemail.com");
+                 "username_8@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -363,7 +363,7 @@ public class ReticketControllerTest {
     @Test
     public void testAppUserListTickets_withGuest_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_9", "password",
-                "guest", "username_9@testemail.com");
+                 "username_9@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -387,7 +387,7 @@ public class ReticketControllerTest {
     @Test
     public void testAppUserListLikedPlays_withSuper_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_10", "password",
-                "guest", "username_10@testemail.com");
+                 "username_10@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -402,7 +402,7 @@ public class ReticketControllerTest {
     @Test
     public void testAppUserListLikedPlays_withGuest_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_11", "password",
-                "guest", "username_11@testemail.com");
+                 "username_11@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -417,7 +417,7 @@ public class ReticketControllerTest {
     @Test
     public void testAppUserListLikedPlays_withWrongUser_401() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_11", "password",
-                "guest", "username_11@testemail.com");
+                "username_11@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -432,7 +432,7 @@ public class ReticketControllerTest {
     @Test
     public void testAppUserLikePlay_withGuest_200() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_12", "password",
-                "guest", "username_12@testemail.com");
+                 "username_12@testemail.com");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(dto, headers);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -485,7 +485,7 @@ public class ReticketControllerTest {
     @Test
     public void testReport_withGuestUser_403() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_13", "password",
-                "guest", "username_13@testemail.com");
+                "username_13@testemail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -586,10 +586,10 @@ public class ReticketControllerTest {
     public void testSaveAssociate_withSuper_200() {
         HttpHeaders headers = new HttpHeaders();
         AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
-        "password", "theater_user", "email@gmail.com");
+        "password",  "email@gmail.com");
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
+                .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
@@ -597,27 +597,26 @@ public class ReticketControllerTest {
     public void testSaveAssociate_withWrongUser_401() {
         HttpHeaders headers = new HttpHeaders();
         AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
-                "password", "theater_user", "email@gmail.com");
+                "password", "email@gmail.com");
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
+                .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
     @Test
     public void testSaveAssociate_withGuestUser_403() {
-        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_14", "password",
-                "guest", "username_14@testemail.com");
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_14", "password","username_14@testemail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
         template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
         HttpHeaders headers = new HttpHeaders();
         AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
-                "password", "theater_user", "email@gmail.com");
+                "password", "email@gmail.com");
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("username_14@testemail.com", "password")
-                .exchange("/api/appUser/saveAssociate", HttpMethod.POST, request, String.class);
+                .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
@@ -647,7 +646,7 @@ public class ReticketControllerTest {
     @Test
     public void testSaveAuditorium_withGuestUser_403() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_15", "password",
-                "guest", "username_15@testemail.com");
+                 "username_15@testemail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -697,7 +696,7 @@ public class ReticketControllerTest {
     @Test
     public void testUpdateAuditorium_withGuestUser_403() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_16", "password",
-                "guest", "username_16@testemail.com");
+                 "username_16@testemail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
         template.withBasicAuth("reticket23@gmail.com", "test")
@@ -733,7 +732,7 @@ public class ReticketControllerTest {
     @Test
     public void testDeleteAuditorium_withGuestUser_403() {
         AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_17", "password",
-                "guest", "username_17@testemail.com");
+                "username_17@testemail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
         template.withBasicAuth("reticket23@gmail.com", "test")

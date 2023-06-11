@@ -1,6 +1,5 @@
 package com.reticket.reticket.service;
 
-import com.github.javafaker.App;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.*;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
@@ -66,9 +65,9 @@ public class AppUserService implements UserDetailsService {
     }
 
 
-    public boolean save(AppUserSaveDto appUserSaveDto) {
+    public boolean saveGuest(AppUserSaveDto appUserSaveDto) {
         if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
-            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
+            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, "guest"));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
 //                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
@@ -79,24 +78,50 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
-    private boolean checkIfEmailIsTaken(String email) {
-        return this.appUserRepository.findByEmail(email) != null;
+    public boolean saveAssociate(AppUserSaveDto appUserSaveDto, boolean isTheaterAdmin) {
+        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
+            String appUserType = checkAppUserType(isTheaterAdmin);
+            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, appUserType));
+            //If a user is saved, then it will log in automatically
+//            UsernamePasswordAuthenticationToken authenticationToken =
+//                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto) {
+    private String checkAppUserType(boolean isTheaterAdmin) {
+        if(isTheaterAdmin) {
+            return "theater_admin";
+        } else {
+            return "theater_user";
+        }
+    }
+
+    private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto, String appUserType) {
         appUser.setFirstName(appUserSaveDto.getFirstName());
         appUser.setLastName(appUserSaveDto.getLastName());
         appUser.setPassword(this.passwordEncoder.encode(appUserSaveDto.getPassword()));
         appUser.setUsername(appUserSaveDto.getUsername());
         appUser.setEmail(appUserSaveDto.getEmail());
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum( //TODO Check auth User to save Associate
-                UserRoleService.createUserRoleFromString(appUserSaveDto.getAppUserType())));
+                UserRoleService.createUserRoleFromString(appUserType)));
         appUser.setDeleted(false);
         return appUser;
     }
 
+
+
+
+
     public AppUser findByUsername(String username) {
         return this.appUserRepository.findByUsername(username);
+    }
+
+    private boolean checkIfEmailIsTaken(String email) {
+        return this.appUserRepository.findByEmail(email) != null;
     }
 
     private boolean checkIfUsernameIsTaken(String username) {

@@ -113,14 +113,14 @@ public class UserRoleService {
 
     public static RoleEnum createUserRoleFromString(String userRole) {
         switch (userRole) {
-            case "guest" -> {
-                return RoleEnum.GUEST;
+            case "theater_user" -> {
+                return RoleEnum.THEATRE_USER;
             }
             case "theater_admin" -> {
                 return RoleEnum.THEATER_ADMIN;
             }
             default ->  {
-                return RoleEnum.THEATRE_USER;
+                return RoleEnum.GUEST;
             }
         }
     }

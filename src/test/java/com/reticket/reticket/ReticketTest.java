@@ -242,10 +242,10 @@ public class ReticketTest {
 
             // ************* APPUSER *************
 
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestOne", "LastName_GuestOne", "guestOne", "test", "guest", "guestOne@testemail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestTwo", "LastName_GuestTwo", "guestTwo", "test", "guest", "guestTwo@testemail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestThree", "LastName_GuestThree", "guestThree", "test", "guest", "guestThree@testemail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestFour", "LastName_GuestFour", "guestFour", "test", "guest", "guestFour@testemail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestOne", "LastName_GuestOne", "guestOne", "test", "guestOne@testemail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestTwo", "LastName_GuestTwo", "guestTwo", "test",  "guestTwo@testemail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestThree", "LastName_GuestThree", "guestThree", "test", "guestThree@testemail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestFour", "LastName_GuestFour", "guestFour", "test",  "guestFour@testemail.com"));
 
             List<TicketActionDto> ticketActionDtoList = new ArrayList<>();
 
