@@ -308,7 +308,7 @@ public class ReticketControllerTest {
         template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
         HttpHeaders updateHeaders = new HttpHeaders();
-        UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("email@gmail.com", "password");
+        UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("username_51@testemail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("username_5@testemail.com", "password")
                 .exchange("/api/appUser/update/username_1000", HttpMethod.PUT, updateRequest, String.class);
@@ -583,21 +583,10 @@ public class ReticketControllerTest {
     }
 
     @Test
-    public void testSaveAssociate_withSuper_200() {
-        HttpHeaders headers = new HttpHeaders();
-        AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
-        "password",  "email@gmail.com");
-        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-    }
-
-    @Test
     public void testSaveAssociate_withWrongUser_401() {
         HttpHeaders headers = new HttpHeaders();
         AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
-                "password", "email@gmail.com");
+                "password", "associate_2@testemail.com");
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
@@ -605,18 +594,30 @@ public class ReticketControllerTest {
     }
 
     @Test
+    public void testSaveAssociate_withSuper_200() {
+        HttpHeaders headers = new HttpHeaders();
+        AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
+                "password",  "associate_1@testemail.com");
+        HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
+                .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
     public void testSaveAssociate_withGuestUser_403() {
-        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_14", "password","username_14@testemail.com");
+        AppUserSaveDto dto = new AppUserSaveDto("First", "Last", "username_14",
+                "password","username_14@testemail.com");
         HttpHeaders guestHeaders = new HttpHeaders();
         HttpEntity<AppUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
         template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
         HttpHeaders headers = new HttpHeaders();
-        AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast", "associate_1",
-                "password", "email@gmail.com");
+        AppUserSaveDto appUserSaveDto = new AppUserSaveDto("AssociateFirst", "AssociateLast",
+                "associate_1","password", "associate_3@testemail.com");
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("username_14@testemail.com", "password")
-                .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
+                .exchange("/api/appUser/saveAssociate/true", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 

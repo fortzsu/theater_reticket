@@ -36,7 +36,7 @@ public class AppUserController {
     }
 
     @PostMapping("/saveAssociate/{isTheaterAdmin}")
-    public ResponseEntity<Void> saveAssociate (@RequestBody AppUserSaveDto appUserSaveDto, @PathVariable boolean isTheaterAdmin) {
+    public ResponseEntity<Void> saveAssociate(@PathVariable boolean isTheaterAdmin, @RequestBody AppUserSaveDto appUserSaveDto) {
         if (this.appUserService.saveAssociate(appUserSaveDto, isTheaterAdmin)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

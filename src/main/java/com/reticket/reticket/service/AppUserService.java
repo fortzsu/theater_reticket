@@ -8,6 +8,7 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
+import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
 import jakarta.persistence.EntityManager;
@@ -67,7 +68,7 @@ public class AppUserService implements UserDetailsService {
 
     public boolean saveGuest(AppUserSaveDto appUserSaveDto) {
         if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
-            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, "guest"));
+            AppUser a = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, "guest"));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
 //                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
@@ -111,9 +112,6 @@ public class AppUserService implements UserDetailsService {
         appUser.setDeleted(false);
         return appUser;
     }
-
-
-
 
 
     public AppUser findByUsername(String username) {
