@@ -6,15 +6,13 @@ public class AppUserSaveDto {
     private String lastName;
     private String username;
     private String password;
-    private String appUserType;
     private String email;
 
-    public AppUserSaveDto(String firstName, String lastName, String username, String password, String appUserType, String email) {
+    public AppUserSaveDto(String firstName, String lastName, String username, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.appUserType = appUserType;
         this.email = email;
     }
 
@@ -48,14 +46,6 @@ public class AppUserSaveDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getAppUserType() {
-        return appUserType;
-    }
-
-    public void setAppUserType(String appUserType) {
-        this.appUserType = appUserType;
     }
 
     public String getEmail() {

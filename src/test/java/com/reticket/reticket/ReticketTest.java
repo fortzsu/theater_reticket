@@ -17,8 +17,6 @@ import com.reticket.reticket.service.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -244,10 +242,10 @@ public class ReticketTest {
 
             // ************* APPUSER *************
 
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestOne", "LastName_GuestOne", "guestOne", "test", "guest", "email@gmail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestTwo", "LastName_GuestTwo", "guestTwo", "test", "guest", "email@gmail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestThree", "LastName_GuestThree", "guestThree", "test", "guest", "email@gmail.com"));
-            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestFour", "LastName_GuestFour", "guestFour", "test", "guest", "email@gmail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestOne", "LastName_GuestOne", "guestOne", "test", "guestOne@testemail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestTwo", "LastName_GuestTwo", "guestTwo", "test",  "guestTwo@testemail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestThree", "LastName_GuestThree", "guestThree", "test", "guestThree@testemail.com"));
+            this.appUserController.saveGuest(new AppUserSaveDto("FirstName_GuestFour", "LastName_GuestFour", "guestFour", "test",  "guestFour@testemail.com"));
 
             List<TicketActionDto> ticketActionDtoList = new ArrayList<>();
 

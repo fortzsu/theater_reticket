@@ -10,4 +10,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     @Query(value = "SELECT a FROM AppUser a WHERE a.username = :username")
     AppUser findByUsername(String username);
+
+    @Query(value = "SELECT a FROM AppUser a WHERE a.email = :email")
+    AppUser findByEmail(String email);
 }

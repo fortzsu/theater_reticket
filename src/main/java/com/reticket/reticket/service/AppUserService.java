@@ -1,6 +1,5 @@
 package com.reticket.reticket.service;
 
-import com.github.javafaker.App;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.*;
 import com.reticket.reticket.dto.save.AppUserSaveDto;
@@ -9,10 +8,10 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
+import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -67,9 +66,9 @@ public class AppUserService implements UserDetailsService {
     }
 
 
-    public boolean save(AppUserSaveDto appUserSaveDto) {
-        if (!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername())) {
-            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto));
+    public boolean saveGuest(AppUserSaveDto appUserSaveDto) {
+        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
+            AppUser a = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, "guest"));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
 //                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
@@ -80,14 +79,36 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
-    private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto) {
+    public boolean saveAssociate(AppUserSaveDto appUserSaveDto, boolean isTheaterAdmin) {
+        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
+            String appUserType = checkAppUserType(isTheaterAdmin);
+            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, appUserType));
+            //If a user is saved, then it will log in automatically
+//            UsernamePasswordAuthenticationToken authenticationToken =
+//                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private String checkAppUserType(boolean isTheaterAdmin) {
+        if(isTheaterAdmin) {
+            return "theater_admin";
+        } else {
+            return "theater_user";
+        }
+    }
+
+    private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto, String appUserType) {
         appUser.setFirstName(appUserSaveDto.getFirstName());
         appUser.setLastName(appUserSaveDto.getLastName());
         appUser.setPassword(this.passwordEncoder.encode(appUserSaveDto.getPassword()));
         appUser.setUsername(appUserSaveDto.getUsername());
         appUser.setEmail(appUserSaveDto.getEmail());
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum( //TODO Check auth User to save Associate
-                UserRoleService.createUserRoleFromString(appUserSaveDto.getAppUserType())));
+                UserRoleService.createUserRoleFromString(appUserType)));
         appUser.setDeleted(false);
         return appUser;
     }
@@ -97,15 +118,19 @@ public class AppUserService implements UserDetailsService {
         return this.appUserRepository.findByUsername(username);
     }
 
+    private boolean checkIfEmailIsTaken(String email) {
+        return this.appUserRepository.findByEmail(email) != null;
+    }
+
     private boolean checkIfUsernameIsTaken(String username) {
         return this.findByUsername(username) != null;
     }
 
     public boolean likePlay(String username, Long playId) {
         AppUser appUser = findByUsername(username);
-        if (appUser != null) {
+        if(appUser != null) {
             Play play = this.playService.findById(playId);
-            if (play != null) {
+            if(play != null) {
                 play.addAppUser(appUser);
                 return true;
             } else {
@@ -180,14 +205,8 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        try {
-//            return entityManager.createNamedQuery(AppUser.FIND_BY_USERNAME, AppUser.class).setParameter(
-//                    "username", username).getSingleResult();
-            return entityManager.createNamedQuery(AppUser.FIND_BY_EMAIL, AppUser.class).setParameter(
-                    "email", email).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return entityManager.createNamedQuery(AppUser.FIND_BY_EMAIL, AppUser.class).setParameter(
+                "email", email).getSingleResult();
     }
 
     public Boolean updateAppUser(UpdateAppUserDto updateAppUserDto, Authentication authentication, String username) {

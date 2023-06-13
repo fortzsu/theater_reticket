@@ -42,6 +42,7 @@ public class UserRoleService {
         appUser.setUsername("super");
         appUser.setEmail("reticket23@gmail.com");
         appUser.setPassword(this.passwordEncoder.encode("test"));
+        appUser.setEmail("reticket23@gmail.com");
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.SUPER));
         this.appUserRepository.save(appUser);
     }
@@ -50,6 +51,7 @@ public class UserRoleService {
         AppUser appUser = new AppUser();
         appUser.setUsername("theaterAdmin");
         appUser.setPassword(this.passwordEncoder.encode("test"));
+        appUser.setEmail("theaterAdmin@testemail.te");
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.THEATER_ADMIN));
         this.appUserRepository.save(appUser);
     }
@@ -57,6 +59,7 @@ public class UserRoleService {
     private void createTheaterUser() {
         AppUser appUser = new AppUser();
         appUser.setUsername("theaterUser");
+        appUser.setEmail("theaterUser@testemail.te");
         appUser.setPassword(this.passwordEncoder.encode("test"));
         appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(RoleEnum.THEATRE_USER));
         this.appUserRepository.save(appUser);
@@ -111,14 +114,14 @@ public class UserRoleService {
 
     public static RoleEnum createUserRoleFromString(String userRole) {
         switch (userRole) {
-            case "guest" -> {
-                return RoleEnum.GUEST;
+            case "theater_user" -> {
+                return RoleEnum.THEATRE_USER;
             }
             case "theater_admin" -> {
                 return RoleEnum.THEATER_ADMIN;
             }
             default ->  {
-                return RoleEnum.THEATRE_USER;
+                return RoleEnum.GUEST;
             }
         }
     }

@@ -10,25 +10,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = AppUser.FIND_BY_USERNAME,
-                query = "SELECT au FROM AppUser au " +
-                        "LEFT JOIN FETCH au.userRoles roles " +
-                        "LEFT JOIN FETCH roles.authorities " +
-                        "WHERE au.username = :username"
-        ),
+@NamedQueries(
         @NamedQuery(
                 name = AppUser.FIND_BY_EMAIL,
                 query = "SELECT au FROM AppUser au " +
                         "LEFT JOIN FETCH au.userRoles roles " +
                         "LEFT JOIN FETCH roles.authorities " +
-                        "WHERE au.email = :email")
-})
+                        "WHERE au.email = :email"
+        )
+)
 public class AppUser implements UserDetails {
 
     private static final String ENTITY_NAME = "AppUser";
-    public static final String FIND_BY_USERNAME = ENTITY_NAME + "." + "findByUsername";
     public static final String FIND_BY_EMAIL = ENTITY_NAME + "." + "findByEmail";
     @Id
     @Column(name = "id")
@@ -48,15 +41,17 @@ public class AppUser implements UserDetails {
     private List<Ticket> tickets = new ArrayList<>();
     @ManyToMany
     private Set<UserRole> userRoles = new HashSet<>();
-
+    private UUID uuid;
     private boolean isDeleted;
 
     public AppUser() {
+        setUuid();
     }
 
     public AppUser(String username, String password) {
         this.username = username;
         this.password = password;
+        setUuid();
     }
 
     @Override
@@ -178,5 +173,13 @@ public class AppUser implements UserDetails {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid() {
+        this.uuid = UUID.randomUUID();
     }
 }

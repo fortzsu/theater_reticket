@@ -8,10 +8,8 @@ import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,16 +28,16 @@ public class AppUserController {
 
     @PostMapping("/saveGuest")
     public ResponseEntity<Void> saveGuest(@RequestBody AppUserSaveDto appUserSaveDto) {
-        if (this.appUserService.save(appUserSaveDto)) {
+        if (this.appUserService.saveGuest(appUserSaveDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //TODO
         }
     }
 
-    @PostMapping("/saveAssociate")
-    public ResponseEntity<Void> saveAssociate(@RequestBody AppUserSaveDto appUserSaveDto) {
-        if (this.appUserService.save(appUserSaveDto)) {
+    @PostMapping("/saveAssociate/{isTheaterAdmin}")
+    public ResponseEntity<Void> saveAssociate(@PathVariable boolean isTheaterAdmin, @RequestBody AppUserSaveDto appUserSaveDto) {
+        if (this.appUserService.saveAssociate(appUserSaveDto, isTheaterAdmin)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //TODO
