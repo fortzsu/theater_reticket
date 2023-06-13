@@ -57,7 +57,7 @@ public class CustomOidcUser implements OidcUser {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return this.attributes;
     }
 
     @Override
@@ -67,10 +67,10 @@ public class CustomOidcUser implements OidcUser {
 
     @Override
     public String getName() {
-        return "null";
+        return this.name;
     }
 
     public Long getUserId() {
-        return userId;
+        return this.userId;
     }
 }
