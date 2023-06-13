@@ -91,10 +91,6 @@ public class AppUser implements UserDetails {
         authorities.addAll(userRoles);
         authorities.addAll(userAuthorities);
 
-        for (GrantedAuthority authority : authorities) {
-            System.out.println(authority.getAuthority());
-        }
-
         return authorities;
     }
 

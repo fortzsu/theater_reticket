@@ -19,12 +19,18 @@ public class CustomOidcUser implements OidcUser {
     private final String name;
     private final Long userId;
 
+
     public CustomOidcUser(AppUser appUser, OidcUser oidcUser) {
+        System.out.println("CUSTOMOIDCUSER");
         if (appUser != null) {
+            System.out.println("CUSTOMOIDCUSER IF");
             this.userId = appUser.getId();
+            System.out.println("CUSTOMOIDCUSER GETID");
             this.authorities = appUser.getAuthorities();
+            System.out.println("CUSTOMOIDCUSER GETAUTHORITIES");
         } else {
-            this.userId = null;
+            System.out.println("CUSTOMOIDCUSER ELSE");
+            this.userId = 1L;
             this.authorities = oidcUser.getAuthorities();
         }
         claims = oidcUser.getClaims();
@@ -61,7 +67,7 @@ public class CustomOidcUser implements OidcUser {
 
     @Override
     public String getName() {
-        return null;
+        return "null";
     }
 
     public Long getUserId() {

@@ -1,6 +1,7 @@
 package com.reticket.reticket.config;
 
 import com.reticket.reticket.config.oauth2.CustomOidcUserService;
+//import com.reticket.reticket.config.oauth2.CustomSuccessHandler;
 import com.reticket.reticket.config.oauth2.CustomSuccessHandler;
 import com.reticket.reticket.security.AuthorityEnum;
 import com.reticket.reticket.security.RoleEnum;
@@ -24,14 +25,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig implements WebMvcConfigurer {
 
     private final AppUserService appUserService;
-
     private final PasswordEncoder passwordEncoder;
-
     private final CustomSuccessHandler customSuccessHandler;
     private final CustomOidcUserService customOidcUserService;
 
     @Autowired
-    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder, CustomSuccessHandler customSuccessHandler, CustomOidcUserService customOidcUserService) {
+    public SecurityConfig(AppUserService appUserService, PasswordEncoder passwordEncoder,
+                          CustomSuccessHandler customSuccessHandler, CustomOidcUserService customOidcUserService) {
         this.appUserService = appUserService;
         this.passwordEncoder = passwordEncoder;
         this.customSuccessHandler = customSuccessHandler;
@@ -69,6 +69,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/**").permitAll() //TODO
 
+                .requestMatchers("/api/appUser//saveAssociate/{isTheaterAdmin}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                 .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).permitAll()
@@ -93,7 +94,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/report", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.ACCESS_REPORT.name())
                 .requestMatchers("/api/address", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                 .requestMatchers("/api/address/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/appUser/saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                 .requestMatchers("/api/auditorium", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                 .requestMatchers("/api/auditorium/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                 .requestMatchers("/api/auditorium/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())

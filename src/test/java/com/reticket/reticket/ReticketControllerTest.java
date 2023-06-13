@@ -617,7 +617,7 @@ public class ReticketControllerTest {
                 "associate_1","password", "associate_3@testemail.com");
         HttpEntity<AppUserSaveDto> request = new HttpEntity<>(appUserSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("username_14@testemail.com", "password")
-                .exchange("/api/appUser/saveAssociate/true", HttpMethod.POST, request, String.class);
+                .exchange("/api/appUser/saveAssociate/false", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
