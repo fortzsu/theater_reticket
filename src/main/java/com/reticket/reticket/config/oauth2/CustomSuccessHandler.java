@@ -38,18 +38,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             OAuth2User principal = token.getPrincipal();
             String email = principal.getAttribute("email");
             AppUser appUser = (AppUser) this.appUserService.loadUserByUsername(email);
-            if(appUser == null) {
-                if(saveGuestUser(token)) {
-                    System.out.println("NEW USER IS SAVED");
-                }
-            }
         }
     }
 
-    private boolean saveGuestUser(OAuth2AuthenticationToken token) {
-        AppUserSaveDto appUserSaveDto = new AppUserSaveDto();
-        appUserSaveDto.setEmail(token.getPrincipal().getAttribute("email"));
-        appUserSaveDto.setUsername(token.getPrincipal().getAttribute("name"));
-        return this.appUserService.saveGuest(appUserSaveDto);
-    }
+
 }
