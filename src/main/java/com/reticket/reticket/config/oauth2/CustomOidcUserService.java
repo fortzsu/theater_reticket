@@ -22,14 +22,10 @@ public class CustomOidcUserService extends OidcUserService {
 
     @Override
     public OidcUser loadUser(OidcUserRequest oidcUserRequest) throws OAuth2AuthenticationException {
-        System.out.println("OIDC USERREQUEST" + oidcUserRequest.toString());
-        System.out.println("CustomOidcUserService");
         OidcUser oidcUser = super.loadUser(oidcUserRequest);
         AppUser appUser = null;
         String email = oidcUser.getAttribute("email");
-        System.out.println("CustomOidcUserService + loadUser " + email);
         try {
-            System.out.println("TRY");
             appUser = (AppUser) this.appUserService.loadUserByUsername(email);
         } catch (UsernameNotFoundException e) {
             System.out.println("There is no user with the given email: " + email);

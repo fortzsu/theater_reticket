@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -50,7 +51,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.oauth2Login()
                 .authorizationEndpoint().baseUri("/api/oauth2/authorization")
                 .and().userInfoEndpoint()
-                    .oidcUserService(customOidcUserService)
+                .oidcUserService(customOidcUserService)
+//                .and().redirectionEndpoint().baseUri("/api/play/list")
                 .and().successHandler(customSuccessHandler);
     }
 
@@ -67,6 +69,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private void setUpEndpointPermissions(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/auth/me", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name()) //TODO
                 .requestMatchers("/api/auth/**").permitAll() //TODO
 
                 .requestMatchers("/api/appUser//saveAssociate/{isTheaterAdmin}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())

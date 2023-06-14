@@ -21,16 +21,11 @@ public class CustomOidcUser implements OidcUser {
 
 
     public CustomOidcUser(AppUser appUser, OidcUser oidcUser) {
-        System.out.println("CUSTOMOIDCUSER");
         if (appUser != null) {
-            System.out.println("CUSTOMOIDCUSER IF");
             this.userId = appUser.getId();
-            System.out.println("CUSTOMOIDCUSER GETID");
             this.authorities = appUser.getAuthorities();
-            System.out.println("CUSTOMOIDCUSER GETAUTHORITIES");
         } else {
-            System.out.println("CUSTOMOIDCUSER ELSE");
-            this.userId = 1L;
+            this.userId = null;
             this.authorities = oidcUser.getAuthorities();
         }
         claims = oidcUser.getClaims();
@@ -42,12 +37,12 @@ public class CustomOidcUser implements OidcUser {
 
     @Override
     public Map<String, Object> getClaims() {
-        return null;
+        return this.claims;
     }
 
     @Override
     public OidcUserInfo getUserInfo() {
-        return null;
+        return this.oidcUserInfo;
     }
 
     @Override
@@ -62,7 +57,7 @@ public class CustomOidcUser implements OidcUser {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.authorities;
     }
 
     @Override

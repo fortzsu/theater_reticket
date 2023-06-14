@@ -21,6 +21,11 @@ public class AuthenticationController {
         this.appUserService = appUserService;
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<String> getMe(Principal principal) {
+        return ResponseEntity.ok(principal.toString());
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Void> login() {
         return ResponseEntity.ok().build();

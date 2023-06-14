@@ -205,7 +205,6 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("APPUSERSERVICE LOADUSER");
         return entityManager.createNamedQuery(AppUser.FIND_BY_EMAIL, AppUser.class).setParameter(
                 "email", email).getSingleResult();
     }
