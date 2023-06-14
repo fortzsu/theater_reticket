@@ -12,6 +12,7 @@ import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -68,7 +69,7 @@ public class AppUserService implements UserDetailsService {
 
     public boolean saveGuest(AppUserSaveDto appUserSaveDto) {
         if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
-            AppUser a = this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, "guest"));
+            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, "guest"));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
 //                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
@@ -205,8 +206,12 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return entityManager.createNamedQuery(AppUser.FIND_BY_EMAIL, AppUser.class).setParameter(
-                "email", email).getSingleResult();
+        try {
+            return entityManager.createNamedQuery(AppUser.FIND_BY_EMAIL, AppUser.class).setParameter(
+                    "email", email).getSingleResult();
+        } catch (NoResultException exception) {
+            throw new UsernameNotFoundException("No user found with given email: " + email);
+        }
     }
 
     public Boolean updateAppUser(UpdateAppUserDto updateAppUserDto, Authentication authentication, String username) {

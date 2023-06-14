@@ -1,6 +1,7 @@
 package com.reticket.reticket.config.oauth2;
 
 import com.reticket.reticket.domain.AppUser;
+import com.reticket.reticket.dto.save.AppUserSaveDto;
 import com.reticket.reticket.service.AppUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @Configuration
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
@@ -37,9 +39,17 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             String email = principal.getAttribute("email");
             AppUser appUser = (AppUser) this.appUserService.loadUserByUsername(email);
             if(appUser == null) {
-                //TODO register User
-                System.out.println("There is no user with email: " + email);
+                if(saveGuestUser(token)) {
+                    System.out.println("NEW USER IS SAVED");
+                }
             }
         }
+    }
+
+    private boolean saveGuestUser(OAuth2AuthenticationToken token) {
+        AppUserSaveDto appUserSaveDto = new AppUserSaveDto();
+        appUserSaveDto.setEmail(token.getPrincipal().getAttribute("email"));
+        appUserSaveDto.setUsername(token.getPrincipal().getAttribute("name"));
+        return this.appUserService.saveGuest(appUserSaveDto);
     }
 }

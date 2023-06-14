@@ -8,6 +8,9 @@ public class AppUserSaveDto {
     private String password;
     private String email;
 
+    public AppUserSaveDto() {
+    }
+
     public AppUserSaveDto(String firstName, String lastName, String username, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
