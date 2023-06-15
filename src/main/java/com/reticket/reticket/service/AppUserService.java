@@ -2,13 +2,13 @@ package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.list.*;
-import com.reticket.reticket.dto.save.AppUserSaveDto;
+import com.reticket.reticket.dto.save.AssociateUserSaveDto;
+import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
-import com.reticket.reticket.security.RoleEnum;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
 import jakarta.persistence.EntityManager;
@@ -67,9 +67,9 @@ public class AppUserService implements UserDetailsService {
     }
 
 
-    public boolean saveGuest(AppUserSaveDto appUserSaveDto) {
-        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
-            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, "guest"));
+    public boolean saveGuest(GuestUserSaveDto guestUserSaveDto) {
+        if(!this.checkIfUsernameIsTaken(guestUserSaveDto.getUsername()) && !checkIfEmailIsTaken(guestUserSaveDto.getEmail())) {
+            this.appUserRepository.save(updateValues(new AppUser(), guestUserSaveDto, "guest", null));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
 //                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
@@ -80,10 +80,12 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
-    public boolean saveAssociate(AppUserSaveDto appUserSaveDto, boolean isTheaterAdmin) {
-        if(!this.checkIfUsernameIsTaken(appUserSaveDto.getUsername()) && !checkIfEmailIsTaken(appUserSaveDto.getEmail())) {
-            String appUserType = checkAppUserType(isTheaterAdmin);
-            this.appUserRepository.save(updateValues(new AppUser(), appUserSaveDto, appUserType));
+    public boolean saveAssociate(AssociateUserSaveDto associateUserSaveDto) {
+        if(!this.checkIfUsernameIsTaken(associateUserSaveDto.getGuestUserSaveDto().getUsername()) &&
+                !checkIfEmailIsTaken(associateUserSaveDto.getGuestUserSaveDto().getEmail())) {
+            String appUserType = checkAppUserType(associateUserSaveDto.isTheaterAdmin());
+            this.appUserRepository.save(updateValues(new AppUser(), associateUserSaveDto.getGuestUserSaveDto(),
+                    appUserType, associateUserSaveDto.getTheaterId()));
             //If a user is saved, then it will log in automatically
 //            UsernamePasswordAuthenticationToken authenticationToken =
 //                    new UsernamePasswordAuthenticationToken(saved, null, saved.getAuthorities());
@@ -92,6 +94,23 @@ public class AppUserService implements UserDetailsService {
         } else {
             return false;
         }
+    }
+
+    private AppUser updateValues(AppUser appUser, GuestUserSaveDto guestUserSaveDto, String appUserType, Long theaterId) {
+        if (theaterId != null) {
+            appUser.setTheater(this.theaterService.findById(theaterId));
+        } else {
+            appUser.setTheater(null);
+        }
+        appUser.setFirstName(guestUserSaveDto.getFirstName());
+        appUser.setLastName(guestUserSaveDto.getLastName());
+        appUser.setPassword(this.passwordEncoder.encode(guestUserSaveDto.getPassword()));
+        appUser.setUsername(guestUserSaveDto.getUsername());
+        appUser.setEmail(guestUserSaveDto.getEmail());
+        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum( //TODO Check auth User to save Associate
+                UserRoleService.createUserRoleFromString(appUserType)));
+        appUser.setDeleted(false);
+        return appUser;
     }
 
     private String checkAppUserType(boolean isTheaterAdmin) {
@@ -101,19 +120,6 @@ public class AppUserService implements UserDetailsService {
             return "theater_user";
         }
     }
-
-    private AppUser updateValues(AppUser appUser, AppUserSaveDto appUserSaveDto, String appUserType) {
-        appUser.setFirstName(appUserSaveDto.getFirstName());
-        appUser.setLastName(appUserSaveDto.getLastName());
-        appUser.setPassword(this.passwordEncoder.encode(appUserSaveDto.getPassword()));
-        appUser.setUsername(appUserSaveDto.getUsername());
-        appUser.setEmail(appUserSaveDto.getEmail());
-        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum( //TODO Check auth User to save Associate
-                UserRoleService.createUserRoleFromString(appUserType)));
-        appUser.setDeleted(false);
-        return appUser;
-    }
-
 
     public AppUser findByUsername(String username) {
         return this.appUserRepository.findByUsername(username);

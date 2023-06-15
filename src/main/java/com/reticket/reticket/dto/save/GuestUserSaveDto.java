@@ -1,6 +1,6 @@
 package com.reticket.reticket.dto.save;
 
-public class AppUserSaveDto {
+public class GuestUserSaveDto {
 
     private String firstName;
     private String lastName;
@@ -8,10 +8,10 @@ public class AppUserSaveDto {
     private String password;
     private String email;
 
-    public AppUserSaveDto() {
+    public GuestUserSaveDto() {
     }
 
-    public AppUserSaveDto(String firstName, String lastName, String username, String password, String email) {
+    public GuestUserSaveDto(String firstName, String lastName, String username, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

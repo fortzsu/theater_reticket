@@ -1,7 +1,6 @@
 package com.reticket.reticket.config.oauth2;
 
 import com.reticket.reticket.domain.AppUser;
-import com.reticket.reticket.dto.save.AppUserSaveDto;
 import com.reticket.reticket.service.AppUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,7 +14,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
-import java.security.Principal;
 
 @Configuration
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {

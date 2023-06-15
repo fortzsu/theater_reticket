@@ -1,11 +1,10 @@
 package com.reticket.reticket.config.oauth2;
 
 import com.reticket.reticket.domain.AppUser;
-import com.reticket.reticket.dto.save.AppUserSaveDto;
+import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -39,11 +38,11 @@ public class CustomOidcUserService extends OidcUserService {
     }
 
     private boolean saveGuestUser(OidcUser oidcUser) {
-        AppUserSaveDto appUserSaveDto = new AppUserSaveDto();
-        appUserSaveDto.setEmail(oidcUser.getAttribute("email"));
-        appUserSaveDto.setUsername(oidcUser.getAttribute("name"));
-        appUserSaveDto.setPassword("password");
-        return this.appUserService.saveGuest(appUserSaveDto);
+        GuestUserSaveDto guestUserSaveDto = new GuestUserSaveDto();
+        guestUserSaveDto.setEmail(oidcUser.getAttribute("email"));
+        guestUserSaveDto.setUsername(oidcUser.getAttribute("name"));
+        guestUserSaveDto.setPassword("password");
+        return this.appUserService.saveGuest(guestUserSaveDto);
     }
 
 }

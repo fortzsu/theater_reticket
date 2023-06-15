@@ -2,7 +2,8 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.list.LikedPlaysListDto;
 import com.reticket.reticket.dto.list.ListTicketDto;
-import com.reticket.reticket.dto.save.AppUserSaveDto;
+import com.reticket.reticket.dto.save.AssociateUserSaveDto;
+import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,17 @@ public class AppUserController {
     }
 
     @PostMapping("/saveGuest")
-    public ResponseEntity<Void> saveGuest(@RequestBody AppUserSaveDto appUserSaveDto) {
-        if (this.appUserService.saveGuest(appUserSaveDto)) {
+    public ResponseEntity<Void> saveGuest(@RequestBody GuestUserSaveDto guestUserSaveDto) {
+        if (this.appUserService.saveGuest(guestUserSaveDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //TODO
         }
     }
 
-    @PostMapping("/saveAssociate/{isTheaterAdmin}")
-    public ResponseEntity<Void> saveAssociate(@PathVariable boolean isTheaterAdmin, @RequestBody AppUserSaveDto appUserSaveDto) {
-        if (this.appUserService.saveAssociate(appUserSaveDto, isTheaterAdmin)) {
+    @PostMapping("/saveAssociate")
+    public ResponseEntity<Void> saveAssociate( @RequestBody AssociateUserSaveDto associateUserSaveDto) {
+        if (this.appUserService.saveAssociate(associateUserSaveDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //TODO

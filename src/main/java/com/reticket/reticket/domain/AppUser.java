@@ -43,6 +43,8 @@ public class AppUser implements UserDetails {
     private Set<UserRole> userRoles = new HashSet<>();
     private UUID uuid;
     private boolean isDeleted;
+    @OneToOne
+    private Theater theater;
 
     public AppUser() {
         setUuid();
@@ -177,5 +179,13 @@ public class AppUser implements UserDetails {
 
     public void setUuid() {
         this.uuid = UUID.randomUUID();
+    }
+
+    public Theater getTheater() {
+        return theater;
+    }
+
+    public void setTheater(Theater theater) {
+        this.theater = theater;
     }
 }
