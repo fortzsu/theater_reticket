@@ -72,7 +72,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/auth/me", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name()) //TODO
                 .requestMatchers("/api/auth/**").permitAll() //TODO
 
-                .requestMatchers("/api/appUser//saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+                .requestMatchers("/api/appUser/saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
                 .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                 .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).permitAll()
