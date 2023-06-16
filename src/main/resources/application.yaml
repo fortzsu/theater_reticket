@@ -41,6 +41,12 @@ spring:
           google:
             client-id: 660403773133-ukksog7511lkf3d4flrgecmipjafpltv.apps.googleusercontent.com
             client-secret: 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
+            scope:
+              - https://www.googleapis.com/auth/userinfo.profile
+              - https://www.googleapis.com/auth/userinfo.email
+              - openid
+#              - https://www.googleapis.com/auth/gmail.readonly
+#              with barer Token I could read my mails in gmail
 logging:
   level:
     web: trace
