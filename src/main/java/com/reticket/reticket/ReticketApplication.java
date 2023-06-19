@@ -11,4 +11,5 @@ public class ReticketApplication {
 		SpringApplication.run(ReticketApplication.class, args);
 	}
 
+
 }
