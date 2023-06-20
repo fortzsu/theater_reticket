@@ -294,26 +294,30 @@ public class ReticketTest {
 
     // -----------------------  GOOGLE TESTS  -----------------------
 
-//    @Test
-//    public void testReportPerformances_Google_soldTickets_byTheatre() {
-//        FilterReportDto reportFilterDto = new FilterReportDto("SOLD", "theatre", 1L,
-//                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
-//                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, true);
-//        Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
-//    }
-//
-//    @Test
-//    public void testReport_Google_soldTickets_byTheatre_ticketAmount() {
-//        FilterReportDto reportFilterDto = new FilterReportDto("SOLD", "theatre", 1L,
-//                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
-//                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, true);
-//        Assert.assertEquals(1940, (long) this.reportService.report(reportFilterDto).getTicketAmount());
-//    }
+    @Test
+    public void testReportPerformances_Google_soldTickets_byTheatre() {
+        FilterReportDto reportFilterDto = new FilterReportDto("SOLD", "theatre", 1L,
+                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, true);
+        Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
+    }
 
+    @Test
+    public void testReport_Google_soldTickets_byTheatre_ticketAmount() {
+        FilterReportDto reportFilterDto = new FilterReportDto("SOLD", "theatre", 1L,
+                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, true);
+        Assert.assertEquals(1940, (long) this.reportService.report(reportFilterDto).getTicketAmount());
+    }
     // -----------------------  GOOGLE TESTS  -----------------------
-
     // -----------------------  REPORT TESTS  -----------------------
-
+    @Test
+    public void testReport_soldTickets_byTheater_ticketAmount() {
+        FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
+                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
+                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
+        Assert.assertEquals(1940, (long) this.reportService.report(filterReportDto).getTicketAmount());
+    }
 
     @Test
     public void testReportPerformances_soldTickets_byTheater() {
@@ -393,13 +397,6 @@ public class ReticketTest {
         Assert.assertEquals(28, (long) this.reportService.report(filterReportDto).getTicketCount());
     }
 
-    @Test
-    public void testReport_soldTickets_byTheater_ticketAmount() {
-        FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
-                new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
-                        LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 10), false, false);
-        Assert.assertEquals(1940, (long) this.reportService.report(filterReportDto).getTicketAmount());
-    }
 
     @Test
     public void testReport_soldTickets_byTheater_outOfDate() {
