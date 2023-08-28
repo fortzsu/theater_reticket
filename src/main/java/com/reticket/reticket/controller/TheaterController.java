@@ -4,9 +4,11 @@ import com.reticket.reticket.dto.list.ListTheatersDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
 import com.reticket.reticket.service.TheaterService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class TheaterController {
     }
 
     @PostMapping("/create")
+    @RolesAllowed("ROLE_SUPER")
     public ResponseEntity<Void> createTheatre(@RequestBody TheaterSaveDto theatreSaveDto) {
         theaterService.save(theatreSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -33,6 +36,7 @@ public class TheaterController {
         return new ResponseEntity<>(this.theaterService.listTheaters(pageableDto), HttpStatus.OK);
     }
 
+    @RolesAllowed("ROLE_SUPER")
     @PutMapping("/update/{theaterName}")
     public ResponseEntity<Boolean> updateTheater(@RequestBody TheaterSaveDto theatreSaveDto, @PathVariable String theaterName) {
         if(this.theaterService.updateTheater(theatreSaveDto, theaterName)) {
@@ -41,7 +45,7 @@ public class TheaterController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    @RolesAllowed("ROLE_SUPER")
     @DeleteMapping("/delete/{theaterName}")
     public ResponseEntity<Boolean> deleteTheater(@PathVariable String theaterName) {
         if(this.theaterService.deleteTheater(theaterName)) {

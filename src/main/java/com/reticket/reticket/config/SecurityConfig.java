@@ -1,7 +1,6 @@
 package com.reticket.reticket.config;
 
 import com.reticket.reticket.config.oauth2.CustomOidcUserService;
-//import com.reticket.reticket.config.oauth2.CustomSuccessHandler;
 import com.reticket.reticket.config.oauth2.CustomSuccessHandler;
 import com.reticket.reticket.security.AuthorityEnum;
 import com.reticket.reticket.security.RoleEnum;
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -85,13 +83,19 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
                 .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).permitAll()
                 .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
-                .requestMatchers("/api/theater/create", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
-                .requestMatchers("/api/theater/update/{theaterName}", HttpMethod.PUT.toString()).hasRole(RoleEnum.SUPER.name())
-                .requestMatchers("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString()).hasRole(RoleEnum.SUPER.name())
-                .requestMatchers("/api/appUser/update/{username}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+
+
+//                .requestMatchers("/api/theater/create", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
+//                .requestMatchers("/api/theater/update/{theaterName}", HttpMethod.PUT.toString()).hasRole(RoleEnum.SUPER.name())
+//                .requestMatchers("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString()).hasRole(RoleEnum.SUPER.name())
+
+
+
+//                .requestMatchers("/api/appUser/update/{username}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
                 .requestMatchers("/api/appUser/delete/{username}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
                 .requestMatchers("/api/appUser/{username}/tickets", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
                 .requestMatchers("/api/appUser/{username}/likedPlays", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+
                 .requestMatchers("/api/appUser/{username}/{playId}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.LIKE_PLAY.name())
                 .requestMatchers("/api/ticketAction", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.TICKET_ACTIONS.name())
                 .requestMatchers("/api/report", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.ACCESS_REPORT.name())
