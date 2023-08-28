@@ -69,7 +69,7 @@ public class AppUserController {
     }
 
     @PutMapping("/update/{username}")
-    @PreAuthorize("hasRole('SUPER')")
+    @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUserDto updateAppUserDto,
                                               @PathVariable String username) {
         if (this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username)) {

@@ -66,53 +66,53 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
     private void setUpEndpointPermissions(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/auth/me", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name()) //TODO
-                .requestMatchers("/api/auth/**").permitAll() //TODO
+//        http.authorizeHttpRequests((authorize) -> authorize
+//                .requestMatchers("/api/auth/me", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name()) //TODO
+//                .requestMatchers("/api/auth/**").permitAll() //TODO
 
-                .requestMatchers("/api/appUser/saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
-                .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
-                .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).permitAll()
-                .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
-                .requestMatchers("/api/play/list", HttpMethod.POST.toString()).permitAll()
-                .requestMatchers("/api/play/list", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
-                .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).permitAll()
-                .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
-                .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).permitAll()
-                .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
-                .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).permitAll()
-                .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
-
-
-//                .requestMatchers("/api/theater/create", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
-//                .requestMatchers("/api/theater/update/{theaterName}", HttpMethod.PUT.toString()).hasRole(RoleEnum.SUPER.name())
-//                .requestMatchers("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString()).hasRole(RoleEnum.SUPER.name())
-
-
-
-//                .requestMatchers("/api/appUser/update/{username}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
-                .requestMatchers("/api/appUser/delete/{username}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
-                .requestMatchers("/api/appUser/{username}/tickets", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
-                .requestMatchers("/api/appUser/{username}/likedPlays", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
-
-                .requestMatchers("/api/appUser/{username}/{playId}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.LIKE_PLAY.name())
-                .requestMatchers("/api/ticketAction", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.TICKET_ACTIONS.name())
-                .requestMatchers("/api/report", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.ACCESS_REPORT.name())
-                .requestMatchers("/api/address", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/address/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/auditorium", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/auditorium/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/auditorium/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/contributor", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/contributor/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/performance/save", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/performance/updatePerformance/{id}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/play/save", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/play/formData/{auditoriumId}", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/play/updatePlay/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .requestMatchers("/api/play/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
-                .anyRequest().authenticated());
+//                .requestMatchers("/api/appUser/saveAssociate", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).permitAll()
+//                .requestMatchers("/api/auditorium/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
+//                .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).permitAll()
+//                .requestMatchers("/api/contributor/list", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
+//                .requestMatchers("/api/play/list", HttpMethod.POST.toString()).permitAll()
+//                .requestMatchers("/api/play/list", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
+//                .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).permitAll()
+//                .requestMatchers("/api/theater/list", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
+//                .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).permitAll()
+//                .requestMatchers("/api/performance/search", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.FREE_LISTS_AND_SEARCH.name())
+//                .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).permitAll()
+//                .requestMatchers("/api/appUser/saveGuest", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
+//
+//
+////                .requestMatchers("/api/theater/create", HttpMethod.POST.toString()).hasRole(RoleEnum.SUPER.name())
+////                .requestMatchers("/api/theater/update/{theaterName}", HttpMethod.PUT.toString()).hasRole(RoleEnum.SUPER.name())
+////                .requestMatchers("/api/theater/delete/{theaterName}", HttpMethod.DELETE.toString()).hasRole(RoleEnum.SUPER.name())
+//
+//
+//
+////                .requestMatchers("/api/appUser/update/{username}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+//                .requestMatchers("/api/appUser/delete/{username}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+//                .requestMatchers("/api/appUser/{username}/tickets", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+//                .requestMatchers("/api/appUser/{username}/likedPlays", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_APPUSER_AND_FOLLOW_ACTIONS.name())
+//
+//                .requestMatchers("/api/appUser/{username}/{playId}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.LIKE_PLAY.name())
+//                .requestMatchers("/api/ticketAction", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.TICKET_ACTIONS.name())
+//                .requestMatchers("/api/report", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.ACCESS_REPORT.name())
+//                .requestMatchers("/api/address", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/address/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/auditorium", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/auditorium/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/auditorium/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/contributor", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/contributor/update/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/performance/save", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/performance/updatePerformance/{id}", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/play/save", HttpMethod.POST.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/play/formData/{auditoriumId}", HttpMethod.GET.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/play/updatePlay/{id}", HttpMethod.PUT.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .requestMatchers("/api/play/{id}", HttpMethod.DELETE.toString()).hasAuthority(AuthorityEnum.MODIFY_IN_THEATER.name())
+//                .anyRequest().authenticated());
     }
 
 
