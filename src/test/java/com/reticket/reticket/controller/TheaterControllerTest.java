@@ -1,6 +1,7 @@
 package com.reticket.reticket.controller;
 
 
+import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +76,35 @@ public class TheaterControllerTest {
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/theater/delete/theaterName", HttpMethod.DELETE, request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    }
+
+
+    @Test
+    public void testListTheater_withSuper_200() {
+        PageableDto pageableDto = new PageableDto(0,5);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
+                .postForEntity("/api/theater/list", request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+    @Test
+    public void testListTheater_withNoUser_200() {
+        PageableDto pageableDto = new PageableDto(0,5);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
+        ResponseEntity<String> result = template.postForEntity("/api/theater/list", request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void testListTheater_withWrongUser_401() {
+        PageableDto pageableDto = new PageableDto(0,5);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .postForEntity("/api/theater/list", request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 }
