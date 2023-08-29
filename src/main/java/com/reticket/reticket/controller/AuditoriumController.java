@@ -27,6 +27,7 @@ public class AuditoriumController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> createAuditorium(@RequestBody List<AuditoriumSaveDto> auditoriumSaveDto) {
         if (auditoriumService.save(auditoriumSaveDto) != null) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -36,6 +37,7 @@ public class AuditoriumController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> deleteAuditorium(@PathVariable Long id) {
         if (auditoriumService.deleteAuditorium(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -45,6 +47,7 @@ public class AuditoriumController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> updateAuditorium(@PathVariable Long id, @RequestBody AuditoriumSaveDto auditoriumSaveDto) {
         if (auditoriumService.update(auditoriumSaveDto, id) != null) {
             return new ResponseEntity<>(HttpStatus.OK);

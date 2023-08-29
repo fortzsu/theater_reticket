@@ -28,8 +28,6 @@ public class AppUserControllerTest {
     @Autowired
     private TestRestTemplate template;
 
-
-
     @Test
     public void testUpdateAppUser_withSuper_200() {
         GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username_2", "password",
@@ -94,36 +92,6 @@ public class AppUserControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, updateResult.getStatusCode());
     }
 
-        @Test
-    public void testSaveGuest_withSuper_200() {
-        GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username_1", "password",
-                 "username_1@testemail.com");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .postForEntity("/api/appUser/saveGuest", request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-    }
-    @Test
-    public void testSaveGuest_withNoUser_200() {
-        GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username1",
-                "password", "username1@testemail.com");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.postForEntity("/api/appUser/saveGuest", request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-    }
-
-    @Test
-    public void testSaveGuest_withWrongUser_401() {
-        GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username2",
-                "password", "username2@testemail.com");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .postForEntity("/api/appUser/saveGuest", request, String.class);
-        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
-    }
 
     @Test
     public void testDeleteAppUser_withGuest_200() {
@@ -153,6 +121,38 @@ public class AppUserControllerTest {
         ResponseEntity<String> updateResult = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/appUser/delete/username_7", HttpMethod.DELETE, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
+    }
+
+
+        @Test
+    public void testSaveGuest_withSuper_200() {
+        GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username_1", "password",
+                 "username_1@testemail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+    @Test
+    public void testSaveGuest_withNoUser_200() {
+        GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username1",
+                "password", "username1@testemail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.postForEntity("/api/appUser/saveGuest", request, String.class);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void testSaveGuest_withWrongUser_401() {
+        GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username2",
+                "password", "username2@testemail.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
+                .postForEntity("/api/appUser/saveGuest", request, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
     @Test

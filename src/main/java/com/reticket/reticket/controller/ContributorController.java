@@ -8,6 +8,7 @@ import com.reticket.reticket.service.ContributorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class ContributorController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> save(@RequestBody List<ContributorSaveDto> contributorSaveDto) {
         this.contributorService.save(contributorSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -36,6 +38,7 @@ public class ContributorController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> update(@RequestBody ContributorSaveDto contributorSaveDto, @PathVariable Long id) {
         if(this.contributorService.update(contributorSaveDto, id)) {
             return new ResponseEntity<>(HttpStatus.OK);

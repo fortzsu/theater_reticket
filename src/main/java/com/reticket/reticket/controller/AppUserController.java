@@ -40,6 +40,7 @@ public class AppUserController {
     }
 
     @PostMapping("/saveAssociate")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> saveAssociate( @RequestBody AssociateUserSaveDto associateUserSaveDto) {
         if (this.appUserService.saveAssociate(associateUserSaveDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -49,11 +50,13 @@ public class AppUserController {
     }
 
     @GetMapping("/{username}/tickets")
+    @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<List<ListTicketDto>> listTickets(@PathVariable(value = "username") String username) {
         return new ResponseEntity<>(this.appUserService.listTickets(username), HttpStatus.OK);
     }
 
     @PostMapping("/{username}/{playId}")
+    @PreAuthorize("hasAuthority('LIKE_PLAY')")
     public ResponseEntity<Void> likePlay(@PathVariable(value = "username") String username,
                                          @PathVariable(value = "playId") Long playId) {
         if(this.appUserService.likePlay(username, playId)) {
@@ -64,12 +67,13 @@ public class AppUserController {
     }
 
     @GetMapping("/{username}/likedPlays")
+    @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<List<LikedPlaysListDto>> listLikedPlays(@PathVariable String username) {
         return new ResponseEntity<>(this.appUserService.listLikedPlays(username), HttpStatus.OK);
     }
 
     @PutMapping("/update/{username}")
-//    @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
+    @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUserDto updateAppUserDto,
                                               @PathVariable String username) {
         if (this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username)) {
@@ -80,6 +84,7 @@ public class AppUserController {
     }
 
     @DeleteMapping("/delete/{username}")
+    @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
         SecurityContext context = SecurityContextHolder.getContext();
         if (this.appUserService.deleteUser(username, context.getAuthentication())) {

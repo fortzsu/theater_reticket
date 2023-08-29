@@ -14,6 +14,7 @@ import com.reticket.reticket.service.PlayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class PlayController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PlaySaveDto> playSaveDtoList) {
         if(this.playService.save(playSaveDtoList)) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -45,6 +47,7 @@ public class PlayController {
     }
 
     @GetMapping("/formData/{auditoriumId}")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<InitFormDataToPlaySaveDto> getPlayFormDataOfAuditoriumAndContributors(
             @PathVariable(value = "auditoriumId") String auditoriumId) {
         InitFormDataToPlaySaveDto initData = new InitFormDataToPlaySaveDto();
@@ -64,6 +67,7 @@ public class PlayController {
     }
 
     @PutMapping("/updatePlay/{id}")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> updatePlay(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
         if(this.playService.updatePlay(updatePlayDto, id))  {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -73,6 +77,7 @@ public class PlayController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> deletePlay(@PathVariable Long id) {
         if(this.playService.deletePlay(id)) {
             return new ResponseEntity<>(HttpStatus.OK);

@@ -20,9 +20,6 @@ public class ContributorControllerTest {
     @Autowired
     private TestRestTemplate template;
 
-
-
-
     @Test
     public void testListContributor_withSuper_200() {
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")

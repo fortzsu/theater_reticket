@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ public class PerformanceController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
         boolean flag = false;
@@ -55,6 +57,7 @@ public class PerformanceController {
     }
 
     @PostMapping("/updatePerformance/{id}")
+    @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> updatePerformance(@RequestBody UpdatePerformanceDto updatePerformanceDto, @PathVariable Long id) {
         if (this.performanceService.updatePerformance(updatePerformanceDto, id)) {
             return new ResponseEntity<>(HttpStatus.OK);
