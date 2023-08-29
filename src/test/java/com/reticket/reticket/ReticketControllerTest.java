@@ -6,10 +6,10 @@ import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.report_search.SearchDateDto;
-import com.reticket.reticket.dto.save.*;
-import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
+import com.reticket.reticket.dto.save.*;
+import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +160,25 @@ public class ReticketControllerTest {
 //                .postForEntity("/api/performance/search", request, String.class);
 //        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
 //    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //
 //    @Test
 //    public void testSaveGuest_withSuper_200() {
@@ -191,6 +210,11 @@ public class ReticketControllerTest {
 //                .postForEntity("/api/appUser/saveGuest", request, String.class);
 //        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
 //    }
+
+
+
+
+
 //
 //
 //    @Test
