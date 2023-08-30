@@ -72,7 +72,7 @@ public class AppUserController {
         return new ResponseEntity<>(this.appUserService.listLikedPlays(username), HttpStatus.OK);
     }
 
-    @PutMapping("/update/{username}")
+    @PutMapping("/{username}")
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUserDto updateAppUserDto,
                                               @PathVariable String username) {
@@ -83,7 +83,7 @@ public class AppUserController {
         }
     }
 
-    @DeleteMapping("/delete/{username}")
+    @DeleteMapping("/{username}")
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
         SecurityContext context = SecurityContextHolder.getContext();

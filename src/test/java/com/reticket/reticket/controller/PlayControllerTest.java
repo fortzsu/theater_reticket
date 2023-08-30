@@ -30,7 +30,7 @@ public class PlayControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
-                .exchange("/api/play/save", HttpMethod.POST, request, String.class);
+                .exchange("/api/play", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
@@ -40,7 +40,7 @@ public class PlayControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/play/save", HttpMethod.POST, request, String.class);
+                .exchange("/api/play", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
@@ -77,7 +77,7 @@ public class PlayControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<UpdatePlayDto> request = new HttpEntity<>(updatePlayDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterAdmin@testemail.te", "test")
-                .exchange("/api/play/updatePlay/1000", HttpMethod.PUT, request, String.class);
+                .exchange("/api/play/1000", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
@@ -87,7 +87,7 @@ public class PlayControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<UpdatePlayDto> request = new HttpEntity<>(updatePlayDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
-                .exchange("/api/play/updatePlay/1000", HttpMethod.PUT, request, String.class);
+                .exchange("/api/play/1000", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
@@ -97,7 +97,7 @@ public class PlayControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<UpdatePlayDto> request = new HttpEntity<>(updatePlayDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/play/updatePlay/1000", HttpMethod.PUT, request, String.class);
+                .exchange("/api/play/1000", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
@@ -157,15 +157,4 @@ public class PlayControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
-    //    @Test
-//    public void testSavePlay_withSuper_NOT_FOUND() {
-//        PlaySaveDto playSaveDto = new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1, 2, 3), "drama");
-//        playSaveDto.setContributorsSaveForPlaySaveDtoList(List.of(new ContributorsSaveForPlaySaveDto()));
-//        List<PlaySaveDto> playSaveDtoList = List.of(playSaveDto);
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
-//        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-//                .exchange("/api/play/save", HttpMethod.POST, request, String.class);
-//        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
-//    }
 }

@@ -32,7 +32,7 @@ public class PerformanceControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
+                .exchange("/api/performance", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
@@ -42,7 +42,7 @@ public class PerformanceControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
-                .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
+                .exchange("/api/performance", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
@@ -52,7 +52,7 @@ public class PerformanceControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/performance/save", HttpMethod.POST, request, String.class);
+                .exchange("/api/performance", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 

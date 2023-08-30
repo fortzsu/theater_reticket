@@ -56,7 +56,7 @@ public class AuditoriumController {
         }
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<List<AuditoriumSaveDto>> listAuditoriums() {
         return new ResponseEntity<>(auditoriumService.listAuditoriums(), HttpStatus.OK);
     }

@@ -58,7 +58,7 @@ public class AddressControllerTest {
         AddressSaveDto saveDto = new AddressSaveDto("1000", "City", "Street", 123, 1L);
         HttpEntity<AddressSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/address/update/2", HttpMethod.PUT, request, String.class);
+                .exchange("/api/address/2", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
@@ -68,7 +68,7 @@ public class AddressControllerTest {
         AddressSaveDto saveDto = new AddressSaveDto();
         HttpEntity<AddressSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/address/update/1", HttpMethod.PUT, request, String.class);
+                .exchange("/api/address/1", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 

@@ -150,19 +150,19 @@ public class AuditoriumControllerTest {
     @Test
     public void testListAuditorium_withSuper_200() {
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .getForEntity("/api/auditorium/list", String.class);
+                .getForEntity("/api/auditorium", String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     @Test
     public void testListAuditorium_withNoUser_200() {
-        ResponseEntity<String> result = template.getForEntity("/api/auditorium/list", String.class);
+        ResponseEntity<String> result = template.getForEntity("/api/auditorium", String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     public void testListAuditorium_withWrongUser_401() {
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .getForEntity("/api/auditorium/list", String.class);
+                .getForEntity("/api/auditorium", String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 

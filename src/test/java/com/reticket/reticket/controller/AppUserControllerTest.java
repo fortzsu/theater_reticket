@@ -40,7 +40,7 @@ public class AppUserControllerTest {
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("username_21@testemail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/appUser/update/username_2", HttpMethod.PUT, updateRequest, String.class);
+                .exchange("/api/appUser/username_2", HttpMethod.PUT, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
 
@@ -56,7 +56,7 @@ public class AppUserControllerTest {
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("username_31@testemail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("username_3@testemail.com", "password")
-                .exchange("/api/appUser/update/username_3", HttpMethod.PUT, updateRequest, String.class);
+                .exchange("/api/appUser/username_3", HttpMethod.PUT, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
 
@@ -72,7 +72,7 @@ public class AppUserControllerTest {
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("username_41@testemail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("wrong", "password")
-                .exchange("/api/appUser/update/username_4", HttpMethod.PUT, updateRequest, String.class);
+                .exchange("/api/appUser/username_4", HttpMethod.PUT, updateRequest, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, updateResult.getStatusCode());
     }
 
@@ -88,7 +88,7 @@ public class AppUserControllerTest {
         UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto("username_51@testemail.com", "password");
         HttpEntity<UpdateAppUserDto> updateRequest = new HttpEntity<>(updateAppUserDto, updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("username_5@testemail.com", "password")
-                .exchange("/api/appUser/update/username_1000", HttpMethod.PUT, updateRequest, String.class);
+                .exchange("/api/appUser/username_1000", HttpMethod.PUT, updateRequest, String.class);
         assertEquals(HttpStatus.NOT_FOUND, updateResult.getStatusCode());
     }
 
@@ -104,7 +104,7 @@ public class AppUserControllerTest {
         HttpHeaders updateHeaders = new HttpHeaders();
         HttpEntity<Boolean> updateRequest = new HttpEntity<>(updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("username_6@testemail.com", "password")
-                .exchange("/api/appUser/delete/username_6", HttpMethod.DELETE, updateRequest, String.class);
+                .exchange("/api/appUser/username_6", HttpMethod.DELETE, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
 
@@ -119,7 +119,7 @@ public class AppUserControllerTest {
         HttpHeaders updateHeaders = new HttpHeaders();
         HttpEntity<Boolean> updateRequest = new HttpEntity<>(updateHeaders);
         ResponseEntity<String> updateResult = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/appUser/delete/username_7", HttpMethod.DELETE, updateRequest, String.class);
+                .exchange("/api/appUser/username_7", HttpMethod.DELETE, updateRequest, String.class);
         assertEquals(HttpStatus.OK, updateResult.getStatusCode());
     }
 

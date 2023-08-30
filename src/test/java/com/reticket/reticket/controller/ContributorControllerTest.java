@@ -23,19 +23,19 @@ public class ContributorControllerTest {
     @Test
     public void testListContributor_withSuper_200() {
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .getForEntity("/api/contributor/list", String.class);
+                .getForEntity("/api/contributor", String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     @Test
     public void testListContributor_withNoUser_200() {
-        ResponseEntity<String> result = template.getForEntity("/api/contributor/list", String.class);
+        ResponseEntity<String> result = template.getForEntity("/api/contributor", String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     public void testListContributor_withWrongUser_401() {
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .getForEntity("/api/contributor/list", String.class);
+                .getForEntity("/api/contributor", String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
     @Test
@@ -84,7 +84,7 @@ public class ContributorControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/contributor/update/1000", HttpMethod.PUT, request, String.class);
+                .exchange("/api/contributor/1000", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
@@ -94,7 +94,7 @@ public class ContributorControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
-                .exchange("/api/contributor/update/1000", HttpMethod.PUT, request, String.class);
+                .exchange("/api/contributor/1000", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
@@ -104,7 +104,7 @@ public class ContributorControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/contributor/update/1000", HttpMethod.PUT, request, String.class);
+                .exchange("/api/contributor/1000", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 

@@ -34,7 +34,7 @@ public class AddressController {
 
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> update(@RequestBody AddressSaveDto addressSaveDto, @PathVariable Long id) {
         if (this.addressService.update(addressSaveDto, id)) {

@@ -32,12 +32,12 @@ public class ContributorController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<List<ListDetailedContributorsDto>> listContributors() {
         return new ResponseEntity<>(this.contributorService.listContributors(), HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> update(@RequestBody ContributorSaveDto contributorSaveDto, @PathVariable Long id) {
         if(this.contributorService.update(contributorSaveDto, id)) {

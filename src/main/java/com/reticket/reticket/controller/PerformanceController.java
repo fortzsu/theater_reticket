@@ -38,7 +38,7 @@ public class PerformanceController {
         this.generateTicketToPerformanceService = generateTicketToPerformanceService;
     }
 
-    @PostMapping("/save")
+    @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
         boolean flag = this.generateTicketToPerformanceService.generate(performanceSaveDtoList);

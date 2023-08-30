@@ -36,7 +36,7 @@ public class PlayController {
         this.auditoriumService = auditoriumService;
     }
 
-    @PostMapping("/save")
+    @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PlaySaveDto> playSaveDtoList) {
         if(this.playService.save(playSaveDtoList)) {
@@ -66,7 +66,7 @@ public class PlayController {
         return new ResponseEntity<>(this.playService.listPlays(pageableDto), HttpStatus.OK);
     }
 
-    @PutMapping("/updatePlay/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> updatePlay(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
         if(this.playService.updatePlay(updatePlayDto, id))  {

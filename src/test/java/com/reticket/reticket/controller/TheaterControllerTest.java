@@ -27,7 +27,7 @@ public class TheaterControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .postForEntity("/api/theater/create", request, String.class);
+                .postForEntity("/api/theater", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
@@ -37,7 +37,7 @@ public class TheaterControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .postForEntity("/api/theater/create", request, String.class);
+                .postForEntity("/api/theater", request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
@@ -47,7 +47,7 @@ public class TheaterControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
         ResponseEntity<Boolean> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                        .exchange("/api/theater/update/theaterName", HttpMethod.PUT, request, Boolean.class);
+                        .exchange("/api/theater/theaterName", HttpMethod.PUT, request, Boolean.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
@@ -57,7 +57,7 @@ public class TheaterControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/theater/update/theaterName", HttpMethod.PUT, request, String.class);
+                .exchange("/api/theater/theaterName", HttpMethod.PUT, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 
@@ -66,7 +66,7 @@ public class TheaterControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/theater/delete/theaterName", HttpMethod.DELETE, request, String.class);
+                .exchange("/api/theater/theaterName", HttpMethod.DELETE, request, String.class);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
@@ -75,7 +75,7 @@ public class TheaterControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
-                .exchange("/api/theater/delete/theaterName", HttpMethod.DELETE, request, String.class);
+                .exchange("/api/theater/theaterName", HttpMethod.DELETE, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 

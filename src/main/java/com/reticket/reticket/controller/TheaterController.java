@@ -24,7 +24,7 @@ public class TheaterController {
         this.theaterService = theaterService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @RolesAllowed("ROLE_SUPER")
     public ResponseEntity<Void> createTheatre(@RequestBody TheaterSaveDto theatreSaveDto) {
         theaterService.save(theatreSaveDto);
@@ -37,7 +37,7 @@ public class TheaterController {
     }
 
     @RolesAllowed("ROLE_SUPER")
-    @PutMapping("/update/{theaterName}")
+    @PutMapping("/{theaterName}")
     public ResponseEntity<Boolean> updateTheater(@RequestBody TheaterSaveDto theatreSaveDto, @PathVariable String theaterName) {
         if(this.theaterService.updateTheater(theatreSaveDto, theaterName)) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -46,7 +46,7 @@ public class TheaterController {
         }
     }
     @RolesAllowed("ROLE_SUPER")
-    @DeleteMapping("/delete/{theaterName}")
+    @DeleteMapping("/{theaterName}")
     public ResponseEntity<Boolean> deleteTheater(@PathVariable String theaterName) {
         if(this.theaterService.deleteTheater(theaterName)) {
             return new ResponseEntity<>(HttpStatus.OK);
