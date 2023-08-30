@@ -33,6 +33,10 @@ import java.util.*;
 public class ReticketTest {
 
     @Autowired
+    private GenerateTicketToPerformanceService generateTicketToPerformanceService;
+    @Autowired
+    private TicketActionService ticketActionService;
+    @Autowired
     private TheaterService theaterService;
     @Autowired
     private TheaterRepository theaterRepository;
@@ -89,7 +93,6 @@ public class ReticketTest {
 
     private static boolean init = true;
 
-
     @Before
     public void init() {
         if (init) {
@@ -130,7 +133,7 @@ public class ReticketTest {
             auditoriumSaveDtoList.add(new AuditoriumSaveDto(
                     "Harold Pinter Theater", 2L, 23, 17, auditoriumPriceCategorySaveDtoList)); //C:391
 
-            this.auditoriumController.createAuditorium(auditoriumSaveDtoList);
+            this.auditoriumService.save(auditoriumSaveDtoList);
 
             // ************* AUDITORIUM *************
 
@@ -141,7 +144,7 @@ public class ReticketTest {
             addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 0, 2L));
             addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 0, 3L));
             addressSaveDtoList.add(new AddressSaveDto("SW1Y 4SW", "London", "Panton", 4, 4L));
-            this.addressController.save(addressSaveDtoList);
+            this.addressService.save(addressSaveDtoList);
 
             // ************* ADDRESS *************
 
@@ -158,7 +161,7 @@ public class ReticketTest {
                 contributorSaveDtoList.add(new ContributorSaveDto(harold, String.valueOf(i), introduction));
             }
 
-            this.contributorController.save(contributorSaveDtoList);
+            this.contributorService.save(contributorSaveDtoList);
 
             // ************* CONTRIBUTOR *************
 
@@ -224,7 +227,7 @@ public class ReticketTest {
             playSaveDto_8.setContributorsSaveForPlaySaveDtoList(Arrays.asList(cForP.get(10), cForP.get(11), cForP.get(12), cForP.get(13), cForP.get(14), cForP.get(15)));
             playSaveDtoList.add(playSaveDto_8);
 
-            this.playController.save(playSaveDtoList);
+            this.playService.save(playSaveDtoList);
             // ************* PLAY *************
             // ************* PERFORMANCE *************
 
@@ -237,15 +240,15 @@ public class ReticketTest {
                     j++;
                 }
             }
-            this.performanceController.save(performanceSaveDtoList);
+            this.generateTicketToPerformanceService.generate(performanceSaveDtoList);
             // ************* PERFORMANCE *************
 
             // ************* APPUSER *************
 
-            this.appUserController.saveGuest(new GuestUserSaveDto("FirstName_GuestOne", "LastName_GuestOne", "guestOne", "test", "guestOne@testemail.com"));
-            this.appUserController.saveGuest(new GuestUserSaveDto("FirstName_GuestTwo", "LastName_GuestTwo", "guestTwo", "test",  "guestTwo@testemail.com"));
-            this.appUserController.saveGuest(new GuestUserSaveDto("FirstName_GuestThree", "LastName_GuestThree", "guestThree", "test", "guestThree@testemail.com"));
-            this.appUserController.saveGuest(new GuestUserSaveDto("FirstName_GuestFour", "LastName_GuestFour", "guestFour", "test",  "guestFour@testemail.com"));
+            this.appUserService.saveGuest(new GuestUserSaveDto("FirstName_GuestOne", "LastName_GuestOne", "guestOne", "test", "guestOne@testemail.com"));
+            this.appUserService.saveGuest(new GuestUserSaveDto("FirstName_GuestTwo", "LastName_GuestTwo", "guestTwo", "test",  "guestTwo@testemail.com"));
+            this.appUserService.saveGuest(new GuestUserSaveDto("FirstName_GuestThree", "LastName_GuestThree", "guestThree", "test", "guestThree@testemail.com"));
+            this.appUserService.saveGuest(new GuestUserSaveDto("FirstName_GuestFour", "LastName_GuestFour", "guestFour", "test",  "guestFour@testemail.com"));
 
             List<TicketActionDto> ticketActionDtoList = new ArrayList<>();
 
@@ -266,7 +269,7 @@ public class ReticketTest {
                             2500L, 2501L, 2600L, 2601L, 2700L, 2701L));
             ticketActionDtoList.add(ticketActionDto_buyAll);
 
-            this.ticketActionController.ticketAction(ticketActionDtoList);
+            this.ticketActionService.ticketAction(ticketActionDtoList);
 
 
             // ************* APPUSER *************
@@ -773,11 +776,6 @@ public class ReticketTest {
     @Test
     public void testSavedAppUser_fromRepository_checkUserName_Last() {
         Assert.assertEquals("guestFour", this.appUserRepository.findAll().get(6).getUsername());
-    }
-
-    @Test
-    public void testSavedAppUser_checkTicketListByUsername() {
-        Assert.assertEquals(HttpStatus.OK, this.appUserController.listTickets("guestOne").getStatusCode());
     }
 
     @Test

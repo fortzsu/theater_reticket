@@ -6,6 +6,7 @@ import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
+import com.reticket.reticket.service.GenerateTicketToPerformanceService;
 import com.reticket.reticket.service.PerformanceService;
 import com.reticket.reticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,22 +28,20 @@ public class PerformanceController {
 
     private final PerformanceService performanceService;
     private final TicketService ticketService;
+    private final GenerateTicketToPerformanceService generateTicketToPerformanceService;
 
     @Autowired
     public PerformanceController(PerformanceService performanceService,
-                                 TicketService ticketService) {
+                                 TicketService ticketService, GenerateTicketToPerformanceService generateTicketToPerformanceService) {
         this.performanceService = performanceService;
         this.ticketService = ticketService;
+        this.generateTicketToPerformanceService = generateTicketToPerformanceService;
     }
 
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
-        List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
-        boolean flag = false;
-        for (int i = 0; i < performanceSaveDtoList.size(); i++) {
-            flag = this.ticketService.generateTicketsToPerformance(performanceList.get(i), performanceSaveDtoList.get(i));
-        }
+        boolean flag = this.generateTicketToPerformanceService.generate(performanceSaveDtoList);
         if(flag) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
