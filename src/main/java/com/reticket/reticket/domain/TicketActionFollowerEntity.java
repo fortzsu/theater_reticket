@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "ticket_action_follower_entity")
 public class TicketActionFollowerEntity {
     @Id
     @Column(name = "id")

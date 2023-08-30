@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "appuser")
 @NamedQueries(
         @NamedQuery(
                 name = AppUser.FIND_BY_EMAIL,

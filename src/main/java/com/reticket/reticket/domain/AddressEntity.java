@@ -2,8 +2,8 @@ package com.reticket.reticket.domain;
 
 import jakarta.persistence.*;
 
-
 @Entity
+@Table(name = "address")
 public class AddressEntity {
 
     @Id

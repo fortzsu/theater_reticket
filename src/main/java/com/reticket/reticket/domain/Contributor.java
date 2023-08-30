@@ -3,6 +3,7 @@ package com.reticket.reticket.domain;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "contributor")
 public class Contributor {
     @Id
     @Column(name = "contributor_id")

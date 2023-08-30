@@ -5,6 +5,7 @@ import com.reticket.reticket.domain.enums.ContributorType;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "play_contributor_types")
 public class PlayContributorTypes {
     @Id
     @Column(name = "id")

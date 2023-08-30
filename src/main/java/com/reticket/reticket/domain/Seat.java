@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "seat")
 public class Seat {
     @Id
     @Column(name = "id")

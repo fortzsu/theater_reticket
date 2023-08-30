@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "performance")
 public class Performance {
     @Id
     @Column(name = "id")

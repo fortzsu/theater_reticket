@@ -14,18 +14,6 @@ import java.security.Principal;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    private final AppUserService appUserService;
-
-    @Autowired
-    public AuthenticationController(AppUserService appUserService) {
-        this.appUserService = appUserService;
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<String> getMe(Principal principal) {
-        return ResponseEntity.ok(principal.toString());
-    }
-
     @PostMapping("/login")
     public ResponseEntity<Void> login() {
         return ResponseEntity.ok().build();

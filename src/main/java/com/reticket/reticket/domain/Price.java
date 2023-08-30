@@ -4,6 +4,7 @@ package com.reticket.reticket.domain;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "price")
 public class Price {
 
     @Id
