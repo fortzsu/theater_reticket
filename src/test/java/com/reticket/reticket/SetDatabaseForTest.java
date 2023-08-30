@@ -2,18 +2,12 @@ package com.reticket.reticket;
 
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.service.*;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestComponent;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@TestComponent
 public class SetDatabaseForTest {
 
     public static void init(GenerateTicketToPerformanceService generateTicketToPerformanceService, TicketActionService ticketActionService,
