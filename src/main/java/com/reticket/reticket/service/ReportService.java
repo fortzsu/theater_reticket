@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.reticket.reticket.domain.enums.TicketCondition.findTicketCondition;
+
 
 @Service
 @Transactional
@@ -47,7 +49,7 @@ public class ReportService {
         if (filterReportDto.isPerformances()) {
             reportResultDto.setCriteriaResultPerformancesDtos(fillPerformances(filterReportDto, ticketCondition, startDate, endDate));
         } else {
-            reportResultDto.setSearchPathName(searchThePath(filterReportDto));
+            reportResultDto.setSearchPathName(searchPath(filterReportDto));
         }
         if(filterReportDto.isExportToSheet()) {
             try {
@@ -136,16 +138,7 @@ public class ReportService {
         return predicateList;
     }
 
-    private TicketCondition findTicketCondition(String ticketCondition) {
-        return switch (ticketCondition) {
-            case "SOLD" -> TicketCondition.SOLD;
-            case "RETURNED" -> TicketCondition.RETURNED;
-            case "RESERVED" -> TicketCondition.RESERVED;
-            default -> TicketCondition.FOR_SALE;
-        };
-    }
-
-    public String searchThePath(FilterReportDto filterReportDto) {
+    public String searchPath(FilterReportDto filterReportDto) {
         switch (filterReportDto.getFilterByPath()) {
             case "theater" -> {
                 Theater theater = this.theaterService.findById(filterReportDto.getSearchId());

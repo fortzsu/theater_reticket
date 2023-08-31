@@ -15,4 +15,13 @@ public enum TicketCondition {
     public String getDisplayName() {
         return displayName;
     }
+
+    public static TicketCondition findTicketCondition(String ticketCondition) {
+        return switch (ticketCondition) {
+            case "SOLD" -> TicketCondition.SOLD;
+            case "RETURNED" -> TicketCondition.RETURNED;
+            case "RESERVED" -> TicketCondition.RESERVED;
+            default -> TicketCondition.FOR_SALE;
+        };
+    }
 }
