@@ -24,8 +24,8 @@ public class Seat {
     @Column(name = "auditorium_row_number")
     private Integer auditoriumRowNumber;
     @ManyToOne
-    @JoinColumn(name = "auditorium_id")
-    private Auditorium auditoriumId;
+    @JoinColumn(name = "auditorium")
+    private Auditorium auditorium;
 
     public Seat() {
     }
@@ -86,11 +86,11 @@ public class Seat {
         this.auditoriumRowNumber = auditoriumRowNumber;
     }
 
-    public Auditorium getAuditoriumId() {
-        return auditoriumId;
+    public Auditorium getAuditorium() {
+        return auditorium;
     }
 
-    public void setAuditoriumId(Auditorium auditoriumId) {
-        this.auditoriumId = auditoriumId;
+    public void setAuditorium(Auditorium auditorium) {
+        this.auditorium = auditorium;
     }
 }

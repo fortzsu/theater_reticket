@@ -29,13 +29,13 @@ public class SeatService {
                 seat.setAuditoriumRowNumber(i);
                 seat.setSeatNumber(j);
                 seat.setPriceCategoryNumber(i, auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList());
-                seat.setAuditoriumId(auditorium);
+                seat.setAuditorium(auditorium);
                 seatRepository.save(seat);
             }
         }
     }
 
     public List<Seat> findAllByAuditoriumId(Auditorium auditorium) {
-        return this.seatRepository.findAllByAuditoriumId(auditorium);
+        return this.seatRepository.findAllByAuditorium(auditorium);
     }
 }
