@@ -42,32 +42,36 @@ public class TicketService {
         return opt.orElse(null);
     }
 
-    public boolean generateTicketsToPerformance(Performance performance, PerformanceSaveDto performanceSaveDto) {
+    public boolean searchSeatsForPerformance(Performance performance, PerformanceSaveDto performanceSaveDto) {
         Play play = this.playService.findById(performanceSaveDto.getPlayId());
         if (play != null) {
             Auditorium auditorium = this.auditoriumService.findAuditoriumByAuditoriumName(performance.getPlay().getAuditorium().getAuditoriumName());
             List<Seat> seats = this.seatService.findAllByAuditoriumId(auditorium);
-            for (Seat seat : seats) {
-                if (seat.getSeatCondition().equals(SeatConditions.AVAILABLE)) {
-                    Ticket ticket = new Ticket();
-                    ticket.setPerformance(performance);
-                    ticket.setSeat(seat);
-                    List<Price> prices = this.priceService.findAllByPlay(play);
-                    Price price = findPriceAmount(seat.getPriceCategoryNumber(), prices);
-                    ticket.setPrice(price);
-                    ticket.setTicketCondition(TicketCondition.FOR_SALE);
-                    ticket.setGeneratedAt(LocalDateTime.now());
-                    this.ticketRepository.save(ticket);
-                }
-            }
+            generateTicketsToPerformance(seats, performance, play);
             return true;
         } else {
             return false;
         }
     }
 
-    private Price findPriceAmount(Integer priceCategory, List<Price> prices) {
-        return prices.get(priceCategory - 1);
+    private void generateTicketsToPerformance(List<Seat> seats, Performance performance, Play play) {
+        for (Seat seat : seats) {
+            if (seat.getSeatCondition().equals(SeatConditions.AVAILABLE)) {
+                Ticket ticket = new Ticket();
+                ticket.setPerformance(performance);
+                ticket.setSeat(seat);
+                List<Price> prices = this.priceService.findAllByPlay(play);
+                Price price = findPriceAmount(seat.getPriceCategoryNumber(), prices);
+                ticket.setPrice(price);
+                ticket.setTicketCondition(TicketCondition.FOR_SALE);
+                ticket.setGeneratedAt(LocalDateTime.now());
+                this.ticketRepository.save(ticket);
+            }
+        }
+    }
+
+    private Price findPriceAmount(Integer seatPriceCategory, List<Price> prices) {
+        return prices.get(seatPriceCategory);
     }
 
 

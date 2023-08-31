@@ -59,17 +59,15 @@ public class Seat {
     }
 
 
-    public void setPriceCategoryNumber(Integer rowNum,
-                                       List<AuditoriumPriceCategorySaveDto>
-                                               list) {
+    public void setPriceCategoryNumber(Integer rowNum, List<AuditoriumPriceCategorySaveDto> list) {
         int i = 0;
         boolean flag = true;
         while (i < list.size() && flag) {
             if (rowNum <= list.get(i).getRowNumberWherePriceCategoryChanges()) {
-                this.priceCategoryNumber = list.get(i).getPriceCategoryNumber();
+                this.priceCategoryNumber = list.get(i).getPriceCategoryNumber() - 1;
                 flag = false;
             } else if (rowNum > list.get(list.size() - 1).getRowNumberWherePriceCategoryChanges()) {
-                this.priceCategoryNumber = list.size() + 1;
+                this.priceCategoryNumber = list.size();
                 flag = false;
             } else {
                 i++;

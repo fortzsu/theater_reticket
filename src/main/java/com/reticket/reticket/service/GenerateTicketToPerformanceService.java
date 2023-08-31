@@ -26,7 +26,7 @@ public class GenerateTicketToPerformanceService {
         List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
         boolean flag = false;
         for (int i = 0; i < performanceSaveDtoList.size(); i++) {
-            flag = this.ticketService.generateTicketsToPerformance(performanceList.get(i), performanceSaveDtoList.get(i));
+            flag = this.ticketService.searchSeatsForPerformance(performanceList.get(i), performanceSaveDtoList.get(i));
         }
         return flag;
     }
