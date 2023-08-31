@@ -35,25 +35,34 @@ public class TicketActionService {
         boolean flag = false;
         for (TicketActionDto ticketActionDto : ticketActionDtoList) {
             AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
-            if (appUser != null) {
-                for (Long ticketId : ticketActionDto.getTicketId()) {
-                    Ticket ticket = this.ticketService.findByTicketId(ticketId);
-                    ticket.setAppUser(appUser);
-                    if (ticketActionDto.getPath().equals("buy")) {
-                        ticket.setTicketCondition(TicketCondition.SOLD);
-                    } else if (ticketActionDto.getPath().equals("reserve")) {
-                        ticket.setTicketCondition(TicketCondition.RESERVED);
-                    } else {
-                        if (ticket.getTicketCondition().equals(TicketCondition.SOLD) && ticket.getAppUser().getUsername().equals(ticketActionDto.getUsername())) {
-                            ticket.setTicketCondition(TicketCondition.RETURNED);
-                        }
-                    }
-                    createTicketActionFollower(appUser, ticket);
-                }
-                flag = true;
-            }
+            flag = addTicketsToAppuser(appUser, ticketActionDto);
         }
         return flag;
+    }
+
+    private boolean addTicketsToAppuser(AppUser appUser, TicketActionDto ticketActionDto) {
+        if (appUser != null) {
+            for (Long ticketId : ticketActionDto.getTicketId()) {
+                Ticket ticket = this.ticketService.findByTicketId(ticketId);
+                ticket.setAppUser(appUser);
+                searchTicketActionPath(ticketActionDto, ticket);
+                createTicketActionFollower(appUser, ticket);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void searchTicketActionPath(TicketActionDto ticketActionDto, Ticket ticket) {
+        if (ticketActionDto.getPath().equals("buy")) {
+            ticket.setTicketCondition(TicketCondition.SOLD);
+        } else if (ticketActionDto.getPath().equals("reserve")) {
+            ticket.setTicketCondition(TicketCondition.RESERVED);
+        } else {
+            if (ticket.getTicketCondition().equals(TicketCondition.SOLD) && ticket.getAppUser().getUsername().equals(ticketActionDto.getUsername())) {
+                ticket.setTicketCondition(TicketCondition.RETURNED);
+            }
+        }
     }
 
     private void createTicketActionFollower(AppUser appUser, Ticket ticket) {
