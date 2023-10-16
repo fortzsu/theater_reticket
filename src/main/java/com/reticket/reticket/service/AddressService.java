@@ -22,14 +22,11 @@ public class AddressService {
 
     private final AuditoriumService auditoriumService;
 
-    private final TheaterService theaterService;
-
 
     @Autowired
-    public AddressService(AddressRepository addressRepository, AuditoriumService auditoriumService, TheaterService theaterService) {
+    public AddressService(AddressRepository addressRepository, AuditoriumService auditoriumService) {
         this.addressRepository = addressRepository;
         this.auditoriumService = auditoriumService;
-        this.theaterService = theaterService;
     }
 
     public List<AddressEntity> save(List<AddressSaveDto> addressSaveDtoList) {
@@ -47,7 +44,8 @@ public class AddressService {
         addressEntity.setHouseNumber(addressSaveDto.getHouseNumber());
         addressEntity.setStreet(addressSaveDto.getStreet());
         addressEntity.setPostCode(addressSaveDto.getPostCode());
-        addressEntity.setAuditoriumId(this.auditoriumService.findAuditoriumById(addressSaveDto.getAuditoriumId()));
+        Auditorium auditorium = this.auditoriumService.findAuditoriumById(addressSaveDto.getAuditoriumId());
+        addressEntity.setAuditoriumId(auditorium);
         return addressEntity;
     }
 
@@ -64,7 +62,6 @@ public class AddressService {
     public boolean update(AddressSaveDto addressSaveDto, Long id) {
         Optional<AddressEntity> address = this.addressRepository.findById(id);
         if(address.isPresent()) {
-            System.out.println(address.get().getCity());
             updateValues(addressSaveDto, address.get());
             return true;
         } else {

@@ -5,7 +5,6 @@ public class TheaterSaveDto {
 
     private Long id;
     private String theatreName;
-
     private String theatreStory;
 
     public TheaterSaveDto() {

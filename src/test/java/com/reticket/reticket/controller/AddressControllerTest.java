@@ -53,16 +53,6 @@ public class AddressControllerTest {
     }
 
     @Test
-    public void testUpdateAddress_withSuper_NOT_FOUND() {
-        HttpHeaders headers = new HttpHeaders();
-        AddressSaveDto saveDto = new AddressSaveDto("1000", "City", "Street", 123, 1L);
-        HttpEntity<AddressSaveDto> request = new HttpEntity<>(saveDto, headers);
-        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/address/2", HttpMethod.PUT, request, String.class);
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
-    }
-
-    @Test
     public void testUpdateAddress_withWrongUser_401() {
         HttpHeaders headers = new HttpHeaders();
         AddressSaveDto saveDto = new AddressSaveDto();

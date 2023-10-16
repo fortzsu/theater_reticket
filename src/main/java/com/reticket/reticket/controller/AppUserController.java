@@ -5,6 +5,7 @@ import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.save.AssociateUserSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
+import com.reticket.reticket.dto.wrapper.ListWrapperDto;
 import com.reticket.reticket.service.AppUserActionService;
 import com.reticket.reticket.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,8 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('LIKE_PLAY')")
     public ResponseEntity<Void> likePlay(@PathVariable(value = "username") String username,
                                          @PathVariable(value = "playId") Long playId) {
-        if(this.appUserActionService.likePlay(username, playId)) {
+        boolean isLikePlayOk = this.appUserActionService.likePlay(username, playId);
+        if(isLikePlayOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -78,7 +80,8 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUserDto updateAppUserDto,
                                               @PathVariable String username) {
-        if (this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username)) {
+        boolean isUpdateUserOk = this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username);
+        if (isUpdateUserOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -89,7 +92,8 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
         SecurityContext context = SecurityContextHolder.getContext();
-        if (this.appUserService.deleteUser(username, context.getAuthentication())) {
+        boolean isDeleteUserOk = this.appUserService.deleteUser(username, context.getAuthentication());
+        if (isDeleteUserOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

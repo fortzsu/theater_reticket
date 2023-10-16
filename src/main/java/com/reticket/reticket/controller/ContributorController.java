@@ -1,7 +1,5 @@
 package com.reticket.reticket.controller;
 
-
-import com.reticket.reticket.dto.list.ListContributorsDto;
 import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.service.ContributorService;
@@ -34,13 +32,15 @@ public class ContributorController {
 
     @GetMapping
     public ResponseEntity<List<ListDetailedContributorsDto>> listContributors() {
-        return new ResponseEntity<>(this.contributorService.listContributors(), HttpStatus.OK);
+        this.contributorService.listContributors();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> update(@RequestBody ContributorSaveDto contributorSaveDto, @PathVariable Long id) {
-        if(this.contributorService.update(contributorSaveDto, id)) {
+        boolean isContributorUpdateOk = this.contributorService.update(contributorSaveDto, id);
+        if(isContributorUpdateOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

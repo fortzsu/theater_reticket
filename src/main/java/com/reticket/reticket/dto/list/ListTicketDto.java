@@ -1,5 +1,7 @@
 package com.reticket.reticket.dto.list;
 
+import com.reticket.reticket.dto.wrapper.WrapperClass;
+
 public class ListTicketDto {
 
     private String theatreName;

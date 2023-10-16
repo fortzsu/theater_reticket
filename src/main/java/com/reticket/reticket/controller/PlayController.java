@@ -63,13 +63,15 @@ public class PlayController {
 
     @PostMapping("/list")
     public ResponseEntity<List<ListPlaysDto>> listPlays(@RequestBody PageableDto pageableDto) {
-        return new ResponseEntity<>(this.playService.listPlays(pageableDto), HttpStatus.OK);
+        this.playService.listPlays(pageableDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> updatePlay(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
-        if(this.playService.updatePlay(updatePlayDto, id))  {
+        boolean isUpdatePlayOk = this.playService.updatePlay(updatePlayDto, id);
+        if(isUpdatePlayOk)  {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -79,7 +81,8 @@ public class PlayController {
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> deletePlay(@PathVariable Long id) {
-        if(this.playService.deletePlay(id)) {
+        boolean isDeletePlayOk = this.playService.deletePlay(id);
+        if(isDeletePlayOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

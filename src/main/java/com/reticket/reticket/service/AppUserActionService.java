@@ -64,9 +64,13 @@ public class AppUserActionService {
     }
 
     public List<LikedPlaysListDto> listLikedPlays(String username) {
-        List<LikedPlaysListDto> returnListOfLikedPlays = new ArrayList<>();
         AppUser appUser = this.appUserRepository.findByUsername(username);
         List<Play> likedPlaysByAppUser = this.playRepository.findPlaysByAppUser(appUser);
+        return fillLikedPlayList(likedPlaysByAppUser);
+    }
+
+    private List<LikedPlaysListDto> fillLikedPlayList(List<Play> likedPlaysByAppUser) {
+        List<LikedPlaysListDto> returnListOfLikedPlays = new ArrayList<>();
         for (Play play : likedPlaysByAppUser) {
             LikedPlaysListDto dto = new LikedPlaysListDto();
             dto.setPlayName(play.getPlayName());
@@ -81,8 +85,12 @@ public class AppUserActionService {
     }
 
     private List<PerformanceListToLikedPlaysDto> findPerformancesByPlay(Play play) {
-        List<PerformanceListToLikedPlaysDto> resultList = new ArrayList<>();
         List<Performance> performances = this.performanceRepository.findUpcomingPerformancesByPlayId(play);
+        return fillPerformanceList(performances);
+    }
+
+    private List<PerformanceListToLikedPlaysDto> fillPerformanceList(List<Performance> performances) {
+        List<PerformanceListToLikedPlaysDto> resultList = new ArrayList<>();
         for (Performance performance : performances) {
             PerformanceListToLikedPlaysDto dto = new PerformanceListToLikedPlaysDto();
             dto.setPerformanceDateTime(performance.getOriginalPerformanceDateTime());
@@ -104,25 +112,33 @@ public class AppUserActionService {
     }
 
     public List<ListTicketDto> listTickets(String username) {
-        List<ListTicketDto> list = new ArrayList<>();
         AppUser appUser = findByUsername(username);
         List<Ticket> tickets = this.ticketService.findTicketByAppUserId(appUser);
+        return fillListTicketDto(tickets);
+    }
+
+    private List<ListTicketDto> fillListTicketDto(List<Ticket> tickets) {
+        List<ListTicketDto> resultList = new ArrayList<>();
         for (Ticket ticket : tickets) {
-            Performance performance = this.performanceService.findPerformanceById(ticket.getPerformance().getId());
-            Play play = this.playService.findById(performance.getPlay().getId());
-            Auditorium auditorium = this.auditoriumService.findAuditoriumById(play.getAuditorium().getId());
-            Theater theater = this.theaterService.findById(auditorium.getTheater().getId());
-            AddressEntity addressEntity = this.addressService.findByAuditoriumId(auditorium);
             ListTicketDto listTicketDto = new ListTicketDto();
-            listTicketDto.setPlayName(play.getPlayName());
-            listTicketDto.setTheatreName(theater.getTheaterName());
-            listTicketDto.setAuditoriumAddress(addressEntity.getCity() + ", " + addressEntity.getStreet() + " " + addressEntity.getHouseNumber());
-            listTicketDto.setPerformanceDateTime(performance.getOriginalPerformanceDateTime().getYear() + ". " + performance.getOriginalPerformanceDateTime().getMonth());
+            addEntitiesToListTicketDto(listTicketDto, ticket);
             listTicketDto.setTicketPrice(ticket.getPrice().getAmount());
             listTicketDto.setTicketCondition(ticket.getTicketCondition().getDisplayName());
-            list.add(listTicketDto);
+            resultList.add(listTicketDto);
         }
-        return list;
+        return resultList;
+    }
+
+    private void addEntitiesToListTicketDto(ListTicketDto listTicketDto, Ticket ticket) {
+        Performance performance = this.performanceService.findPerformanceById(ticket.getPerformance().getId());
+        Play play = this.playService.findById(performance.getPlay().getId());
+        Auditorium auditorium = this.auditoriumService.findAuditoriumById(play.getAuditorium().getId());
+        Theater theater = this.theaterService.findById(auditorium.getTheater().getId());
+        AddressEntity addressEntity = this.addressService.findByAuditoriumId(auditorium);
+        listTicketDto.setPlayName(play.getPlayName());
+        listTicketDto.setTheatreName(theater.getTheaterName());
+        listTicketDto.setAuditoriumAddress(addressEntity.getCity() + ", " + addressEntity.getStreet() + " " + addressEntity.getHouseNumber());
+        listTicketDto.setPerformanceDateTime(performance.getOriginalPerformanceDateTime().getYear() + ". " + performance.getOriginalPerformanceDateTime().getMonth());
     }
 
 

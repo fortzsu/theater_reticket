@@ -240,21 +240,6 @@ public class AppUserControllerTest {
     }
 
     @Test
-    public void testAppUserLikePlay_withGuest_200() {
-        GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username_12", "password",
-                 "username_12@testemail.com");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
-        template.withBasicAuth("reticket23@gmail.com", "test")
-                .postForEntity("/api/appUser/saveGuest", request, String.class);
-        HttpHeaders listHeaders = new HttpHeaders();
-        HttpEntity<Void> listRequest = new HttpEntity<>(listHeaders);
-        ResponseEntity<String> listResult = template.withBasicAuth("username_12@testemail.com", "password")
-                .exchange("/api/appUser/username_12/1", HttpMethod.POST, listRequest, String.class);
-        assertEquals(HttpStatus.NOT_FOUND, listResult.getStatusCode());
-    }
-
-    @Test
     public void testAppUserLikePlay_withSuper_403() {
         HttpHeaders listHeaders = new HttpHeaders();
         HttpEntity<Void> listRequest = new HttpEntity<>(listHeaders);

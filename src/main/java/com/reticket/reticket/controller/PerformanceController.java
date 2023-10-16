@@ -1,14 +1,12 @@
 package com.reticket.reticket.controller;
 
 
-import com.reticket.reticket.domain.Performance;
 import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.service.GenerateTicketToPerformanceService;
 import com.reticket.reticket.service.PerformanceService;
-import com.reticket.reticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -27,14 +25,12 @@ import java.util.List;
 public class PerformanceController {
 
     private final PerformanceService performanceService;
-    private final TicketService ticketService;
     private final GenerateTicketToPerformanceService generateTicketToPerformanceService;
 
     @Autowired
     public PerformanceController(PerformanceService performanceService,
-                                 TicketService ticketService, GenerateTicketToPerformanceService generateTicketToPerformanceService) {
+                                GenerateTicketToPerformanceService generateTicketToPerformanceService) {
         this.performanceService = performanceService;
-        this.ticketService = ticketService;
         this.generateTicketToPerformanceService = generateTicketToPerformanceService;
     }
 
@@ -52,13 +48,15 @@ public class PerformanceController {
     @PostMapping("/search")
     public ResponseEntity<Page<PerformanceListDto>> searchFilteredPerformances(
             @RequestBody FilterPerformancesDto dto) {
-        return new ResponseEntity<>(this.performanceService.searchFilteredPerformances(dto), HttpStatus.OK);
+        this.performanceService.searchFilteredPerformances(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/updatePerformance/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> updatePerformance(@RequestBody UpdatePerformanceDto updatePerformanceDto, @PathVariable Long id) {
-        if (this.performanceService.updatePerformance(updatePerformanceDto, id)) {
+        boolean isUpdatePerformanceOk = this.performanceService.updatePerformance(updatePerformanceDto, id);
+        if (isUpdatePerformanceOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

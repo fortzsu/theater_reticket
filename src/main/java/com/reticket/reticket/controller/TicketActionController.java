@@ -27,7 +27,8 @@ public class TicketActionController {
     @PostMapping
     @PreAuthorize("hasAuthority('TICKET_ACTIONS')")
     public ResponseEntity<Void> ticketAction(@RequestBody List<TicketActionDto> ticketActionDtoList) {
-        if(this.ticketActionService.ticketAction(ticketActionDtoList)) {
+        boolean isTicketActionOk = this.ticketActionService.ticketAction(ticketActionDtoList);
+        if(isTicketActionOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
