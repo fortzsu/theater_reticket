@@ -25,14 +25,18 @@ public class SeatService {
         for (int i = 1; i <= auditoriumSaveDto.getNumberOfRows(); i++) {
             for (int j = 1; j <= auditoriumSaveDto.getSeatNumberPerAuditoriumRow(); j++) {
                 Seat seat = new Seat();
-                seat.setSeatCondition(SeatConditions.AVAILABLE);
-                seat.setAuditoriumRowNumber(i);
-                seat.setSeatNumber(j);
-                seat.setPriceCategoryNumber(i, auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList());
-                seat.setAuditorium(auditorium);
-                seatRepository.save(seat);
+                fillSeatData(i, j, auditoriumSaveDto, auditorium, seat);
             }
         }
+    }
+
+    private void fillSeatData(int i, int j, AuditoriumSaveDto auditoriumSaveDto, Auditorium auditorium, Seat seat) {
+        seat.setSeatCondition(SeatConditions.AVAILABLE);
+        seat.setAuditoriumRowNumber(i);
+        seat.setSeatNumber(j);
+        seat.setPriceCategoryNumber(i, auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList());
+        seat.setAuditorium(auditorium);
+        seatRepository.save(seat);
     }
 
     public List<Seat> findAllByAuditoriumId(Auditorium auditorium) {

@@ -35,12 +35,12 @@ public class TicketActionService {
         boolean flag = false;
         for (TicketActionDto ticketActionDto : ticketActionDtoList) {
             AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
-            flag = addTicketsToAppuser(appUser, ticketActionDto);
+            flag = addTicketsToAppUser(appUser, ticketActionDto);
         }
         return flag;
     }
 
-    private boolean addTicketsToAppuser(AppUser appUser, TicketActionDto ticketActionDto) {
+    private boolean addTicketsToAppUser(AppUser appUser, TicketActionDto ticketActionDto) {
         if (appUser != null) {
             for (Long ticketId : ticketActionDto.getTicketId()) {
                 Ticket ticket = this.ticketService.findByTicketId(ticketId);

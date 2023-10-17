@@ -1,7 +1,6 @@
 package com.reticket.reticket.service;
 
 
-import com.github.javafaker.Address;
 import com.reticket.reticket.domain.AddressEntity;
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Theater;
@@ -67,16 +66,26 @@ public class TheaterService {
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize());
         List<Theater> theaters = this.theaterRepository.findAllTheater(pageRequest);
         List<ListTheatersDto> resultList = new ArrayList<>();
+        searchTheaters(theaters, resultList);
+        return resultList;
+    }
+
+    private void searchTheaters(List<Theater> theaters, List<ListTheatersDto> resultList) {
         for (Theater theater : theaters) {
             ListTheatersDto listTheatersDto = new ListTheatersDto(theater.getTheaterName(), theater.getTheaterStory());
             List<Auditorium> auditoriums = this.auditoriumRepository.findAllByTheater(theater);
-            for (Auditorium auditorium : auditoriums) {
-                AddressEntity address = this.addressRepository.findByAuditoriumId(auditorium);
-                listTheatersDto.addAuditoriumListDtoList(new AuditoriumListDto(auditorium.getAuditoriumName(), address.toString()));
-            }
+            searchTheatersByAuditorium(auditoriums, listTheatersDto);
             resultList.add(listTheatersDto);
         }
-        return resultList;
+    }
+
+
+    private void searchTheatersByAuditorium(List<Auditorium> auditoriums, ListTheatersDto listTheatersDto) {
+        for (Auditorium auditorium : auditoriums) {
+            AddressEntity address = this.addressRepository.findByAuditoriumId(auditorium);
+            AuditoriumListDto auditoriumListDto = new AuditoriumListDto(auditorium.getAuditoriumName(), address.toString());
+            listTheatersDto.addAuditoriumListDtoList(auditoriumListDto);
+        }
     }
 
     public boolean updateTheater(TheaterSaveDto theatreSaveDto, String theaterName) {
@@ -98,6 +107,5 @@ public class TheaterService {
             return false;
         }
     }
-
 
 }

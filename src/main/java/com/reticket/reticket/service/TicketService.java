@@ -45,7 +45,8 @@ public class TicketService {
     public boolean searchSeatsForPerformance(Performance performance, PerformanceSaveDto performanceSaveDto) {
         Play play = this.playService.findById(performanceSaveDto.getPlayId());
         if (play != null) {
-            Auditorium auditorium = this.auditoriumService.findAuditoriumByAuditoriumName(performance.getPlay().getAuditorium().getAuditoriumName());
+            String auditoriumName = performance.getPlay().getAuditorium().getAuditoriumName();
+            Auditorium auditorium = this.auditoriumService.findAuditoriumByAuditoriumName(auditoriumName);
             List<Seat> seats = this.seatService.findAllByAuditoriumId(auditorium);
             generateTicketsToPerformance(seats, performance, play);
             return true;
