@@ -12,8 +12,9 @@ import java.util.List;
 @Repository
 public interface AuditoriumRepository extends JpaRepository<Auditorium, Long> {
         Auditorium findAuditoriumByAuditoriumName(String auditoriumName);
-
         @Query(value = "SELECT a FROM Auditorium a WHERE a.theater =:theater")
         List<Auditorium> findAllByTheater(Theater theater);
+
+
 
 }

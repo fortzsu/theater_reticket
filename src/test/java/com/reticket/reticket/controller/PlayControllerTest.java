@@ -1,10 +1,11 @@
 package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.report_search.PageableDto;
-import com.reticket.reticket.dto.save.ContributorsSaveForPlaySaveDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
+import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,11 +48,15 @@ public class PlayControllerTest {
 
     @Test
     public void testGetFormDataPlay_withSuper_NOT_FOUND() {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Void> request = new HttpEntity<>(headers);
-        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/play/formData/1000", HttpMethod.GET, request, String.class);
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        AuditoriumNotFoundException thrown = Assertions.assertThrows(AuditoriumNotFoundException.class, () -> {
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<Void> request = new HttpEntity<>(headers);
+            ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
+                    .exchange("/api/play/formData/1000", HttpMethod.GET, request, String.class);
+//            assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        });
+
+        Assertions.assertEquals("some message", thrown.getMessage());
     }
 
     @Test
@@ -131,16 +137,17 @@ public class PlayControllerTest {
 
     @Test
     public void testListPlay_withSuper_200() {
-        PageableDto pageableDto = new PageableDto(0,5);
+        PageableDto pageableDto = new PageableDto(0, 5);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/play/list", request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
+
     @Test
     public void testListPlay_withNoUser_200() {
-        PageableDto pageableDto = new PageableDto(0,5);
+        PageableDto pageableDto = new PageableDto(0, 5);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
         ResponseEntity<String> result = template.postForEntity("/api/play/list", request, String.class);
@@ -149,7 +156,7 @@ public class PlayControllerTest {
 
     @Test
     public void testListPlay_withWrongUser_401() {
-        PageableDto pageableDto = new PageableDto(0,5);
+        PageableDto pageableDto = new PageableDto(0, 5);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<PageableDto> request = new HttpEntity<>(pageableDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")

@@ -3,11 +3,11 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.dto.list.InitFormDataToPlaySaveDto;
-import com.reticket.reticket.dto.list.ListContributorsDto;
 import com.reticket.reticket.dto.list.ListPlaysDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
+import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.ContributorService;
 import com.reticket.reticket.service.PlayService;
@@ -39,12 +39,15 @@ public class PlayController {
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<HttpStatus> save(@RequestBody List<PlaySaveDto> playSaveDtoList) {
-        if(this.playService.save(playSaveDtoList)) {
+        try {
+            this.playService.save(playSaveDtoList);
             return new ResponseEntity<>(HttpStatus.OK);
-        } else {
+        } catch (AuditoriumNotFoundException e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
     @GetMapping("/formData/{auditoriumId}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
@@ -53,8 +56,8 @@ public class PlayController {
         InitFormDataToPlaySaveDto initData = new InitFormDataToPlaySaveDto();
         initData.setContributorsList(this.contributorService.findContributors());
         Auditorium auditorium = this.auditoriumService.findAuditoriumById(Long.valueOf(auditoriumId));
-        if(auditorium != null) {
-                initData.setNumberOfPriceCategories(auditorium.getNumberOfPriceCategories());
+        if (auditorium != null) {
+            initData.setNumberOfPriceCategories(auditorium.getNumberOfPriceCategories());
             return new ResponseEntity<>(initData, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -71,7 +74,7 @@ public class PlayController {
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> updatePlay(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
         boolean isUpdatePlayOk = this.playService.updatePlay(updatePlayDto, id);
-        if(isUpdatePlayOk)  {
+        if (isUpdatePlayOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -82,7 +85,7 @@ public class PlayController {
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Boolean> deletePlay(@PathVariable Long id) {
         boolean isDeletePlayOk = this.playService.deletePlay(id);
-        if(isDeletePlayOk) {
+        if (isDeletePlayOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

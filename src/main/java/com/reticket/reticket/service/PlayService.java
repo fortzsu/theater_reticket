@@ -1,12 +1,12 @@
 package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.*;
-import com.reticket.reticket.domain.enums.PlayType;
 import com.reticket.reticket.dto.list.ListPlaysDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.ContributorsSaveForPlaySaveDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
+import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.repository.PriceRepository;
@@ -15,9 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,36 +40,28 @@ public class PlayService {
         this.playContributorTypeRepository = playContributorTypeRepository;
     }
 
-    public boolean save(List<PlaySaveDto> playSaveDtoList) {
-        boolean flag = true;
+    public void save(List<PlaySaveDto> playSaveDtoList) throws AuditoriumNotFoundException {
         for (PlaySaveDto dto : playSaveDtoList) {
-            Play play = updateValues(dto);
-            if (play != null) {
-                this.playRepository.save(play);
-                savePricesOfPlay(play.getId(), dto.getPrices());
-                connectContributorWithPlayAndContributorType(play.getId(), dto.getContributorsSaveForPlaySaveDtoList());
-            } else {
-                flag = false;
-            }
-
+            Play play = new Play();
+            updateValues(play, dto);
+            this.playRepository.save(play);
+            savePricesOfPlay(play.getId(), dto.getPrices());
+            connectContributorWithPlayAndContributorType(play.getId(), dto.getContributorsSaveForPlaySaveDtoList());
         }
-        return flag;
     }
 
-    private Play updateValues(PlaySaveDto playSaveDto) {
-        Play play = new Play();
+    private void updateValues(Play play, PlaySaveDto playSaveDto) throws AuditoriumNotFoundException {
+        Auditorium auditorium = this.auditoriumService.findAuditoriumById(playSaveDto.getAuditoriumId());
+        updateData(playSaveDto, play, auditorium);
+    }
+
+    private void updateData(PlaySaveDto playSaveDto, Play play, Auditorium auditorium) {
+        play.setAuditorium(auditorium);
         play.setPlayName(playSaveDto.getPlayName());
         play.setPlot(playSaveDto.getPlot());
         play.setPremiere(playSaveDto.getPremiere().plusHours(1));
         play.setArchived(false);
         play.setPlayType(playSaveDto.getPlayType());
-        Auditorium auditorium = this.auditoriumService.findAuditoriumById(playSaveDto.getAuditoriumId());
-        if (auditorium != null) {
-            play.setAuditorium(auditorium);
-        } else {
-            play = null;
-        }
-        return play;
     }
 
     private void connectContributorWithPlayAndContributorType(Long playId, List<ContributorsSaveForPlaySaveDto> contributorsSaveForPlaySaveDtoList) {
@@ -103,35 +93,43 @@ public class PlayService {
 
     public List<ListPlaysDto> listPlays(PageableDto dto) {
         return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()))
-                .stream().map(ListPlaysDto::new).collect(Collectors.toList());
+                .stream().map(ListPlaysDto::new).collect(Collectors.toList()); //TODO
     }
 
     public boolean updatePlay(UpdatePlayDto updatePlayDto, Long id) {
-        Play play = this.findById(id);
+        Play play = findPlayById(id);
         if (play != null) {
-            if (updatePlayDto.getPlayName() != null) {
-                play.setPlayName(updatePlayDto.getPlayName());
-            }
-            if (updatePlayDto.getPlot() != null) {
-                play.setPlot(updatePlayDto.getPlot());
-            }
-            if (!play.getAuditorium().getId().equals(updatePlayDto.getAuditoriumId())) {
-                Auditorium auditorium = this.auditoriumService.findAuditoriumById(updatePlayDto.getAuditoriumId());
-                play.setAuditorium(auditorium);
-            }
+            updatePlayData(updatePlayDto, play);
             return true;
         } else {
             return false;
         }
     }
 
+    private void updatePlayData(UpdatePlayDto updatePlayDto, Play play) {
+        if (updatePlayDto.getPlayName() != null) {
+            play.setPlayName(updatePlayDto.getPlayName());
+        }
+        if (updatePlayDto.getPlot() != null) {
+            play.setPlot(updatePlayDto.getPlot());
+        }
+        if (!play.getAuditorium().getId().equals(updatePlayDto.getAuditoriumId())) {
+            Auditorium auditorium = this.auditoriumService.findAuditoriumById(updatePlayDto.getAuditoriumId());
+            play.setAuditorium(auditorium);
+        }
+    }
+
     public boolean deletePlay(Long id) {
-        Play play = this.findById(id);
+        Play play = findPlayById(id);
         if (play != null) {
             play.setArchived(true);
             return true;
         } else {
             return false;
         }
+    }
+
+    private Play findPlayById(Long id) {
+        return this.findById(id);
     }
 }

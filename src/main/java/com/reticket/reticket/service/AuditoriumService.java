@@ -3,6 +3,7 @@ package com.reticket.reticket.service;
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
+import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.AuditoriumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,17 +32,19 @@ public class AuditoriumService {
     public List<Auditorium> save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
         List<Auditorium> auditoriumList =  new ArrayList<>();
         for (AuditoriumSaveDto dto : auditoriumSaveDtoList) {
-            Theater tempTheater = this.theaterService.findById(dto.getTheatreId());
-            if(tempTheater != null) {
-                Auditorium savedAuditorium = updateValues(dto, new Auditorium());
-                auditoriumList.add(savedAuditorium);
-                tempTheater.setCapacity(tempTheater.getCapacity() + savedAuditorium.getCapacity());
-                this.seatService.generateSeats(savedAuditorium, dto);
-            } else {
-                return auditoriumList;
-            }
+            generateSeatsToAuditorium(dto,auditoriumList);
         }
         return auditoriumList;
+    }
+
+    private void generateSeatsToAuditorium(AuditoriumSaveDto dto, List<Auditorium> auditoriumList) {
+        Theater tempTheater = this.theaterService.findById(dto.getTheatreId());
+        if(tempTheater != null) {
+            Auditorium savedAuditorium = updateValues(dto, new Auditorium());
+            auditoriumList.add(savedAuditorium);
+            tempTheater.setCapacity(tempTheater.getCapacity() + savedAuditorium.getCapacity());
+            this.seatService.generateSeats(savedAuditorium, dto);
+        }
     }
 
     public Auditorium update(AuditoriumSaveDto auditoriumSaveDto, Long id) {
@@ -51,7 +54,7 @@ public class AuditoriumService {
             auditorium = opt.get();
             return updateValues(auditoriumSaveDto, auditorium);
         } else {
-            return null;
+            return null; //TODO
         }
     }
 
@@ -81,13 +84,16 @@ public class AuditoriumService {
     }
 
     public List<AuditoriumSaveDto> listAuditoriums() {
-        return auditoriumRepository.findAll().stream().
-                map(AuditoriumSaveDto::new).collect(Collectors.toList());
+        return auditoriumRepository.findAll().stream().map(AuditoriumSaveDto::new).collect(Collectors.toList());
     }//TODO
 
     public Auditorium findAuditoriumById(Long auditoriumId) {
         Optional<Auditorium> opt = this.auditoriumRepository.findById(auditoriumId);
-        return opt.orElse(null);
+        if(opt.isPresent()) {
+            return opt.get();
+        } else {
+            throw new AuditoriumNotFoundException("The Auditorium is not found!");
+        }
     }
 
     public Auditorium findAuditoriumByAuditoriumName(String auditoriumName) {

@@ -8,7 +8,6 @@ import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.repository.PerformanceRepository;
-import com.reticket.reticket.repository.TicketRepository;
 import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -128,14 +127,18 @@ public class PerformanceService {
     public boolean updatePerformance(UpdatePerformanceDto updatePerformanceDto, Long id) {
         Performance performance = this.findPerformanceById(id);
         if (performance != null) {
-            performance.setNewDateTime(updatePerformanceDto.getModifiedDateTime());
-            performance.setAvailableOnline(updatePerformanceDto.isAvailableOnline());
-            performance.setCancelled(updatePerformanceDto.isCancelled());
-            performance.setSeenOnline(updatePerformanceDto.isSeenOnline());
+            updatePerformanceData(updatePerformanceDto, performance);
             return true;
         } else {
             return false;
         }
+    }
+
+    private void updatePerformanceData(UpdatePerformanceDto updatePerformanceDto, Performance performance) {
+        performance.setNewDateTime(updatePerformanceDto.getModifiedDateTime());
+        performance.setAvailableOnline(updatePerformanceDto.isAvailableOnline());
+        performance.setCancelled(updatePerformanceDto.isCancelled());
+        performance.setSeenOnline(updatePerformanceDto.isSeenOnline());
     }
 
 

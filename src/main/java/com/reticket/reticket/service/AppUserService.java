@@ -1,5 +1,6 @@
 package com.reticket.reticket.service;
 
+import com.github.javafaker.App;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.save.AssociateUserSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
@@ -61,20 +62,26 @@ public class AppUserService implements UserDetailsService {
     }
 
     private boolean checkIfUsernameAndEmailIsTaken(String username, String email) {
-        return this.appUserRepository.findByEmail(email) != null && this.findByUsername(username) != null;
+        AppUser appUserByEmail = this.appUserRepository.findByEmail(email);
+        AppUser appUserByUsername = this.findByUsername(username);
+        return  appUserByEmail != null && appUserByUsername != null;
     }
 
     public boolean saveAssociate(AssociateUserSaveDto associateUserSaveDto) {
         String username = associateUserSaveDto.getGuestUserSaveDto().getUsername();
         String email = associateUserSaveDto.getGuestUserSaveDto().getEmail();
         if(!checkIfUsernameAndEmailIsTaken(username, email)) {
-            String appUserType = checkAppUserType(associateUserSaveDto.isTheaterAdmin());
-            this.appUserRepository.save(updateValues(new AppUser(), associateUserSaveDto.getGuestUserSaveDto(),
-                    appUserType, associateUserSaveDto.getTheaterId()));
+            saveNewAppUser(associateUserSaveDto);
             return true;
         } else {
             return false;
         }
+    }
+
+    private void saveNewAppUser(AssociateUserSaveDto associateUserSaveDto) {
+        String appUserType = checkAppUserType(associateUserSaveDto.isTheaterAdmin());
+        this.appUserRepository.save(updateValues(new AppUser(), associateUserSaveDto.getGuestUserSaveDto(),
+                appUserType, associateUserSaveDto.getTheaterId()));
     }
 
     private AppUser updateValues(AppUser appUser, GuestUserSaveDto guestUserSaveDto, String appUserType, Long theaterId) {
@@ -109,8 +116,6 @@ public class AppUserService implements UserDetailsService {
             return "theater_user";
         }
     }
-
-
 
     public boolean updateAppUser(UpdateAppUserDto updateAppUserDto, Authentication authentication, String username) {
         AppUser appUser = appUserRepository.findByUsername(username);
