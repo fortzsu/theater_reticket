@@ -5,6 +5,7 @@ import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
 import com.reticket.reticket.service.TheaterService;
 import jakarta.annotation.security.RolesAllowed;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/theater")
+@RequiredArgsConstructor
 public class TheaterController {
 
     private final TheaterService theaterService;
-
-    @Autowired
-    public TheaterController(TheaterService theaterService) {
-        this.theaterService = theaterService;
-    }
-
     @PostMapping
     @RolesAllowed("ROLE_SUPER")
     public ResponseEntity<Void> createTheatre(@RequestBody TheaterSaveDto theatreSaveDto) {

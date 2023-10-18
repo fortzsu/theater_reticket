@@ -7,6 +7,7 @@ import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.service.AppUserActionService;
 import com.reticket.reticket.service.AppUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +21,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/appUser")
+@RequiredArgsConstructor
 public class AppUserController {
 
     private final AppUserService appUserService;
 
     private final AppUserActionService appUserActionService;
-
-    @Autowired
-    public AppUserController(AppUserService appUserService, AppUserActionService appUserActionService) {
-        this.appUserService = appUserService;
-        this.appUserActionService = appUserActionService;
-    }
 
     @PostMapping("/saveGuest")
     public ResponseEntity<Void> saveGuest(@RequestBody GuestUserSaveDto guestUserSaveDto) {

@@ -7,6 +7,7 @@ import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.service.GenerateTicketToPerformanceService;
 import com.reticket.reticket.service.PerformanceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/performance")
+@RequiredArgsConstructor
 public class PerformanceController {
 
     private final PerformanceService performanceService;
     private final GenerateTicketToPerformanceService generateTicketToPerformanceService;
-
-    @Autowired
-    public PerformanceController(PerformanceService performanceService,
-                                GenerateTicketToPerformanceService generateTicketToPerformanceService) {
-        this.performanceService = performanceService;
-        this.generateTicketToPerformanceService = generateTicketToPerformanceService;
-    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")

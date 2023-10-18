@@ -2,6 +2,7 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.save.AddressSaveDto;
 import com.reticket.reticket.service.AddressService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/address")
+@RequiredArgsConstructor
 public class AddressController {
 
     private final AddressService addressService;
-
-    @Autowired
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")

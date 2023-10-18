@@ -3,6 +3,7 @@ package com.reticket.reticket.controller;
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.ReportResultDto;
 import com.reticket.reticket.service.ReportService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/api/report")
+@RequiredArgsConstructor
 public class ReportController {
 
     private final ReportService reportService;
-
-    @Autowired
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ACCESS_REPORT')")

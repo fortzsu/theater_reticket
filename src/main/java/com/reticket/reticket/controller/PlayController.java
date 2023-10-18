@@ -11,6 +11,7 @@ import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.ContributorService;
 import com.reticket.reticket.service.PlayService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +24,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/play")
+@RequiredArgsConstructor
 public class PlayController {
 
     private final PlayService playService;
     private final ContributorService contributorService;
     private final AuditoriumService auditoriumService;
-
-    @Autowired
-    public PlayController(PlayService playService, ContributorService contributorService, AuditoriumService auditoriumService) {
-        this.playService = playService;
-        this.contributorService = contributorService;
-        this.auditoriumService = auditoriumService;
-    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")

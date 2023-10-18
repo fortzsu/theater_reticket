@@ -3,6 +3,7 @@ package com.reticket.reticket.controller;
 import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.service.ContributorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/contributor")
+@RequiredArgsConstructor
 public class ContributorController {
 
     private final ContributorService contributorService;
 
-    @Autowired
-    public ContributorController(ContributorService contributorService) {
-        this.contributorService = contributorService;
-    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")

@@ -2,6 +2,7 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.service.AuditoriumService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/auditorium")
+@RequiredArgsConstructor
 public class AuditoriumController {
 
     private final AuditoriumService auditoriumService;
-
-    @Autowired
-    public AuditoriumController(AuditoriumService auditoriumService) {
-        this.auditoriumService = auditoriumService;
-    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
