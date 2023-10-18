@@ -1,6 +1,5 @@
 package com.reticket.reticket.service;
 
-import com.github.javafaker.App;
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.save.AssociateUserSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;

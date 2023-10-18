@@ -1,14 +1,9 @@
 package com.reticket.reticket.dto.list;
 
-import com.reticket.reticket.domain.Performance;
 
 import java.time.LocalDateTime;
 
-import com.reticket.reticket.dto.wrapper.WrapperClass;
-import com.reticket.reticket.dto.wrapper.WrapperClass;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter

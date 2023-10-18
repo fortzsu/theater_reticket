@@ -86,8 +86,8 @@ public class GoogleService {
                     .setRange("G7")
                     .setValues(List.of(
                             List.of("Number of tickets:"))));
-            for (int i = 0, j = 8; i < dto.getCriteriaResultPerformancesDtos().size(); i++, j++) {
-                data.add(fillSheetWithPerformances(dto.getCriteriaResultPerformancesDtos().get(i), j));
+            for (int i = 0, j = 8; i < dto.getReportResultPerformancesDtos().size(); i++, j++) {
+                data.add(fillSheetWithPerformances(dto.getReportResultPerformancesDtos().get(i), j));
             }
         }
         return data;

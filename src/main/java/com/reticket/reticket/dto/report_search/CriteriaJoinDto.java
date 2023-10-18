@@ -2,7 +2,13 @@ package com.reticket.reticket.dto.report_search;
 
 import com.reticket.reticket.domain.*;
 import jakarta.persistence.criteria.Join;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class CriteriaJoinDto {
 
     Join<Ticket, Performance> performanceJoin;
@@ -11,46 +17,4 @@ public class CriteriaJoinDto {
     Join<Auditorium, Theater> theaterJoin;
     Join<Ticket, Price> priceJoin;
 
-    public CriteriaJoinDto() {
-    }
-
-    public Join<Ticket, Performance> getPerformanceJoin() {
-        return performanceJoin;
-    }
-
-    public void setPerformanceJoin(Join<Ticket, Performance> performanceJoin) {
-        this.performanceJoin = performanceJoin;
-    }
-
-    public Join<Performance, Play> getPlayJoin() {
-        return playJoin;
-    }
-
-    public void setPlayJoin(Join<Performance, Play> playJoin) {
-        this.playJoin = playJoin;
-    }
-
-    public Join<Play, Auditorium> getAuditoriumJoin() {
-        return auditoriumJoin;
-    }
-
-    public void setAuditoriumJoin(Join<Play, Auditorium> auditoriumJoin) {
-        this.auditoriumJoin = auditoriumJoin;
-    }
-
-    public Join<Auditorium, Theater> getTheaterJoin() {
-        return theaterJoin;
-    }
-
-    public void setTheaterJoin(Join<Auditorium, Theater> theaterJoin) {
-        this.theaterJoin = theaterJoin;
-    }
-
-    public Join<Ticket, Price> getPriceJoin() {
-        return priceJoin;
-    }
-
-    public void setPriceJoin(Join<Ticket, Price> priceJoin) {
-        this.priceJoin = priceJoin;
-    }
 }

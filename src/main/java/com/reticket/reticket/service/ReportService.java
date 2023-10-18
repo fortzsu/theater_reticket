@@ -47,7 +47,7 @@ public class ReportService {
         reportResultDto.setStart(startDate);
         reportResultDto.setEnd(endDate);
         if (filterReportDto.isPerformances()) {
-            reportResultDto.setCriteriaResultPerformancesDtos(fillPerformances(filterReportDto, ticketCondition, startDate, endDate));
+            reportResultDto.setReportResultPerformancesDtos(fillPerformances(filterReportDto, ticketCondition, startDate, endDate));
         } else {
             reportResultDto.setSearchPathName(searchPath(filterReportDto));
         }

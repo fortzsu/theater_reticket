@@ -128,7 +128,7 @@ public class ReticketTest {
         FilterReportDto reportFilterDto = new FilterReportDto("SOLD", "theater", 1L,
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, true);
-        Assert.assertEquals(3, this.reportService.report(reportFilterDto).getCriteriaResultPerformancesDtos().size());
+        Assert.assertEquals(3, this.reportService.report(reportFilterDto).getReportResultPerformancesDtos().size());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class ReticketTest {
         FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-        Assert.assertEquals(3, this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().size());
+        Assert.assertEquals(3, this.reportService.report(filterReportDto).getReportResultPerformancesDtos().size());
     }
 
     @Test
@@ -162,8 +162,8 @@ public class ReticketTest {
         FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-        Assert.assertEquals(1030, this.reportService.report(filterReportDto).
-                getCriteriaResultPerformancesDtos().get(0).getSumOfTickets());
+        Assert.assertEquals(1030, (long) this.reportService.report(filterReportDto).
+                getReportResultPerformancesDtos().get(0).getSumOfTickets());
     }
 
     @Test
@@ -171,8 +171,8 @@ public class ReticketTest {
         FilterReportDto filterReportDto = new FilterReportDto("RETURNED", "theater", 1L,
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-        Assert.assertEquals(200, this.reportService.report(filterReportDto).
-                getCriteriaResultPerformancesDtos().get(0).getSumOfTickets());
+        Assert.assertEquals(200, (long) this.reportService.report(filterReportDto).
+                getReportResultPerformancesDtos().get(0).getSumOfTickets());
     }
 
 
@@ -182,7 +182,7 @@ public class ReticketTest {
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
         Assert.assertEquals(14, (long)
-                this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().get(0).getCountOfTicket());
+                this.reportService.report(filterReportDto).getReportResultPerformancesDtos().get(0).getCountOfTicket());
     }
 
     @Test
@@ -190,8 +190,8 @@ public class ReticketTest {
         FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-        Assert.assertEquals(580, this.reportService.report(filterReportDto).
-                getCriteriaResultPerformancesDtos().get(1).getSumOfTickets());
+        Assert.assertEquals(580, (long) this.reportService.report(filterReportDto).
+                getReportResultPerformancesDtos().get(1).getSumOfTickets());
     }
 
     @Test
@@ -200,7 +200,7 @@ public class ReticketTest {
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
         Assert.assertEquals(8, (long) this.reportService.report(filterReportDto).
-                getCriteriaResultPerformancesDtos().get(1).getCountOfTicket());
+                getReportResultPerformancesDtos().get(1).getCountOfTicket());
     }
 
     @Test
@@ -208,7 +208,7 @@ public class ReticketTest {
         FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-        Assert.assertEquals(330, this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().get(2).getSumOfTickets());
+        Assert.assertEquals(330, (long) this.reportService.report(filterReportDto).getReportResultPerformancesDtos().get(2).getSumOfTickets());
     }
 
     @Test
@@ -216,7 +216,7 @@ public class ReticketTest {
         FilterReportDto filterReportDto = new FilterReportDto("SOLD", "theater", 1L,
                 new SearchDateDto(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1,
                         LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 16), true, false);
-        Assert.assertEquals(6, (long) this.reportService.report(filterReportDto).getCriteriaResultPerformancesDtos().get(2).getCountOfTicket());
+        Assert.assertEquals(6, (long) this.reportService.report(filterReportDto).getReportResultPerformancesDtos().get(2).getCountOfTicket());
     }
 
     @Test
