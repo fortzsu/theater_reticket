@@ -31,7 +31,7 @@ public class SeatService {
     }
 
     private void fillSeatData(int i, int j, AuditoriumSaveDto auditoriumSaveDto, Auditorium auditorium, Seat seat) {
-        seat.setSeatCondition(SeatConditions.AVAILABLE);
+        seat.setSeatConditions(SeatConditions.AVAILABLE);
         seat.setAuditoriumRowNumber(i);
         seat.setSeatNumber(j);
         seat.setPriceCategoryNumber(i, auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList());

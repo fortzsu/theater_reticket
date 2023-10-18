@@ -1,5 +1,8 @@
 package com.reticket.reticket.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum PlayType {
 
 
@@ -16,7 +19,4 @@ public enum PlayType {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 }

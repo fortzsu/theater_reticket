@@ -749,7 +749,7 @@ public class ReticketTest {
 
     @Test
     public void testGenerateSeats_seatCondition() {
-        Assert.assertEquals(SeatConditions.AVAILABLE, this.seatRepository.findAll().get(0).getSeatCondition());
+        Assert.assertEquals(SeatConditions.AVAILABLE, this.seatRepository.findAll().get(0).getSeatConditions());
     }
 
     @Test
@@ -812,7 +812,7 @@ public class ReticketTest {
     @Test
     public void testDeletePlay() {
         this.playService.deletePlay(8L);
-        Assert.assertEquals(true, this.playService.findById(8L).getArchived());
+        Assert.assertEquals(true, this.playService.findById(8L).getIsArchived());
     }
 
 
@@ -931,7 +931,7 @@ public class ReticketTest {
     @Test
     public void testDeleteAuditorium_formService_checkAuditoriumIsActive_false() {
         this.auditoriumService.deleteAuditorium(1L);
-        Assert.assertFalse(this.auditoriumService.findAuditoriumById(1L).getActive());
+        Assert.assertFalse(this.auditoriumService.findAuditoriumById(1L).getIsActive());
     }
 
     @Test
@@ -991,7 +991,7 @@ public class ReticketTest {
         TheaterSaveDto theater = new TheaterSaveDto("testDelete", "Story.");
         this.theaterService.save(theater);
         this.theaterService.deleteTheater("testDelete");
-        Assert.assertTrue(this.theaterRepository.findTheaterByTheaterName("testDelete").getArchived());
+        Assert.assertTrue(this.theaterRepository.findTheaterByTheaterName("testDelete").getIsArchived());
         this.theaterRepository.deleteById(3L);
     }
 

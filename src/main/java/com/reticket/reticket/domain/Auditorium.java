@@ -1,12 +1,18 @@
 package com.reticket.reticket.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import java.util.List;
 
 @Entity
 @Table(name = "auditorium")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Auditorium {
 
     @Id
@@ -28,62 +34,5 @@ public class Auditorium {
     @OneToMany
     private List<Seat> seats;
 
-    public Auditorium() {
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAuditoriumName() {
-        return auditoriumName;
-    }
-
-    public void setAuditoriumName(String auditoriumName) {
-        this.auditoriumName = auditoriumName;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public Theater getTheater() {
-        return theater;
-    }
-
-    public void setTheater(Theater theater) {
-        this.theater = theater;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public Integer getNumberOfPriceCategories() {
-        return numberOfPriceCategories;
-    }
-
-    public void setNumberOfPriceCategories(Integer numberOfPriceCategories) {
-        this.numberOfPriceCategories = numberOfPriceCategories;
-    }
-
-    public List<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
-    }
 }

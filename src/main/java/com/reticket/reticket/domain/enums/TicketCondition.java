@@ -1,6 +1,10 @@
 package com.reticket.reticket.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum TicketCondition {
+
     RESERVED("Reserved"),
     RETURNED("Returned"),
     FOR_SALE("For Sale"),
@@ -10,10 +14,6 @@ public enum TicketCondition {
 
     TicketCondition(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 
     public static TicketCondition findTicketCondition(String ticketCondition) {

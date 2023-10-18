@@ -1,5 +1,8 @@
 package com.reticket.reticket.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ContributorType {
 
     ACTOR("Actor"),
@@ -13,8 +16,6 @@ public enum ContributorType {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+
 
 }

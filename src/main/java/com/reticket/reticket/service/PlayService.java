@@ -60,7 +60,7 @@ public class PlayService {
         play.setPlayName(playSaveDto.getPlayName());
         play.setPlot(playSaveDto.getPlot());
         play.setPremiere(playSaveDto.getPremiere().plusHours(1));
-        play.setArchived(false);
+        play.setIsArchived(false);
         play.setPlayType(playSaveDto.getPlayType());
     }
 
@@ -122,7 +122,7 @@ public class PlayService {
     public boolean deletePlay(Long id) {
         Play play = findPlayById(id);
         if (play != null) {
-            play.setArchived(true);
+            play.setIsArchived(true);
             return true;
         } else {
             return false;

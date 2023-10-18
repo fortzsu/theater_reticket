@@ -1,5 +1,8 @@
 package com.reticket.reticket.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum SeatConditions {
 
     AVAILABLE("Available"),
@@ -11,7 +14,4 @@ public enum SeatConditions {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 }

@@ -57,7 +57,7 @@ public class TicketService {
 
     private void generateTicketsToPerformance(List<Seat> seats, Performance performance, Play play) {
         for (Seat seat : seats) {
-            if (seat.getSeatCondition().equals(SeatConditions.AVAILABLE)) {
+            if (seat.getSeatConditions().equals(SeatConditions.AVAILABLE)) {
                 Ticket ticket = new Ticket();
                 ticket.setPerformance(performance);
                 ticket.setSeat(seat);

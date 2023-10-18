@@ -3,6 +3,9 @@ package com.reticket.reticket.domain;
 
 import com.reticket.reticket.domain.enums.PlayType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import java.time.LocalDateTime;
@@ -11,6 +14,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "play")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Play {
     @Id
     @Column(name = "play_id")
@@ -46,86 +52,8 @@ public class Play {
     @Column(name = "play_type")
     private PlayType playType;
 
-    public Play() {
-    }
-
-    public List<Price> getPrices() {
-        return prices;
-    }
-
-    public void setPrices(List<Price> prices) {
-        this.prices = prices;
-    }
-
-    public LocalDateTime getPremiere() {
-        return premiere;
-    }
-
-    public void setPremiere(LocalDateTime premiere) {
-        this.premiere = premiere;
-    }
-
-    public List<Performance> getPerformances() {
-        return performances;
-    }
-
-    public void setPerformances(List<Performance> performances) {
-        this.performances = performances;
-    }
-
-    public String getPlayName() {
-        return playName;
-    }
-
-    public void setPlayName(String playName) {
-        this.playName = playName;
-    }
-
-    public String getPlot() {
-        return plot;
-    }
-
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Boolean getArchived() {
-        return isArchived;
-    }
-
-    public void setArchived(Boolean archived) {
-        isArchived = archived;
-    }
-
-    public Auditorium getAuditorium() {
-        return auditorium;
-    }
-
-    public void setAuditorium(Auditorium auditorium) {
-        this.auditorium = auditorium;
-    }
-    public List<AppUser> getAppUsers() {
-        return appUsers;
-    }
-
-    public void setAppUsers(List<AppUser> appUsers) {
-        this.appUsers = appUsers;
-    }
-
     public void addAppUser(AppUser appUser) {
         this.appUsers.add(appUser);
-    }
-
-    public PlayType getPlayType() {
-        return playType;
     }
 
     public void setPlayType(String playType) {

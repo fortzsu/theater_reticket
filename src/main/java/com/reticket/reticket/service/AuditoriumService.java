@@ -61,7 +61,7 @@ public class AuditoriumService {
     private Auditorium updateValues(AuditoriumSaveDto auditoriumSaveDto, Auditorium auditorium) {
         auditorium.setAuditoriumName(auditoriumSaveDto.getAuditoriumName());
         auditorium.setCapacity(auditoriumSaveDto.getSeatNumberPerAuditoriumRow() * auditoriumSaveDto.getNumberOfRows());
-        auditorium.setActive(true);
+        auditorium.setIsActive(true);
         auditorium.setNumberOfPriceCategories(auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList().size());
         if (auditoriumSaveDto.getTheatreId() != null) {
             auditorium.setTheater(theaterService.findById(auditoriumSaveDto.getTheatreId()));
@@ -76,7 +76,7 @@ public class AuditoriumService {
         Optional<Auditorium> opt = this.auditoriumRepository.findById(id);
         if (opt.isPresent()) {
             Auditorium auditorium = opt.get();
-            auditorium.setActive(false);
+            auditorium.setIsActive(false);
             return true;
         } else {
             return false;

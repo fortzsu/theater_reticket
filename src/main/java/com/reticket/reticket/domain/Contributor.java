@@ -1,9 +1,15 @@
 package com.reticket.reticket.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "contributor")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Contributor {
     @Id
     @Column(name = "contributor_id")
@@ -18,41 +24,5 @@ public class Contributor {
 
     @Column(name = "introduction")
     private String introduction;
-    public Contributor() {
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-
 
 }

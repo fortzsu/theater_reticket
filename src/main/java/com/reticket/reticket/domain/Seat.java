@@ -4,11 +4,17 @@ package com.reticket.reticket.domain;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.dto.save.AuditoriumPriceCategorySaveDto;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "seat")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Seat {
     @Id
     @Column(name = "id")
@@ -27,38 +33,6 @@ public class Seat {
     @JoinColumn(name = "auditorium")
     private Auditorium auditorium;
 
-    public Seat() {
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Integer getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(Integer seatNumber) {
-        this.seatNumber = seatNumber;
-    }
-
-    public SeatConditions getSeatCondition() {
-        return seatConditions;
-    }
-
-    public void setSeatCondition(SeatConditions seatConditions) {
-        this.seatConditions = seatConditions;
-    }
-
-    public Integer getPriceCategoryNumber() {
-        return priceCategoryNumber;
-    }
-
-
     public void setPriceCategoryNumber(Integer rowNum, List<AuditoriumPriceCategorySaveDto> list) {
         int i = 0;
         boolean flag = true;
@@ -75,20 +49,4 @@ public class Seat {
         }
     }
 
-
-    public Integer getAuditoriumRowNumber() {
-        return auditoriumRowNumber;
-    }
-
-    public void setAuditoriumRowNumber(Integer auditoriumRowNumber) {
-        this.auditoriumRowNumber = auditoriumRowNumber;
-    }
-
-    public Auditorium getAuditorium() {
-        return auditorium;
-    }
-
-    public void setAuditorium(Auditorium auditorium) {
-        this.auditorium = auditorium;
-    }
 }
