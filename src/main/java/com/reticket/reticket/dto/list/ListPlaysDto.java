@@ -2,9 +2,15 @@ package com.reticket.reticket.dto.list;
 
 import com.reticket.reticket.domain.Play;
 import com.reticket.reticket.domain.enums.PlayType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class ListPlaysDto {
 
     private String playName;
@@ -22,38 +28,4 @@ public class ListPlaysDto {
         this.playType = play.getPlayType();
     }
 
-    public ListPlaysDto() {
-    }
-
-    public String getPlayName() {
-        return playName;
-    }
-
-    public String getPlot() {
-        return plot;
-    }
-
-    public LocalDateTime getPremiere() {
-        return premiere;
-    }
-
-    public PlayType getPlayType() {
-        return playType;
-    }
-
-    public void setPlayName(String playName) {
-        this.playName = playName;
-    }
-
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-
-    public void setPremiere(LocalDateTime premiere) {
-        this.premiere = premiere;
-    }
-
-    public void setPlayType(PlayType playType) {
-        this.playType = playType;
-    }
 }

@@ -1,16 +1,16 @@
 package com.reticket.reticket.dto.list;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class PerformanceListToLikedPlaysDto {
 
     private LocalDateTime performanceDateTime;
 
-    public LocalDateTime getPerformanceDateTime() {
-        return performanceDateTime;
-    }
-
-    public void setPerformanceDateTime(LocalDateTime performanceDateTime) {
-        this.performanceDateTime = performanceDateTime;
-    }
 }

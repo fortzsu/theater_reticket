@@ -1,23 +1,15 @@
 package com.reticket.reticket.dto.list;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class ListContributorsDto {
     private String contributorFirstName;
 
     private String contributorLastName;
 
-    public String getContributorFirstName() {
-        return contributorFirstName;
-    }
-
-    public void setContributorFirstName(String contributorFirstName) {
-        this.contributorFirstName = contributorFirstName;
-    }
-
-    public String getContributorLastName() {
-        return contributorLastName;
-    }
-
-    public void setContributorLastName(String contributorLastName) {
-        this.contributorLastName = contributorLastName;
-    }
 }

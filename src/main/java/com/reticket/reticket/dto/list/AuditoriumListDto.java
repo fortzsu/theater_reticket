@@ -1,5 +1,12 @@
 package com.reticket.reticket.dto.list;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class AuditoriumListDto {
 
     private String auditoriumName;
@@ -10,19 +17,4 @@ public class AuditoriumListDto {
         this.auditoriumAddress = auditoriumAddress;
     }
 
-    public String getAuditoriumName() {
-        return auditoriumName;
-    }
-
-    public void setAuditoriumName(String auditoriumName) {
-        this.auditoriumName = auditoriumName;
-    }
-
-    public String getAuditoriumAddress() {
-        return auditoriumAddress;
-    }
-
-    public void setAuditoriumAddress(String auditoriumAddress) {
-        this.auditoriumAddress = auditoriumAddress;
-    }
 }

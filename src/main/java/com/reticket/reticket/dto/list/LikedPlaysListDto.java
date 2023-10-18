@@ -1,7 +1,14 @@
 package com.reticket.reticket.dto.list;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class LikedPlaysListDto {
 
     private String playName;
@@ -11,52 +18,5 @@ public class LikedPlaysListDto {
     private List<PerformanceListToLikedPlaysDto> performanceListDtoListToLikedPlays;
     private List<ListContributorsDto> listContributorsDto;
 
-    public String getPlayName() {
-        return playName;
-    }
-
-    public void setPlayName(String playName) {
-        this.playName = playName;
-    }
-
-    public String getPlayPlot() {
-        return playPlot;
-    }
-
-    public void setPlayPlot(String playPlot) {
-        this.playPlot = playPlot;
-    }
-
-    public String getTheatreName() {
-        return theatreName;
-    }
-
-    public void setTheatreName(String theatreName) {
-        this.theatreName = theatreName;
-    }
-
-    public String getTheatreAddress() {
-        return theatreAddress;
-    }
-
-    public void setTheatreAddress(String theatreAddress) {
-        this.theatreAddress = theatreAddress;
-    }
-
-    public List<PerformanceListToLikedPlaysDto> getPerformanceListDtoListToLikedPlays() {
-        return performanceListDtoListToLikedPlays;
-    }
-
-    public void setPerformanceListDtoListToLikedPlays(List<PerformanceListToLikedPlaysDto> performanceListDtoListToLikedPlays) {
-        this.performanceListDtoListToLikedPlays = performanceListDtoListToLikedPlays;
-    }
-
-    public List<ListContributorsDto> getListContributorsDto() {
-        return listContributorsDto;
-    }
-
-    public void setListContributorsDto(List<ListContributorsDto> listContributorsDto) {
-        this.listContributorsDto = listContributorsDto;
-    }
 
 }

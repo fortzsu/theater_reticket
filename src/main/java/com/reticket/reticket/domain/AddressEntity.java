@@ -29,7 +29,6 @@ public class AddressEntity {
     @OneToOne
     @JoinColumn(name = "auditorium_id")
     private Auditorium auditoriumId;
-    //TODO @OneToMany
     @Override
     public String toString() {
         return postCode + ", " + city + " " + street + " " + houseNumber;

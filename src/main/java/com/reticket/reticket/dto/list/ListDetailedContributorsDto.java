@@ -1,9 +1,15 @@
 package com.reticket.reticket.dto.list;
 
-import com.reticket.reticket.domain.Play;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ListDetailedContributorsDto {
 
 
@@ -22,35 +28,4 @@ public class ListDetailedContributorsDto {
         this.introduction = introduction;
     }
 
-    public String getContributorFirstName() {
-        return contributorFirstName;
-    }
-
-    public void setContributorFirstName(String contributorFirstName) {
-        this.contributorFirstName = contributorFirstName;
-    }
-
-    public String getContributorLastName() {
-        return contributorLastName;
-    }
-
-    public void setContributorLastName(String contributorLastName) {
-        this.contributorLastName = contributorLastName;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
-
-    public List<String> getPlayNames() {
-        return playNames;
-    }
-
-    public void setPlayNames(List<String> playNames) {
-        this.playNames = playNames;
-    }
 }

@@ -4,6 +4,15 @@ import com.reticket.reticket.domain.Performance;
 
 import java.time.LocalDateTime;
 
+import com.reticket.reticket.dto.wrapper.WrapperClass;
+import com.reticket.reticket.dto.wrapper.WrapperClass;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PerformanceListDto {
 
     private LocalDateTime performanceDateTime;
@@ -21,45 +30,4 @@ public class PerformanceListDto {
         this.auditoriumName = auditoriumName;
     }
 
-    public PerformanceListDto() {
-    }
-
-    public PerformanceListDto(Performance performance) {
-        this.performanceDateTime = performance.getOriginalPerformanceDateTime();
-        this.playName = performance.getPlay().getPlayName();
-        this.theatreName = performance.getPlay().getAuditorium().getTheater().getTheaterName();
-        this.auditoriumName = performance.getPlay().getAuditorium().getAuditoriumName();
-    }
-
-    public LocalDateTime getPerformanceDateTime() {
-        return performanceDateTime;
-    }
-
-    public void setPerformanceDateTime(LocalDateTime performanceDateTime) {
-        this.performanceDateTime = performanceDateTime;
-    }
-
-    public String getPlayName() {
-        return playName;
-    }
-
-    public void setPlayName(String playName) {
-        this.playName = playName;
-    }
-
-    public String getTheatreName() {
-        return theatreName;
-    }
-
-    public void setTheatreName(String theatreName) {
-        this.theatreName = theatreName;
-    }
-
-    public String getAuditoriumName() {
-        return auditoriumName;
-    }
-
-    public void setAuditoriumName(String auditoriumName) {
-        this.auditoriumName = auditoriumName;
-    }
 }
