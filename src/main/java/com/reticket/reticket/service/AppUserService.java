@@ -10,6 +10,7 @@ import com.reticket.reticket.security.repository_service.UserRoleService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AppUserService implements UserDetailsService {
+
 
     private final AppUserRepository appUserRepository;
     private final TheaterService theaterService;
@@ -29,15 +32,6 @@ public class AppUserService implements UserDetailsService {
     private final UserRoleRepository userRoleRepository;
     @PersistenceContext
     EntityManager entityManager;
-
-    @Autowired
-    public AppUserService(AppUserRepository appUserRepository, TheaterService theaterService,
-                          PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
-        this.appUserRepository = appUserRepository;
-        this.theaterService = theaterService;
-        this.passwordEncoder = passwordEncoder;
-        this.userRoleRepository = userRoleRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

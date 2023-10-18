@@ -12,6 +12,7 @@ import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,18 +28,14 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PerformanceService {
 
     @PersistenceContext
     private EntityManager entityManager;
+
     private final PerformanceRepository performanceRepository;
     private final PlayService playService;
-
-    @Autowired
-    public PerformanceService(PerformanceRepository performanceRepository, PlayService playService) {
-        this.performanceRepository = performanceRepository;
-        this.playService = playService;
-    }
 
     public List<Performance> save(List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = new ArrayList<>();

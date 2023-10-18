@@ -5,6 +5,7 @@ import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.domain.enums.TicketCondition;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.repository.TicketRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,23 +16,15 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TicketService {
+
 
     private final TicketRepository ticketRepository;
     private final PlayService playService;
     private final AuditoriumService auditoriumService;
     private final SeatService seatService;
     private final PriceService priceService;
-
-    @Autowired
-    public TicketService(TicketRepository ticketRepository, PlayService playService,
-                         AuditoriumService auditoriumService, SeatService seatService, PriceService priceService){
-                         this.ticketRepository = ticketRepository;
-        this.playService = playService;
-        this.auditoriumService = auditoriumService;
-        this.seatService = seatService;
-        this.priceService = priceService;
-    }
 
     public List<Ticket> findTicketByAppUserId(AppUser appUser) {
         return this.ticketRepository.findAllByAppUser(appUser);

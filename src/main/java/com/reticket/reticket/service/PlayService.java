@@ -10,6 +10,7 @@ import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.repository.PriceRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,24 +22,15 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PlayService {
+
 
     private final PlayRepository playRepository;
     private final AuditoriumService auditoriumService;
     private final PriceRepository priceRepository;
     private final ContributorService contributorService;
     private final PlayContributorTypeRepository playContributorTypeRepository;
-
-    @Autowired
-    public PlayService(PlayRepository playRepository, AuditoriumService auditoriumService,
-                       PriceRepository priceRepository, ContributorService contributorService,
-                       PlayContributorTypeRepository playContributorTypeRepository) {
-        this.playRepository = playRepository;
-        this.auditoriumService = auditoriumService;
-        this.priceRepository = priceRepository;
-        this.contributorService = contributorService;
-        this.playContributorTypeRepository = playContributorTypeRepository;
-    }
 
     public void save(List<PlaySaveDto> playSaveDtoList) throws AuditoriumNotFoundException {
         for (PlaySaveDto dto : playSaveDtoList) {

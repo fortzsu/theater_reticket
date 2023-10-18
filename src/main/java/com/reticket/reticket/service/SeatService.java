@@ -5,6 +5,7 @@ import com.reticket.reticket.domain.Seat;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.repository.SeatRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +14,11 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SeatService {
-    private final SeatRepository seatRepository;
 
-    @Autowired
-    public SeatService(SeatRepository seatRepository) {
-        this.seatRepository = seatRepository;
-    }
+
+    private final SeatRepository seatRepository;
 
     public void generateSeats(Auditorium auditorium, AuditoriumSaveDto auditoriumSaveDto) {
         for (int i = 1; i <= auditoriumSaveDto.getNumberOfRows(); i++) {

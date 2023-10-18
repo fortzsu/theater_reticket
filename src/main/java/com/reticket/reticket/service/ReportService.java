@@ -8,6 +8,8 @@ import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import static com.reticket.reticket.domain.enums.TicketCondition.findTicketCondi
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ReportService {
 
     @PersistenceContext
@@ -29,14 +32,6 @@ public class ReportService {
     private final AuditoriumService auditoriumService;
     private final PlayService playService;
     private final GoogleService googleService;
-
-    public ReportService(TheaterService theaterService, AuditoriumService auditoriumService,
-                         PlayService playService, GoogleService googleService) {
-        this.theaterService = theaterService;
-        this.auditoriumService = auditoriumService;
-        this.playService = playService;
-        this.googleService = googleService;
-    }
 
     public ReportResultDto report(FilterReportDto filterReportDto) {
         TicketCondition ticketCondition = findTicketCondition(filterReportDto.getTicketCondition());

@@ -2,6 +2,7 @@ package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.Performance;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,17 +11,12 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GenerateTicketToPerformanceService {
 
-    @Autowired
-    private final TicketService ticketService;
-    @Autowired
-    private final PerformanceService performanceService;
 
-    public GenerateTicketToPerformanceService(TicketService ticketService, PerformanceService performanceService) {
-        this.ticketService = ticketService;
-        this.performanceService = performanceService;
-    }
+    private final TicketService ticketService;
+    private final PerformanceService performanceService;
 
     public boolean generate(List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);

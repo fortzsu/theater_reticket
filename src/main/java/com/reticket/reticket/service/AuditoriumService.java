@@ -5,6 +5,7 @@ import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.AuditoriumRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,18 +17,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuditoriumService {
+
     private final AuditoriumRepository auditoriumRepository;
     private final TheaterService theaterService;
     private final SeatService seatService;
-
-    @Autowired
-    public AuditoriumService(AuditoriumRepository auditoriumRepository, TheaterService theaterService,
-                              SeatService seatService) {
-        this.auditoriumRepository = auditoriumRepository;
-        this.theaterService = theaterService;
-        this.seatService = seatService;
-    }
 
     public List<Auditorium> save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
         List<Auditorium> auditoriumList =  new ArrayList<>();

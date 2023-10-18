@@ -6,6 +6,7 @@ import com.reticket.reticket.domain.TicketActionFollowerEntity;
 import com.reticket.reticket.domain.enums.TicketCondition;
 import com.reticket.reticket.dto.save.TicketActionDto;
 import com.reticket.reticket.repository.TicketActionFollowerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TicketActionService {
 
     private final TicketService ticketService;
@@ -22,14 +24,6 @@ public class TicketActionService {
     private final AppUserService appUserService;
 
     private final TicketActionFollowerRepository ticketActionFollowerRepository;
-
-    @Autowired
-    public TicketActionService(TicketService ticketService,
-                               AppUserService appUserService, TicketActionFollowerRepository ticketActionFollowerRepository) {
-        this.ticketService = ticketService;
-        this.appUserService = appUserService;
-        this.ticketActionFollowerRepository = ticketActionFollowerRepository;
-    }
 
     public boolean ticketAction(List<TicketActionDto> ticketActionDtoList) {
         boolean flag = false;

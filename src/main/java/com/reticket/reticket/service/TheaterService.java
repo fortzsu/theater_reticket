@@ -11,6 +11,7 @@ import com.reticket.reticket.dto.save.TheaterSaveDto;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.repository.AuditoriumRepository;
 import com.reticket.reticket.repository.TheaterRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TheaterService {
 
     private final TheaterRepository theaterRepository;
@@ -29,14 +31,6 @@ public class TheaterService {
     private final AuditoriumRepository auditoriumRepository;
 
     private final AddressRepository addressRepository;
-
-
-    @Autowired
-    public TheaterService(TheaterRepository theaterRepository, AuditoriumRepository auditoriumRepository, AddressRepository addressRepository) {
-        this.theaterRepository = theaterRepository;
-        this.auditoriumRepository = auditoriumRepository;
-        this.addressRepository = addressRepository;
-    }
 
     public Theater save(TheaterSaveDto theatreSaveDto) {
         Theater theater = new Theater();

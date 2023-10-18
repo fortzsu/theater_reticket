@@ -7,6 +7,7 @@ import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +16,13 @@ import java.util.*;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ContributorService {
+
 
     private final ContributorRepository contributorRepository;
 
     private final PlayContributorTypeRepository playContributorTypeRepository;
-
-
-    @Autowired
-    public ContributorService(ContributorRepository contributorRepository, PlayContributorTypeRepository playContributorTypeRepository) {
-        this.contributorRepository = contributorRepository;
-        this.playContributorTypeRepository = playContributorTypeRepository;
-    }
 
     public List<Contributor> save(List<ContributorSaveDto> contributorSaveDtoList) {
         List<Contributor> contributors = new ArrayList<>();

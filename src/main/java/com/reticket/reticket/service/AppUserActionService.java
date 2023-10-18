@@ -9,6 +9,8 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AppUserActionService {
 
     private final AppUserRepository appUserRepository;
@@ -29,20 +32,6 @@ public class AppUserActionService {
     private final PlayRepository playRepository;
     private final ContributorRepository contributorRepository;
     private final PerformanceRepository performanceRepository;
-
-    public AppUserActionService(AppUserRepository appUserRepository, TicketService ticketService, PerformanceService performanceService, PlayService playService, TheaterService theaterService, AuditoriumService auditoriumService, AddressService addressService, PlayRepository playRepository, ContributorRepository contributorRepository, PerformanceRepository performanceRepository) {
-        this.appUserRepository = appUserRepository;
-        this.ticketService = ticketService;
-        this.performanceService = performanceService;
-        this.playService = playService;
-        this.theaterService = theaterService;
-        this.auditoriumService = auditoriumService;
-        this.addressService = addressService;
-        this.playRepository = playRepository;
-        this.contributorRepository = contributorRepository;
-        this.performanceRepository = performanceRepository;
-    }
-
 
     public boolean likePlay(String username, Long playId) {
         AppUser appUser = findByUsername(username);
