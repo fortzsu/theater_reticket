@@ -1,5 +1,10 @@
 package com.reticket.reticket.dto.update;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UpdatePlayDto {
 
     private String playName;
@@ -12,27 +17,4 @@ public class UpdatePlayDto {
         this.auditoriumId = auditoriumId;
     }
 
-    public String getPlayName() {
-        return playName;
-    }
-
-    public void setPlayName(String playName) {
-        this.playName = playName;
-    }
-
-    public String getPlot() {
-        return plot;
-    }
-
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-
-    public Long getAuditoriumId() {
-        return auditoriumId;
-    }
-
-    public void setAuditoriumId(Long auditoriumId) {
-        this.auditoriumId = auditoriumId;
-    }
 }

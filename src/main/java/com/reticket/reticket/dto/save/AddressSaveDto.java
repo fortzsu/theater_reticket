@@ -1,10 +1,12 @@
 package com.reticket.reticket.dto.save;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class AddressSaveDto {
 
     private String postCode;
@@ -13,8 +15,6 @@ public class AddressSaveDto {
     private Integer houseNumber;
     private Long auditoriumId;
 
-    public AddressSaveDto() {
-    }
 
     public AddressSaveDto(String postCode, String city, String street, Integer houseNumber, Long auditoriumId) {
         this.postCode = postCode;

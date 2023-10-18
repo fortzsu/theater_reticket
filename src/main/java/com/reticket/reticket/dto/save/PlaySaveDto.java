@@ -2,6 +2,7 @@ package com.reticket.reticket.dto.save;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Setter
 @Getter
+@NoArgsConstructor
 public class PlaySaveDto {
 
     private String playName;
@@ -26,8 +28,6 @@ public class PlaySaveDto {
 
     private List<ContributorsSaveForPlaySaveDto> contributorsSaveForPlaySaveDtoList;
 
-    public PlaySaveDto() {
-    }
 
     public PlaySaveDto(String playName, String plot, LocalDateTime premiere, Long auditoriumId, List<Integer> prices, String playType) {
         this.playName = playName;
