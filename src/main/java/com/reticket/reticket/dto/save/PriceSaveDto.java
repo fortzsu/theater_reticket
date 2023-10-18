@@ -1,6 +1,10 @@
 package com.reticket.reticket.dto.save;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class PriceSaveDto {
 
     private Integer amount;
@@ -10,19 +14,5 @@ public class PriceSaveDto {
     public PriceSaveDto() {
     }
 
-    public Integer getAmount() {
-        return amount;
-    }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public Long getPlayId() {
-        return playId;
-    }
-
-    public void setPlayId(Long playId) {
-        this.playId = playId;
-    }
 }

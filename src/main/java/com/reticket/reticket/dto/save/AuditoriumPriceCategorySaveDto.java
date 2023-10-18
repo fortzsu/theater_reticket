@@ -1,5 +1,10 @@
 package com.reticket.reticket.dto.save;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class AuditoriumPriceCategorySaveDto {
 
 
@@ -15,19 +20,4 @@ public class AuditoriumPriceCategorySaveDto {
         this.rowNumberWherePriceCategoryChanges = rowNumberWherePriceCategoryChanges;
     }
 
-    public Integer getPriceCategoryNumber() {
-        return priceCategoryNumber;
-    }
-
-    public void setPriceCategoryNumber(Integer priceCategoryNumber) {
-        this.priceCategoryNumber = priceCategoryNumber;
-    }
-
-    public Integer getRowNumberWherePriceCategoryChanges() {
-        return rowNumberWherePriceCategoryChanges;
-    }
-
-    public void setRowNumberWherePriceCategoryChanges(Integer rowNumberWherePriceCategoryChanges) {
-        this.rowNumberWherePriceCategoryChanges = rowNumberWherePriceCategoryChanges;
-    }
 }

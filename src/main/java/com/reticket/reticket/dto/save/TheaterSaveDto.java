@@ -1,6 +1,10 @@
 package com.reticket.reticket.dto.save;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class TheaterSaveDto {
 
     private Long id;
@@ -15,28 +19,4 @@ public class TheaterSaveDto {
         this.theatreStory = theatreStory;
     }
 
-    public String getTheatreName() {
-        return theatreName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTheatreName(String theatreName) {
-        this.theatreName = theatreName;
-    }
-
-
-    public String getTheatreStory() {
-        return theatreStory;
-    }
-
-    public void setTheatreStory(String theatreStory) {
-        this.theatreStory = theatreStory;
-    }
 }

@@ -1,5 +1,10 @@
 package com.reticket.reticket.dto.save;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class AssociateUserSaveDto {
 
     private boolean isTheaterAdmin;
@@ -12,27 +17,5 @@ public class AssociateUserSaveDto {
         this.guestUserSaveDto = guestUserSaveDto;
     }
 
-    public boolean isTheaterAdmin() {
-        return isTheaterAdmin;
-    }
 
-    public void setTheaterAdmin(boolean theaterAdmin) {
-        isTheaterAdmin = theaterAdmin;
-    }
-
-    public Long getTheaterId() {
-        return theaterId;
-    }
-
-    public void setTheaterId(Long theaterId) {
-        this.theaterId = theaterId;
-    }
-
-    public GuestUserSaveDto getGuestUserSaveDto() {
-        return guestUserSaveDto;
-    }
-
-    public void setGuestUserSaveDto(GuestUserSaveDto guestUserSaveDto) {
-        this.guestUserSaveDto = guestUserSaveDto;
-    }
 }

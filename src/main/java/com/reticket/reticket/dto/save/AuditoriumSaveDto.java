@@ -1,9 +1,12 @@
 package com.reticket.reticket.dto.save;
 
 import com.reticket.reticket.domain.Auditorium;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
-
+@Setter
+@Getter
 public class AuditoriumSaveDto {
 
     private Long id;
@@ -12,9 +15,6 @@ public class AuditoriumSaveDto {
     private Integer seatNumberPerAuditoriumRow;
     private List<AuditoriumPriceCategorySaveDto> auditoriumPriceCategorySaveDtoList;
     private Long theatreId;
-
-    public AuditoriumSaveDto() {
-    }
 
     public AuditoriumSaveDto(String auditoriumName, Long theatreId, Integer numberOfRows, Integer seatNumberPerAuditoriumRow,
                              List<AuditoriumPriceCategorySaveDto> auditoriumPriceCategorySaveDtoList) {
@@ -26,58 +26,5 @@ public class AuditoriumSaveDto {
     }
 
     public AuditoriumSaveDto(Auditorium auditorium) {
-        this.id = auditorium.getId();
-        this.auditoriumName = auditorium.getAuditoriumName();
-        this.theatreId = auditorium.getTheater().getId();
-    }
-
-    public String getAuditoriumName() {
-        return auditoriumName;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setAuditoriumName(String auditoriumName) {
-        this.auditoriumName = auditoriumName;
-    }
-
-    public Long getTheatreId() {
-        return theatreId;
-    }
-
-    public void setTheatreId(Long theatreId) {
-        this.theatreId = theatreId;
-    }
-
-    public Integer getNumberOfRows() {
-        return numberOfRows;
-    }
-
-    public void setNumberOfRows(Integer numberOfRows) {
-        this.numberOfRows = numberOfRows;
-    }
-
-    public Integer getSeatNumberPerAuditoriumRow() {
-        return seatNumberPerAuditoriumRow;
-    }
-
-    public void setSeatNumberPerAuditoriumRow(Integer seatNumberPerAuditoriumRow) {
-        this.seatNumberPerAuditoriumRow = seatNumberPerAuditoriumRow;
-    }
-
-
-    public List<AuditoriumPriceCategorySaveDto> getAuditoriumPriceCategorySaveDtoList() {
-        return auditoriumPriceCategorySaveDtoList;
-    }
-
-    public void setAuditoriumPriceCategorySaveDtoList(List<AuditoriumPriceCategorySaveDto> auditoriumPriceCategorySaveDtoList) {
-        this.auditoriumPriceCategorySaveDtoList = auditoriumPriceCategorySaveDtoList;
     }
 }

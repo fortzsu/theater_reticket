@@ -1,5 +1,10 @@
 package com.reticket.reticket.dto.save;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ContributorsSaveForPlaySaveDto {
 
     private Long contributorId;
@@ -14,19 +19,4 @@ public class ContributorsSaveForPlaySaveDto {
         this.contributorType = contributorType;
     }
 
-    public String getContributorType() {
-        return contributorType;
-    }
-
-    public void setContributorType(String contributorType) {
-        this.contributorType = contributorType;
-    }
-
-    public Long getContributorId() {
-        return contributorId;
-    }
-
-    public void setContributorId(Long contributorId) {
-        this.contributorId = contributorId;
-    }
 }
