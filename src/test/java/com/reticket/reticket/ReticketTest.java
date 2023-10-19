@@ -94,6 +94,8 @@ public class ReticketTest {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private AppUserActionService appUserActionService;
+
+
     private static boolean init = true;
 
     @Before
@@ -107,6 +109,8 @@ public class ReticketTest {
     }
 
     // -----------------------  USERROLE TESTS  -----------------------
+
+
 
     @Test
     public void testUserRole_findAll() {

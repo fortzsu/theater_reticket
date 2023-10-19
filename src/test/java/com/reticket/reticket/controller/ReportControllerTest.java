@@ -21,7 +21,6 @@ public class ReportControllerTest {
     @Autowired
     private TestRestTemplate template;
 
-
     @Test
     public void testReport_withGuestUser_403() {
         GuestUserSaveDto dto = new GuestUserSaveDto("First", "Last", "username_13", "password",
