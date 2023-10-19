@@ -15,8 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PriceService {
 
+    private final PriceRepository priceRepository;
 
-    private PriceRepository priceRepository;
     public List<Price> findAllByPlay(Play play) {
         return this.priceRepository.findByPlay(play);
     }

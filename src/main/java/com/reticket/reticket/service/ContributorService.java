@@ -19,10 +19,9 @@ import java.util.*;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ContributorService {
 
-
     private final ContributorRepository contributorRepository;
-
     private final PlayContributorTypeRepository playContributorTypeRepository;
+
 
     public List<Contributor> save(List<ContributorSaveDto> contributorSaveDtoList) {
         List<Contributor> contributors = new ArrayList<>();

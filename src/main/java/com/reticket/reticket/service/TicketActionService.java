@@ -20,9 +20,7 @@ import java.util.List;
 public class TicketActionService {
 
     private final TicketService ticketService;
-
     private final AppUserService appUserService;
-
     private final TicketActionFollowerRepository ticketActionFollowerRepository;
 
     public boolean ticketAction(List<TicketActionDto> ticketActionDtoList) {

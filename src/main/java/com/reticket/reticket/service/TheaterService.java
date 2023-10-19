@@ -27,9 +27,7 @@ import java.util.Optional;
 public class TheaterService {
 
     private final TheaterRepository theaterRepository;
-
     private final AuditoriumRepository auditoriumRepository;
-
     private final AddressRepository addressRepository;
 
     public Theater save(TheaterSaveDto theatreSaveDto) {

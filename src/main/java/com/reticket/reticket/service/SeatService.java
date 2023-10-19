@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SeatService {
 
-
     private final SeatRepository seatRepository;
 
     public void generateSeats(Auditorium auditorium, AuditoriumSaveDto auditoriumSaveDto) {

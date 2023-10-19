@@ -33,6 +33,7 @@ public class ReportService {
     private final PlayService playService;
     private final GoogleService googleService;
 
+
     public ReportResultDto report(FilterReportDto filterReportDto) {
         TicketCondition ticketCondition = findTicketCondition(filterReportDto.getTicketCondition());
         LocalDateTime startDate = LocalDateTime.of(filterReportDto.getSearchDateDto().getStartYear(), filterReportDto.getSearchDateDto().getStartMonth(), filterReportDto.getSearchDateDto().getStartDay(), 0, 0);

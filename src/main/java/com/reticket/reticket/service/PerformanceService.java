@@ -33,9 +33,9 @@ public class PerformanceService {
 
     @PersistenceContext
     private EntityManager entityManager;
-
     private final PerformanceRepository performanceRepository;
     private final PlayService playService;
+
 
     public List<Performance> save(List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = new ArrayList<>();

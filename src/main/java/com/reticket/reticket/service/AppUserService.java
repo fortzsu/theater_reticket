@@ -30,6 +30,8 @@ public class AppUserService implements UserDetailsService {
     private final TheaterService theaterService;
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
+
+
     @PersistenceContext
     EntityManager entityManager;
 

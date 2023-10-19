@@ -22,6 +22,11 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final AuditoriumService auditoriumService;
 
+//    @Autowired
+//    public AddressService(AddressRepository addressRepository, AuditoriumService auditoriumService) {
+//        this.addressRepository = addressRepository;
+//        this.auditoriumService = auditoriumService;
+//    }
 
     public List<AddressEntity> save(List<AddressSaveDto> addressSaveDtoList) {
         List<AddressEntity> addressEntityList = new ArrayList<>();

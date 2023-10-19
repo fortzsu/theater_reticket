@@ -20,9 +20,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuditoriumService {
 
+
     private final AuditoriumRepository auditoriumRepository;
     private final TheaterService theaterService;
     private final SeatService seatService;
+
 
     public List<Auditorium> save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
         List<Auditorium> auditoriumList =  new ArrayList<>();
