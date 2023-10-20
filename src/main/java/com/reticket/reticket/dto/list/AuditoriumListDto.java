@@ -13,14 +13,15 @@ public class AuditoriumListDto {
 
     private String auditoriumName;
     private String auditoriumAddress;
+    private Long auditoriumId;
 
     public AuditoriumListDto(String auditoriumName, AddressEntity addressEntity) {
         this.auditoriumName = auditoriumName;
         this.auditoriumAddress = addressEntity.toString();
     }
 
-    public AuditoriumListDto(String auditoriumName) {
+    public AuditoriumListDto(String auditoriumName, Long auditoriumId) {
         this.auditoriumName = auditoriumName;
+        this.auditoriumId = auditoriumId;
     }
-
 }

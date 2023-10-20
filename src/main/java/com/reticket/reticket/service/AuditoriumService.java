@@ -1,10 +1,12 @@
 package com.reticket.reticket.service;
 
+import com.reticket.reticket.domain.AddressEntity;
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
+import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.repository.AuditoriumRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class AuditoriumService {
     private final AuditoriumRepository auditoriumRepository;
     private final TheaterService theaterService;
     private final SeatService seatService;
+    private final AddressRepository addressRepository;
 
 
     public List<Auditorium> save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
@@ -81,10 +84,21 @@ public class AuditoriumService {
     }
 
     public List<AuditoriumListDto> listAuditoriums() {
-        return auditoriumRepository.findAllAuditorium();
+        List<AuditoriumListDto> list = auditoriumRepository.findAllAuditorium();
+        for (AuditoriumListDto dto : list) {
+            findAddressToAuditorium(dto);
+        }
+        return list;
     }
 
-
+    private void findAddressToAuditorium(AuditoriumListDto dto) {
+        Optional<Auditorium> opt = this.auditoriumRepository.findById(dto.getAuditoriumId());
+        if(opt.isPresent()) {
+            Auditorium auditorium = opt.get();
+            AddressEntity addressEntity = this.addressRepository.findByAuditoriumId(auditorium);
+            dto.setAuditoriumAddress(addressEntity.toString());
+        }
+    }
 
 
     public Auditorium findAuditoriumById(Long auditoriumId) {

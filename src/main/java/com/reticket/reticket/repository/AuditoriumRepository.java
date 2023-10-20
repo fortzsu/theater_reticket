@@ -16,13 +16,7 @@ public interface AuditoriumRepository extends JpaRepository<Auditorium, Long> {
         Auditorium findAuditoriumByAuditoriumName(String auditoriumName);
         @Query(value = "SELECT a FROM Auditorium a WHERE a.theater =:theater")
         List<Auditorium> findAllByTheater(Theater theater);
-//        @Query(value = "SELECT new com.reticket.reticket.dto.list.AuditoriumListDto(a.auditoriumName, a.addressEntity) FROM Auditorium a")
-        @Query(value = "SELECT new com.reticket.reticket.dto.list.AuditoriumListDto(a.auditoriumName) FROM Auditorium a")
+        @Query(value = "SELECT new com.reticket.reticket.dto.list.AuditoriumListDto(a.auditoriumName, a.id) FROM Auditorium a")
         List<AuditoriumListDto> findAllAuditorium();
-
-        // @Query(value = "SELECT new hu.fortzsu.reticket.dto.report_search.ReportDataDto(COUNT(t),SUM(t.price.amount))" +
-        //            "FROM Ticket t " +
-        //            "WHERE t.performance.play.auditorium = :auditorium AND t.ticketCondition = :ticketCondition " +
-        //            "AND t.performance.performanceDateTime >= :startDate AND t.performance.performanceDateTime <= :endDate")
 
 }
