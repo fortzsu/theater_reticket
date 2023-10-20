@@ -14,7 +14,7 @@ public class AuditoriumSaveDto {
     private Integer numberOfRows;
     private Integer seatNumberPerAuditoriumRow;
     private List<AuditoriumPriceCategorySaveDto> auditoriumPriceCategorySaveDtoList;
-    private Long theatreId;
+    private Long theaterId;
 
     public AuditoriumSaveDto(String auditoriumName, Long theatreId, Integer numberOfRows, Integer seatNumberPerAuditoriumRow,
                              List<AuditoriumPriceCategorySaveDto> auditoriumPriceCategorySaveDtoList) {
@@ -22,9 +22,7 @@ public class AuditoriumSaveDto {
         this.numberOfRows = numberOfRows;
         this.seatNumberPerAuditoriumRow = seatNumberPerAuditoriumRow;
         this.auditoriumPriceCategorySaveDtoList = auditoriumPriceCategorySaveDtoList;
-        this.theatreId = theatreId;
+        this.theaterId = theatreId;
     }
 
-    public AuditoriumSaveDto(Auditorium auditorium) {
-    }
 }

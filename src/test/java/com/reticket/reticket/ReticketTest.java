@@ -954,6 +954,11 @@ public class ReticketTest {
     }
 
     @Test
+    public void testSaveAuditorium_listSize_fromRepo() {
+        Assert.assertEquals(4, this.auditoriumRepository.findAll().size());
+    }
+
+    @Test
     public void testSaveAuditorium_findThird_fromService() {
         Assert.assertEquals(150, (long) this.auditoriumService.findAuditoriumByAuditoriumName("Dorfman Theater").getCapacity());
     }

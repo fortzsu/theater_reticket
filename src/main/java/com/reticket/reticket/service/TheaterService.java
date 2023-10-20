@@ -75,7 +75,7 @@ public class TheaterService {
     private void searchTheatersByAuditorium(List<Auditorium> auditoriums, ListTheatersDto listTheatersDto) {
         for (Auditorium auditorium : auditoriums) {
             AddressEntity address = this.addressRepository.findByAuditoriumId(auditorium);
-            AuditoriumListDto auditoriumListDto = new AuditoriumListDto(auditorium.getAuditoriumName(), address.toString());
+            AuditoriumListDto auditoriumListDto = new AuditoriumListDto(auditorium.getAuditoriumName(), address);
             listTheatersDto.addAuditoriumListDtoList(auditoriumListDto);
         }
     }

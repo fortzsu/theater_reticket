@@ -33,6 +33,8 @@ public class Auditorium {
     @Column
     @OneToMany
     private List<Seat> seats;
+    @OneToOne
+    private AddressEntity addressEntity;
 
 
 }

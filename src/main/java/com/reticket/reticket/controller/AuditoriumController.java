@@ -1,5 +1,6 @@
 package com.reticket.reticket.controller;
 
+import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.service.AuditoriumService;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class AuditoriumController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AuditoriumSaveDto>> listAuditoriums() {
+    public ResponseEntity<List<AuditoriumListDto>> listAuditoriums() {
         return new ResponseEntity<>(auditoriumService.listAuditoriums(), HttpStatus.OK);
     }
 }

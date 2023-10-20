@@ -2,6 +2,7 @@ package com.reticket.reticket.service;
 
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Theater;
+import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.AuditoriumRepository;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,7 +35,7 @@ public class AuditoriumService {
     }
 
     private void generateSeatsToAuditorium(AuditoriumSaveDto dto, List<Auditorium> auditoriumList) {
-        Theater tempTheater = this.theaterService.findById(dto.getTheatreId());
+        Theater tempTheater = this.theaterService.findById(dto.getTheaterId());
         if(tempTheater != null) {
             Auditorium savedAuditorium = updateValues(dto, new Auditorium());
             auditoriumList.add(savedAuditorium);
@@ -60,8 +60,8 @@ public class AuditoriumService {
         auditorium.setCapacity(auditoriumSaveDto.getSeatNumberPerAuditoriumRow() * auditoriumSaveDto.getNumberOfRows());
         auditorium.setIsActive(true);
         auditorium.setNumberOfPriceCategories(auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList().size());
-        if (auditoriumSaveDto.getTheatreId() != null) {
-            auditorium.setTheater(theaterService.findById(auditoriumSaveDto.getTheatreId()));
+        if (auditoriumSaveDto.getTheaterId() != null) {
+            auditorium.setTheater(theaterService.findById(auditoriumSaveDto.getTheaterId()));
         } else {
             auditorium.setTheater(null);
         }
@@ -80,9 +80,12 @@ public class AuditoriumService {
         }
     }
 
-    public List<AuditoriumSaveDto> listAuditoriums() {
-        return auditoriumRepository.findAll().stream().map(AuditoriumSaveDto::new).collect(Collectors.toList());
-    }//TODO
+    public List<AuditoriumListDto> listAuditoriums() {
+        return auditoriumRepository.findAllAuditorium();
+    }
+
+
+
 
     public Auditorium findAuditoriumById(Long auditoriumId) {
         Optional<Auditorium> opt = this.auditoriumRepository.findById(auditoriumId);
