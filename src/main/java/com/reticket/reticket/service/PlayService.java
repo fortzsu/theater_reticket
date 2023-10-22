@@ -84,8 +84,7 @@ public class PlayService {
     }
 
     public List<ListPlaysDto> listPlays(PageableDto dto) {
-        return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()))
-                .stream().map(ListPlaysDto::new).collect(Collectors.toList()); //TODO
+        return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()));
     }
 
     public boolean updatePlay(UpdatePlayDto updatePlayDto, Long id) {
