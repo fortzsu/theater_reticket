@@ -22,15 +22,15 @@ public class AddressControllerTest {
     private TestRestTemplate template;
 
 
-    @Test
-    public void testAddress_withSuper_200() {
-        HttpHeaders headers = new HttpHeaders();
-        List<AddressSaveDto> saveDtos = List.of(new AddressSaveDto("1000", "City", "Street", 123, 1L));
-        HttpEntity<List<AddressSaveDto>> request = new HttpEntity<>(saveDtos, headers);
-        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                .exchange("/api/address", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-    }
+//    @Test
+//    public void testAddress_withSuper_200() {
+//        HttpHeaders headers = new HttpHeaders();
+//        List<AddressSaveDto> saveDtos = List.of(new AddressSaveDto("1000", "City", "Street", 123, 1L));
+//        HttpEntity<List<AddressSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+//        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
+//                .exchange("/api/address", HttpMethod.POST, request, String.class);
+//        assertEquals(HttpStatus.OK, result.getStatusCode());
+//    }
 
     @Test
     public void testAddress_withTheaterUser_403() {

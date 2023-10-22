@@ -38,7 +38,7 @@ public class AddressService {
         addressEntity.setStreet(addressSaveDto.getStreet());
         addressEntity.setPostCode(addressSaveDto.getPostCode());
         Auditorium auditorium = this.auditoriumService.findAuditoriumById(addressSaveDto.getAuditoriumId());
-        addressEntity.setAuditoriumId(auditorium);
+        addressEntity.setAuditorium(auditorium);
         return addressEntity;
     }
 

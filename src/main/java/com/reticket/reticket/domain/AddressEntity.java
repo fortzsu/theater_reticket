@@ -27,8 +27,8 @@ public class AddressEntity {
     private Integer houseNumber;
 
     @OneToOne
-    @JoinColumn(name = "auditorium_id")
-    private Auditorium auditoriumId;
+    @JoinColumn(name = "auditorium")
+    private Auditorium auditorium;
     @Override
     public String toString() {
         return postCode + ", " + city + " " + street + " " + houseNumber;

@@ -30,16 +30,16 @@ public class AuditoriumService {
 
 
     public List<Auditorium> save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
-        List<Auditorium> auditoriumList =  new ArrayList<>();
+        List<Auditorium> auditoriumList = new ArrayList<>();
         for (AuditoriumSaveDto dto : auditoriumSaveDtoList) {
-            generateSeatsToAuditorium(dto,auditoriumList);
+            generateSeatsToAuditorium(dto, auditoriumList);
         }
         return auditoriumList;
     }
 
     private void generateSeatsToAuditorium(AuditoriumSaveDto dto, List<Auditorium> auditoriumList) {
         Theater tempTheater = this.theaterService.findById(dto.getTheaterId());
-        if(tempTheater != null) {
+        if (tempTheater != null) {
             Auditorium savedAuditorium = updateValues(dto, new Auditorium());
             auditoriumList.add(savedAuditorium);
             tempTheater.setCapacity(tempTheater.getCapacity() + savedAuditorium.getCapacity());
@@ -89,22 +89,18 @@ public class AuditoriumService {
             findAddressToAuditorium(dto);
         }
         return list;
-
     }
 
     private void findAddressToAuditorium(AuditoriumListDto dto) {
-        Optional<Auditorium> opt = this.auditoriumRepository.findById(dto.getAuditoriumId());
-        if(opt.isPresent()) {
-            Auditorium auditorium = opt.get();
-            AddressEntity addressEntity = this.addressRepository.findAddressByAuditorium(auditorium);
-            dto.setAuditoriumAddress(addressEntity.toString());
-        }
+        Long auditoriumId = dto.getAuditoriumId();
+        Auditorium auditorium = findAuditoriumById(auditoriumId);
+        AddressEntity addressEntity = this.addressRepository.findAddressByAuditorium(auditorium);
+        dto.setAuditoriumAddress(addressEntity.toString());
     }
-
 
     public Auditorium findAuditoriumById(Long auditoriumId) {
         Optional<Auditorium> opt = this.auditoriumRepository.findById(auditoriumId);
-        if(opt.isPresent()) {
+        if (opt.isPresent()) {
             return opt.get();
         } else {
             throw new AuditoriumNotFoundException("The Auditorium is not found!");
