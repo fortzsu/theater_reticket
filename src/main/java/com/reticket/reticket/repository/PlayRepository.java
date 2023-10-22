@@ -21,7 +21,4 @@ public interface PlayRepository extends JpaRepository<Play, Long> {
         @Query(value = "SELECT new com.reticket.reticket.dto.list.ListPlaysDto (p.playName, p.plot, p.premiere, p.playType) FROM Play p")
         List<ListPlaysDto> findAllPlay(Pageable pageable);
 
-//        @Query(value = "SELECT p FROM Play p")
-//        List<Play> findAllPlay(Pageable pageable);
-
 }

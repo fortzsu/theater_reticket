@@ -21,14 +21,6 @@ public class ListPlaysDto {
 
     private PlayType playType;
 
-//    public ListPlaysDto(Play play) {
-//        this.playName = play.getPlayName();
-//        this.plot = play.getPlot();
-//        this.premiere = play.getPremiere();
-//        this.playType = play.getPlayType();
-//    }
-
-
     public ListPlaysDto(String playName, String plot, LocalDateTime premiere, PlayType playType) {
         this.playName = playName;
         this.plot = plot;
