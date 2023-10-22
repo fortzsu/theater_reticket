@@ -89,6 +89,7 @@ public class AuditoriumService {
             findAddressToAuditorium(dto);
         }
         return list;
+
     }
 
     private void findAddressToAuditorium(AuditoriumListDto dto) {
