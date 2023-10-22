@@ -49,7 +49,7 @@ public class AddressService {
     }
 
     public AddressEntity findByAuditoriumId(Auditorium auditorium) {
-        return this.addressRepository.findByAuditoriumId(auditorium);
+        return this.addressRepository.findAddressByAuditorium(auditorium);
     }
 
     public boolean update(AddressSaveDto addressSaveDto, Long id) {

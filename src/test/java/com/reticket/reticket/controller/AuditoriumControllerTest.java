@@ -1,5 +1,6 @@
 package com.reticket.reticket.controller;
 
+import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumPriceCategorySaveDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;

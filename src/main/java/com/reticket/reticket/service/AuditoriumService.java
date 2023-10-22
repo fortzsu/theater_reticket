@@ -95,7 +95,7 @@ public class AuditoriumService {
         Optional<Auditorium> opt = this.auditoriumRepository.findById(dto.getAuditoriumId());
         if(opt.isPresent()) {
             Auditorium auditorium = opt.get();
-            AddressEntity addressEntity = this.addressRepository.findByAuditoriumId(auditorium);
+            AddressEntity addressEntity = this.addressRepository.findAddressByAuditorium(auditorium);
             dto.setAuditoriumAddress(addressEntity.toString());
         }
     }
