@@ -24,6 +24,7 @@ public class AddressControllerTest {
     private TestRestTemplate template;
 
     @Test
+
     public void testAddress_withSuper_200() {
         try {
             HttpHeaders headers = new HttpHeaders();
