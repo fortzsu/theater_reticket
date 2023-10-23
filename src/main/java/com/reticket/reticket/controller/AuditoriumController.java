@@ -2,16 +2,12 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
+import com.reticket.reticket.dto.wrapper.ListWrapperDto;
 import com.reticket.reticket.service.AuditoriumService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +51,7 @@ public class AuditoriumController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AuditoriumListDto>> listAuditoriums() {
+    public ResponseEntity<ListWrapperDto> listAuditoriums() {
         return new ResponseEntity<>(auditoriumService.listAuditoriums(), HttpStatus.OK);
     }
 }

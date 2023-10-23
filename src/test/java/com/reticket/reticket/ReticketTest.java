@@ -950,7 +950,7 @@ public class ReticketTest {
 
     @Test
     public void testSaveAuditorium_listSize_fromService() {
-        Assert.assertEquals(4, this.auditoriumService.listAuditoriums().size());
+        Assert.assertEquals(4, this.auditoriumService.listAuditoriums().getWrapperList().size());
     }
 
     @Test

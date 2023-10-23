@@ -5,6 +5,8 @@ import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
+import com.reticket.reticket.dto.wrapper.ListWrapperDto;
+import com.reticket.reticket.dto.wrapper.WrapperDto;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.repository.AuditoriumRepository;
@@ -83,12 +85,14 @@ public class AuditoriumService {
         }
     }
 
-    public List<AuditoriumListDto> listAuditoriums() {
-        List<AuditoriumListDto> list = auditoriumRepository.findAllAuditorium();
-        for (AuditoriumListDto dto : list) {
-            findAddressToAuditorium(dto);
+    public ListWrapperDto listAuditoriums() {
+        List<WrapperDto> wrapperDtos = new ArrayList<>(auditoriumRepository.findAllAuditorium());
+        ListWrapperDto resultList = new ListWrapperDto();
+        resultList.setWrapperList(wrapperDtos);
+        for (WrapperDto dto : wrapperDtos) {
+            findAddressToAuditorium((AuditoriumListDto) dto);
         }
-        return list;
+        return resultList;
     }
 
     private void findAddressToAuditorium(AuditoriumListDto dto) {
