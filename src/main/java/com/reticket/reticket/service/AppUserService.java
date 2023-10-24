@@ -1,12 +1,14 @@
 package com.reticket.reticket.service;
 
-import com.reticket.reticket.domain.*;
+import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.dto.save.AssociateUserSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.repository.AppUserRepository;
+import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
 import com.reticket.reticket.security.repository_service.UserRoleService;
+import com.reticket.reticket.service.mapper.MapperService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
@@ -31,7 +33,6 @@ public class AppUserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
 
-
     @PersistenceContext
     EntityManager entityManager;
 
@@ -48,7 +49,7 @@ public class AppUserService implements UserDetailsService {
     public boolean saveGuest(GuestUserSaveDto guestUserSaveDto) {
         String username = guestUserSaveDto.getUsername();
         String email = guestUserSaveDto.getEmail();
-        if(!checkIfUsernameAndEmailIsTaken(username, email)) {
+        if (!checkIfUsernameAndEmailIsTaken(username, email)) {
             this.appUserRepository.save(updateValues(new AppUser(), guestUserSaveDto, "guest", null));
             return true;
         } else {
@@ -56,16 +57,10 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
-    private boolean checkIfUsernameAndEmailIsTaken(String username, String email) {
-        AppUser appUserByEmail = this.appUserRepository.findByEmail(email);
-        AppUser appUserByUsername = this.findByUsername(username);
-        return  appUserByEmail != null && appUserByUsername != null;
-    }
-
     public boolean saveAssociate(AssociateUserSaveDto associateUserSaveDto) {
         String username = associateUserSaveDto.getGuestUserSaveDto().getUsername();
         String email = associateUserSaveDto.getGuestUserSaveDto().getEmail();
-        if(!checkIfUsernameAndEmailIsTaken(username, email)) {
+        if (!checkIfUsernameAndEmailIsTaken(username, email)) {
             saveNewAppUser(associateUserSaveDto);
             return true;
         } else {
@@ -75,25 +70,34 @@ public class AppUserService implements UserDetailsService {
 
     private void saveNewAppUser(AssociateUserSaveDto associateUserSaveDto) {
         String appUserType = checkAppUserType(associateUserSaveDto.isTheaterAdmin());
-        this.appUserRepository.save(updateValues(new AppUser(), associateUserSaveDto.getGuestUserSaveDto(),
-                appUserType, associateUserSaveDto.getTheaterId()));
+        Long theaterId = associateUserSaveDto.getTheaterId();
+        AppUser appUser = updateValues(new AppUser(), associateUserSaveDto.getGuestUserSaveDto(),
+                appUserType, theaterId);
+        this.appUserRepository.save(appUser);
     }
 
     private AppUser updateValues(AppUser appUser, GuestUserSaveDto guestUserSaveDto, String appUserType, Long theaterId) {
         checkIfTheaterIdIsPresent(theaterId, appUser);
-        appUser.setFirstName(guestUserSaveDto.getFirstName());
-        appUser.setLastName(guestUserSaveDto.getLastName());
-        appUser.setPassword(this.passwordEncoder.encode(guestUserSaveDto.getPassword()));
-        appUser.setUsername(guestUserSaveDto.getUsername());
-        appUser.setEmail(guestUserSaveDto.getEmail());
-        appUser.addUserRoles(this.userRoleRepository.findUserRoleByRoleEnum(
-                UserRoleService.createUserRoleFromString(appUserType)));
-        appUser.setDeleted(false);
+        String password = this.passwordEncoder.encode(guestUserSaveDto.getPassword());
+        UserRole userRole = this.userRoleRepository.findUserRoleByRoleEnum(
+                UserRoleService.createUserRoleFromString(appUserType));
+        MapperService.appUserDtoToEntity(appUser, password, guestUserSaveDto, userRole);
         return appUser;
+    }
+
+    private void setUpdatedData(AppUser appUser, UpdateAppUserDto updateAppUserDto) {
+        appUser.setEmail(updateAppUserDto.getEmail());
+        appUser.setPassword(this.passwordEncoder.encode(updateAppUserDto.getPassword()));
     }
 
     public AppUser findByUsername(String username) {
         return this.appUserRepository.findByUsername(username);
+    }
+
+    private boolean checkIfUsernameAndEmailIsTaken(String username, String email) {
+        AppUser appUserByEmail = this.appUserRepository.findByEmail(email);
+        AppUser appUserByUsername = this.findByUsername(username);
+        return appUserByEmail != null && appUserByUsername != null;
     }
 
     private void checkIfTheaterIdIsPresent(Long theaterId, AppUser appUser) {
@@ -105,7 +109,7 @@ public class AppUserService implements UserDetailsService {
     }
 
     private String checkAppUserType(boolean isTheaterAdmin) {
-        if(isTheaterAdmin) {
+        if (isTheaterAdmin) {
             return "theater_admin";
         } else {
             return "theater_user";
@@ -129,11 +133,6 @@ public class AppUserService implements UserDetailsService {
         } else {
             return false;
         }
-    }
-
-    private void setUpdatedData(AppUser appUser, UpdateAppUserDto updateAppUserDto) {
-        appUser.setEmail(updateAppUserDto.getEmail());
-        appUser.setPassword(this.passwordEncoder.encode(updateAppUserDto.getPassword()));
     }
 
     public boolean deleteUser(String username, Authentication authentication) {

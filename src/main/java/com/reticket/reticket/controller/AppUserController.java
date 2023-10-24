@@ -8,7 +8,6 @@ import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.service.AppUserActionService;
 import com.reticket.reticket.service.AppUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,21 +29,16 @@ public class AppUserController {
 
     @PostMapping("/saveGuest")
     public ResponseEntity<Void> saveGuest(@RequestBody GuestUserSaveDto guestUserSaveDto) {
-        if (this.appUserService.saveGuest(guestUserSaveDto)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
+        this.appUserService.saveGuest(guestUserSaveDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/saveAssociate")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> saveAssociate( @RequestBody AssociateUserSaveDto associateUserSaveDto) {
-        if (this.appUserService.saveAssociate(associateUserSaveDto)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
+    public ResponseEntity<Void> saveAssociate(@RequestBody AssociateUserSaveDto associateUserSaveDto) {
+        this.appUserService.saveAssociate(associateUserSaveDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @GetMapping("/{username}/tickets")
@@ -58,7 +52,7 @@ public class AppUserController {
     public ResponseEntity<Void> likePlay(@PathVariable(value = "username") String username,
                                          @PathVariable(value = "playId") Long playId) {
         boolean isLikePlayOk = this.appUserActionService.likePlay(username, playId);
-        if(isLikePlayOk) {
+        if (isLikePlayOk) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
