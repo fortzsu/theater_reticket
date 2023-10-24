@@ -86,10 +86,10 @@ public class AuditoriumService {
     }
 
     public ListWrapperDto listAuditoriums() {
-        List<WrapperDto> wrapperDtos = new ArrayList<>(auditoriumRepository.findAllAuditorium());
+        List<WrapperDto> wrapperDtoList = new ArrayList<>(auditoriumRepository.findAllAuditorium());
         ListWrapperDto resultList = new ListWrapperDto();
-        resultList.setWrapperList(wrapperDtos);
-        for (WrapperDto dto : wrapperDtos) {
+        resultList.setWrapperList(wrapperDtoList);
+        for (WrapperDto dto : wrapperDtoList) {
             findAddressToAuditorium((AuditoriumListDto) dto);
         }
         return resultList;

@@ -1,5 +1,6 @@
 package com.reticket.reticket.dto.list;
 
+import com.reticket.reticket.dto.wrapper.WrapperDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ListTicketDto {
+public class ListTicketDto extends WrapperDto {
 
     private String theatreName;
     private String auditoriumAddress;
