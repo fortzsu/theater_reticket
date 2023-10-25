@@ -10,6 +10,7 @@ import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.repository.PriceRepository;
+import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -44,17 +45,12 @@ public class PlayService {
 
     private void updateValues(Play play, PlaySaveDto playSaveDto) throws AuditoriumNotFoundException {
         Auditorium auditorium = this.auditoriumService.findAuditoriumById(playSaveDto.getAuditoriumId());
-        updateData(playSaveDto, play, auditorium);
+        play.setAuditorium(auditorium);
+        play.setIsArchived(false);
+        play.setPremiere(playSaveDto.getPremiere().plusHours(1));
+        MapperService.playDtoToEntity(playSaveDto, play);
     }
 
-    private void updateData(PlaySaveDto playSaveDto, Play play, Auditorium auditorium) {
-        play.setAuditorium(auditorium);
-        play.setPlayName(playSaveDto.getPlayName());
-        play.setPlot(playSaveDto.getPlot());
-        play.setPremiere(playSaveDto.getPremiere().plusHours(1));
-        play.setIsArchived(false);
-        play.setPlayType(playSaveDto.getPlayType());
-    }
 
     private void connectContributorWithPlayAndContributorType(Long playId, List<ContributorsSaveForPlaySaveDto> contributorsSaveForPlaySaveDtoList) {
         for (ContributorsSaveForPlaySaveDto dto : contributorsSaveForPlaySaveDtoList) {
@@ -87,13 +83,10 @@ public class PlayService {
         return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()));
     }
 
-    public boolean updatePlay(UpdatePlayDto updatePlayDto, Long id) {
+    public void updatePlay(UpdatePlayDto updatePlayDto, Long id) {
         Play play = findPlayById(id);
         if (play != null) {
             updatePlayData(updatePlayDto, play);
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -110,13 +103,10 @@ public class PlayService {
         }
     }
 
-    public boolean deletePlay(Long id) {
+    public void deletePlay(Long id) {
         Play play = findPlayById(id);
         if (play != null) {
             play.setIsArchived(true);
-            return true;
-        } else {
-            return false;
         }
     }
 

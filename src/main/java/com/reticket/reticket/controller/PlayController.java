@@ -12,7 +12,6 @@ import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.ContributorService;
 import com.reticket.reticket.service.PlayService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @Controller
@@ -38,7 +38,7 @@ public class PlayController {
             this.playService.save(playSaveDtoList);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (AuditoriumNotFoundException e) {
-            System.out.println(e.getMessage());
+            Logger.getAnonymousLogger().info(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -67,23 +67,15 @@ public class PlayController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Boolean> updatePlay(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
-        boolean isUpdatePlayOk = this.playService.updatePlay(updatePlayDto, id);
-        if (isUpdatePlayOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Boolean> update(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
+        this.playService.updatePlay(updatePlayDto, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Boolean> deletePlay(@PathVariable Long id) {
-        boolean isDeletePlayOk = this.playService.deletePlay(id);
-        if (isDeletePlayOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Boolean> delete(@PathVariable Long id) {
+        this.playService.deletePlay(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
