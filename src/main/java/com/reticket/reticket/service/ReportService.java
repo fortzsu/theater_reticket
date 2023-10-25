@@ -35,9 +35,10 @@ public class ReportService {
     private final AuditoriumService auditoriumService;
     private final PlayService playService;
     private final GoogleService googleService;
+//    private final ReportQueryService reportQueryService;
 
-    private static final String TICKET_CONDITION = "ticketCondition";
     private static final String ORIGINAL_DATE_TIME = "originalPerformanceDateTime";
+    private static final String TICKET_CONDITION = "ticketCondition";
     private static final String ID = "id";
     private static final String THEATER = "theater";
     private static final String AUDITORIUM = "auditorium";
@@ -45,22 +46,34 @@ public class ReportService {
     private LocalDateTime searchStartDate;
     private LocalDateTime searchEndDate;
 
+    private CriteriaBuilder criteriaBuilder;
+    private CriteriaQuery<ReportResultDto> reportQuery;
+    private Root<Ticket> reportTicketRoot;
+    private CriteriaJoinDto criteriaReportJoinDto;
+
+    private CriteriaBuilder criteriaBuilderPerformances;
+    private CriteriaQuery<ReportResultPerformancesDto> criteriaQueryPerformances;
+    private Root<Ticket> performancesTicketRoot;
+    private CriteriaJoinDto criteriaJoinDtoPerformances;
+
+
 
     public ReportResultDto report(FilterReportDto filter) {
         TicketCondition ticketCondition = findTicketCondition(filter.getTicketCondition());
         addValuesToSearchDates(filter);
-        ReportResultDto reportResultDto = fillResultQuery(filter, ticketCondition);
+        ReportResultDto reportResultDto = prepReportQuery(filter, ticketCondition);
         fillReportResultDto(reportResultDto, ticketCondition, filter);
         exportToGoogleSheets(filter, reportResultDto);
         return reportResultDto;
     }
+
 
     private void fillReportResultDto(ReportResultDto reportResultDto, TicketCondition ticketCondition, FilterReportDto filter) {
         reportResultDto.setTicketCondition(ticketCondition.getDisplayName());
         reportResultDto.setStart(searchStartDate);
         reportResultDto.setEnd(searchEndDate);
         if (filter.isPerformances()) {
-            reportResultDto.setReportResultPerformancesDtos(fillPerformances(filter, ticketCondition));
+            reportResultDto.setReportResultPerformancesDtos(prepPerformancesQuery(filter, ticketCondition));
         } else {
             reportResultDto.setSearchPathName(searchPath(filter));
         }
@@ -81,46 +94,68 @@ public class ReportService {
         searchEndDate = LocalDateTime.of(filter.getSearchDateDto().getEndYear(), filter.getSearchDateDto().getEndMonth(), filter.getSearchDateDto().getEndDay(), 23, 59);
     }
 
-    private ReportResultDto fillResultQuery(FilterReportDto filterReportDto, TicketCondition ticketCondition) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ReportResultDto> reportQuery = criteriaBuilder.createQuery(ReportResultDto.class);
-        Root<Ticket> ticketRoot = reportQuery.from(Ticket.class);
-        CriteriaJoinDto criteriaJoinDto = createJoinDto(ticketRoot);
 
-        return entityManager.createQuery(
-                reportQuery.multiselect(
-                                criteriaBuilder.count(ticketRoot),
-                                criteriaBuilder.sum(criteriaJoinDto.getPriceJoin().get("amount"))).
-                        where(fillPredicateList(filterReportDto, ticketRoot, criteriaBuilder, criteriaJoinDto,
+    private ReportResultDto prepReportQuery(FilterReportDto filter, TicketCondition ticketCondition) {
+        this.criteriaBuilder = this.entityManager.getCriteriaBuilder();
+        this.reportQuery = this.criteriaBuilder.createQuery(ReportResultDto.class);
+        this.reportTicketRoot = this.reportQuery.from(Ticket.class);
+        this.criteriaReportJoinDto = createJoinDto(this.reportTicketRoot);
+        return createReportQuery(filter, ticketCondition);
+    }
+
+    private ReportResultDto createReportQuery(FilterReportDto filter,
+                                              TicketCondition ticketCondition) {
+        return this.entityManager.createQuery(
+                this.reportQuery.multiselect(
+                                this.criteriaBuilder.count(this.reportTicketRoot),
+                                this.criteriaBuilder.sum(this.criteriaReportJoinDto.getPriceJoin().get("amount"))).
+                        where(fillPredicateList(filter, this.reportTicketRoot, this.criteriaBuilder, this.criteriaReportJoinDto,
                                 ticketCondition)
                                 .toArray(new Predicate[0]))).getSingleResult();
-
     }
 
-    private List<ReportResultPerformancesDto> fillPerformances(FilterReportDto filter, TicketCondition ticketCondition) {
-        CriteriaBuilder criteriaBuilderPerformances = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ReportResultPerformancesDto> criteriaQueryPerformances = criteriaBuilderPerformances.createQuery(ReportResultPerformancesDto.class);
-        Root<Ticket> ticketRoot = criteriaQueryPerformances.from(Ticket.class);
-        CriteriaJoinDto criteriaJoinDtoPerformances = createJoinDto(ticketRoot);
-        return createPerformancesQuery(criteriaQueryPerformances, criteriaJoinDtoPerformances, criteriaBuilderPerformances,
-                ticketCondition, ticketRoot, filter);
+
+
+    private List<ReportResultPerformancesDto> prepPerformancesQuery(FilterReportDto filter, TicketCondition ticketCondition) {
+        this.criteriaBuilderPerformances = this.entityManager.getCriteriaBuilder();
+        this.criteriaQueryPerformances = this.criteriaBuilderPerformances.createQuery(ReportResultPerformancesDto.class);
+        this.performancesTicketRoot = this.criteriaQueryPerformances.from(Ticket.class);
+        this.criteriaJoinDtoPerformances = createJoinDto(this.performancesTicketRoot);
+        return createPerformancesQuery(ticketCondition, filter);
     }
 
-    private List<ReportResultPerformancesDto> createPerformancesQuery(CriteriaQuery<ReportResultPerformancesDto> criteriaQueryPerformances,
-                                                                      CriteriaJoinDto criteriaJoinDtoPerformances, CriteriaBuilder criteriaBuilderPerformances,
-                                                                      TicketCondition ticketCondition, Root<Ticket> ticketRoot, FilterReportDto filter) {
+    private List<ReportResultPerformancesDto> createPerformancesQuery(TicketCondition ticketCondition, FilterReportDto filter) {
         return entityManager.createQuery(
-                        criteriaQueryPerformances.multiselect(
-                                        criteriaJoinDtoPerformances.getPerformanceJoin().get(ORIGINAL_DATE_TIME),
-                                        criteriaBuilderPerformances.count(ticketRoot),
-                                        criteriaBuilderPerformances.sum(criteriaJoinDtoPerformances.getPriceJoin().get("amount")),
-                                        criteriaJoinDtoPerformances.getTheaterJoin().get("theaterName"),
-                                        criteriaJoinDtoPerformances.getAuditoriumJoin().get("auditoriumName"),
-                                        criteriaJoinDtoPerformances.getPlayJoin().get("playName")).
-                                groupBy(ticketRoot.get("performance")).where(fillPredicateList(filter, ticketRoot,
-                                        criteriaBuilderPerformances, criteriaJoinDtoPerformances, ticketCondition).toArray(new Predicate[0]))).
+                        this.criteriaQueryPerformances.multiselect(
+                                        this.criteriaJoinDtoPerformances.getPerformanceJoin().get(ORIGINAL_DATE_TIME),
+                                        this.criteriaBuilderPerformances.count(this.performancesTicketRoot),
+                                        this.criteriaBuilderPerformances.sum(this.criteriaJoinDtoPerformances.getPriceJoin().get("amount")),
+                                        this.criteriaJoinDtoPerformances.getTheaterJoin().get("theaterName"),
+                                        this.criteriaJoinDtoPerformances.getAuditoriumJoin().get("auditoriumName"),
+                                        this.criteriaJoinDtoPerformances.getPlayJoin().get("playName")).
+                                groupBy(this.performancesTicketRoot.get("performance")).where(fillPredicateList(filter, this.performancesTicketRoot,
+                                        this.criteriaBuilderPerformances, this.criteriaJoinDtoPerformances, ticketCondition).toArray(new Predicate[0]))).
                 getResultList();
     }
+
+    public String searchPath(FilterReportDto filterReportDto) {
+        switch (filterReportDto.getFilterByPath()) {
+            case THEATER -> {
+                Theater theater = this.theaterService.findById(filterReportDto.getSearchId());
+                return theater.getTheaterName();
+            }
+            case AUDITORIUM -> {
+                Auditorium auditorium = this.auditoriumService.findAuditoriumById(filterReportDto.getSearchId());
+                return auditorium.getAuditoriumName();
+            }
+            default -> {
+                Play play = this.playService.findById(filterReportDto.getSearchId());
+                return play.getPlayName();
+            }
+        }
+    }
+
+
 
     private CriteriaJoinDto createJoinDto(Root<Ticket> ticketRoot) {
         CriteriaJoinDto criteriaJoinDto = new CriteriaJoinDto();
@@ -149,6 +184,8 @@ public class ReportService {
         return predicateList;
     }
 
+
+
     private void findTicketConditionForPredicate(FilterReportDto dto, List<Predicate> predicateList,
                                                  CriteriaBuilder criteriaBuilder, Root<Ticket> root, TicketCondition ticketCondition) {
         if (dto.getTicketCondition().equals("SOLD")) {
@@ -170,23 +207,6 @@ public class ReportService {
             predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getAuditoriumJoin().get(ID), dto.getSearchId()));
         } else {
             predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get(ID), dto.getSearchId()));
-        }
-    }
-
-    public String searchPath(FilterReportDto filterReportDto) {
-        switch (filterReportDto.getFilterByPath()) {
-            case THEATER -> {
-                Theater theater = this.theaterService.findById(filterReportDto.getSearchId());
-                return theater.getTheaterName();
-            }
-            case AUDITORIUM -> {
-                Auditorium auditorium = this.auditoriumService.findAuditoriumById(filterReportDto.getSearchId());
-                return auditorium.getAuditoriumName();
-            }
-            default -> {
-                Play play = this.playService.findById(filterReportDto.getSearchId());
-                return play.getPlayName();
-            }
         }
     }
 
