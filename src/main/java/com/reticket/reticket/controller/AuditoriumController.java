@@ -1,6 +1,5 @@
 package com.reticket.reticket.controller;
 
-import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.dto.wrapper.ListWrapperDto;
 import com.reticket.reticket.service.AuditoriumService;
@@ -22,36 +21,28 @@ public class AuditoriumController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> createAuditorium(@RequestBody List<AuditoriumSaveDto> auditoriumSaveDto) {
-        if (auditoriumService.save(auditoriumSaveDto) != null) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> save(@RequestBody List<AuditoriumSaveDto> auditoriumSaveDto) {
+        auditoriumService.save(auditoriumSaveDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> deleteAuditorium(@PathVariable Long id) {
-        if (auditoriumService.deleteAuditorium(id)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        auditoriumService.deleteAuditorium(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> updateAuditorium(@PathVariable Long id, @RequestBody AuditoriumSaveDto auditoriumSaveDto) {
-        if (auditoriumService.update(auditoriumSaveDto, id) != null) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AuditoriumSaveDto auditoriumSaveDto) {
+        auditoriumService.update(auditoriumSaveDto, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<ListWrapperDto> listAuditoriums() {
+    public ResponseEntity<ListWrapperDto> list() {
         return new ResponseEntity<>(auditoriumService.listAuditoriums(), HttpStatus.OK);
     }
 }

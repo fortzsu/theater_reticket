@@ -10,6 +10,7 @@ import com.reticket.reticket.dto.wrapper.WrapperDto;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.repository.AuditoriumRepository;
+import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,47 +32,38 @@ public class AuditoriumService {
     private final AddressRepository addressRepository;
 
 
-    public List<Auditorium> save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
-        List<Auditorium> auditoriumList = new ArrayList<>();
+    public void save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
         for (AuditoriumSaveDto dto : auditoriumSaveDtoList) {
-            generateSeatsToAuditorium(dto, auditoriumList);
-        }
-        return auditoriumList;
-    }
-
-    private void generateSeatsToAuditorium(AuditoriumSaveDto dto, List<Auditorium> auditoriumList) {
-        Theater tempTheater = this.theaterService.findById(dto.getTheaterId());
-        if (tempTheater != null) {
-            Auditorium savedAuditorium = updateValues(dto, new Auditorium());
-            auditoriumList.add(savedAuditorium);
-            tempTheater.setCapacity(tempTheater.getCapacity() + savedAuditorium.getCapacity());
-            this.seatService.generateSeats(savedAuditorium, dto);
+            generateSeatsToAuditorium(dto);
         }
     }
 
     public Auditorium update(AuditoriumSaveDto auditoriumSaveDto, Long id) {
         Optional<Auditorium> opt = auditoriumRepository.findById(id);
-        Auditorium auditorium;
-        if (opt.isPresent()) {
-            auditorium = opt.get();
-            return updateValues(auditoriumSaveDto, auditorium);
-        } else {
-            return null; //TODO
-        }
+        return opt.map(auditorium -> updateValues(auditoriumSaveDto, auditorium)).orElse(null);
     }
 
     private Auditorium updateValues(AuditoriumSaveDto auditoriumSaveDto, Auditorium auditorium) {
-        auditorium.setAuditoriumName(auditoriumSaveDto.getAuditoriumName());
-        auditorium.setCapacity(auditoriumSaveDto.getSeatNumberPerAuditoriumRow() * auditoriumSaveDto.getNumberOfRows());
-        auditorium.setIsActive(true);
-        auditorium.setNumberOfPriceCategories(auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList().size());
+        MapperService.auditoriumDtoToEntity(auditorium, auditoriumSaveDto);
+        setTheaterToAuditorium(auditorium, auditoriumSaveDto);
+        return this.auditoriumRepository.save(auditorium);
+    }
+
+    private void setTheaterToAuditorium(Auditorium auditorium, AuditoriumSaveDto auditoriumSaveDto) {
         if (auditoriumSaveDto.getTheaterId() != null) {
             auditorium.setTheater(theaterService.findById(auditoriumSaveDto.getTheaterId()));
         } else {
             auditorium.setTheater(null);
         }
-        this.auditoriumRepository.save(auditorium);
-        return auditorium;
+    }
+
+    private void generateSeatsToAuditorium(AuditoriumSaveDto dto) {
+        Theater theater = this.theaterService.findById(dto.getTheaterId());
+        if (theater != null) {
+            Auditorium savedAuditorium = updateValues(dto, new Auditorium());
+            theater.setCapacity(theater.getCapacity() + savedAuditorium.getCapacity());
+            this.seatService.generateSeats(savedAuditorium, dto);
+        }
     }
 
     public boolean deleteAuditorium(Long id) {

@@ -2,7 +2,9 @@ package com.reticket.reticket.service.mapper;
 
 import com.reticket.reticket.domain.AddressEntity;
 import com.reticket.reticket.domain.AppUser;
+import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.dto.save.AddressSaveDto;
+import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,14 @@ public class MapperService {
         appUser.setPassword(password);
         appUser.addUserRoles(userRole);
     }
+
+    public static void auditoriumDtoToEntity(Auditorium auditorium, AuditoriumSaveDto auditoriumSaveDto) {
+        auditorium.setAuditoriumName(auditoriumSaveDto.getAuditoriumName());
+        auditorium.setCapacity(auditoriumSaveDto.getSeatNumberPerAuditoriumRow() * auditoriumSaveDto.getNumberOfRows());
+        auditorium.setIsActive(true);
+        auditorium.setNumberOfPriceCategories(auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList().size());
+    }
+
 
 
 }
