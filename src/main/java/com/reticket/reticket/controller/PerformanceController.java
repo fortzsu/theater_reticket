@@ -8,7 +8,6 @@ import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.service.GenerateTicketToPerformanceService;
 import com.reticket.reticket.service.PerformanceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,13 +30,10 @@ public class PerformanceController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<HttpStatus> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
-        boolean flag = this.generateTicketToPerformanceService.generate(performanceSaveDtoList);
-        if(flag) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
+        this.generateTicketToPerformanceService.generateTickets(performanceSaveDtoList);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @PostMapping("/search")
@@ -49,13 +45,9 @@ public class PerformanceController {
 
     @PostMapping("/updatePerformance/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Boolean> updatePerformance(@RequestBody UpdatePerformanceDto updatePerformanceDto, @PathVariable Long id) {
-        boolean isUpdatePerformanceOk = this.performanceService.updatePerformance(updatePerformanceDto, id);
-        if (isUpdatePerformanceOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> update(@RequestBody UpdatePerformanceDto updatePerformanceDto, @PathVariable Long id) {
+        this.performanceService.updatePerformance(updatePerformanceDto, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

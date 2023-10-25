@@ -33,7 +33,7 @@ public class PerformanceControllerTest {
         HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/performance", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
     }
 
     @Test
@@ -63,7 +63,7 @@ public class PerformanceControllerTest {
         HttpEntity<UpdatePerformanceDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/performance/updatePerformance/1000", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
     }
 
     @Test

@@ -1,13 +1,11 @@
 package com.reticket.reticket.service.mapper;
 
-import com.reticket.reticket.domain.AddressEntity;
-import com.reticket.reticket.domain.AppUser;
-import com.reticket.reticket.domain.Auditorium;
-import com.reticket.reticket.domain.Contributor;
+import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.save.AddressSaveDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
+import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +44,13 @@ public class MapperService {
         contributor.setFirstName(contributorSaveDto.getFirstName());
         contributor.setLastName(contributorSaveDto.getLastName());
         contributor.setIntroduction(contributorSaveDto.getIntroduction());
+    }
+
+    public static void performanceDtoToEntity(UpdatePerformanceDto updatePerformanceDto, Performance performance) {
+        performance.setNewDateTime(updatePerformanceDto.getModifiedDateTime());
+        performance.setAvailableOnline(updatePerformanceDto.isAvailableOnline());
+        performance.setCancelled(updatePerformanceDto.isCancelled());
+        performance.setSeenOnline(updatePerformanceDto.isSeenOnline());
     }
 
 }

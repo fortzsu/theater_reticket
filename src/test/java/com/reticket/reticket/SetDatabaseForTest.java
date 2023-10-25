@@ -156,7 +156,7 @@ public class SetDatabaseForTest {
                 j++;
             }
         }
-        generateTicketToPerformanceService.generate(performanceSaveDtoList);
+        generateTicketToPerformanceService.generateTickets(performanceSaveDtoList);
         // ************* PERFORMANCE *************
 
         // ************* APPUSER *************

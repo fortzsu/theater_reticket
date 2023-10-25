@@ -18,12 +18,10 @@ public class GenerateTicketToPerformanceService {
     private final TicketService ticketService;
     private final PerformanceService performanceService;
 
-    public boolean generate(List<PerformanceSaveDto> performanceSaveDtoList) {
+    public void generateTickets(List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
-        boolean flag = false;
         for (int i = 0; i < performanceSaveDtoList.size(); i++) {
-            flag = this.ticketService.searchSeatsForPerformance(performanceList.get(i), performanceSaveDtoList.get(i));
+            this.ticketService.searchSeatsForPerformance(performanceList.get(i), performanceSaveDtoList.get(i));
         }
-        return flag;
     }
 }

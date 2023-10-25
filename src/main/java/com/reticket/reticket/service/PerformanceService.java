@@ -8,6 +8,7 @@ import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.repository.PerformanceRepository;
+import com.reticket.reticket.service.mapper.MapperService;
 import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -42,13 +43,13 @@ public class PerformanceService {
         for (PerformanceSaveDto saveDto : performanceSaveDtoList) {
             Performance performance = new Performance();
             Performance updatedPerformance =
-                    this.performanceRepository.save(updateValue(performance, saveDto));
+                    this.performanceRepository.save(addInitDataForNewPerformance(performance, saveDto));
             performanceList.add(updatedPerformance);
         }
         return performanceList;
     }
 
-    private Performance updateValue(Performance performance, PerformanceSaveDto performanceSaveDto) {
+    private Performance addInitDataForNewPerformance(Performance performance, PerformanceSaveDto performanceSaveDto) {
         Play play = this.playService.findById(performanceSaveDto.getPlayId());
         performance.setOriginalPerformanceDateTime(performanceSaveDto.getPerformanceDateTime().minusHours(1));
         performance.setPlay(play);
@@ -121,22 +122,14 @@ public class PerformanceService {
         return predicateList;
     }
 
-    public boolean updatePerformance(UpdatePerformanceDto updatePerformanceDto, Long id) {
+    public void updatePerformance(UpdatePerformanceDto updatePerformanceDto, Long id) {
         Performance performance = this.findPerformanceById(id);
         if (performance != null) {
-            updatePerformanceData(updatePerformanceDto, performance);
-            return true;
-        } else {
-            return false;
+            MapperService.performanceDtoToEntity(updatePerformanceDto, performance);
         }
     }
 
-    private void updatePerformanceData(UpdatePerformanceDto updatePerformanceDto, Performance performance) {
-        performance.setNewDateTime(updatePerformanceDto.getModifiedDateTime());
-        performance.setAvailableOnline(updatePerformanceDto.isAvailableOnline());
-        performance.setCancelled(updatePerformanceDto.isCancelled());
-        performance.setSeenOnline(updatePerformanceDto.isSeenOnline());
-    }
+
 
 
 }
