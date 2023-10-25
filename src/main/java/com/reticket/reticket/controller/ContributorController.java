@@ -4,7 +4,6 @@ import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.service.ContributorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,13 +35,8 @@ public class ContributorController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Boolean> update(@RequestBody ContributorSaveDto contributorSaveDto, @PathVariable Long id) {
-        boolean isContributorUpdateOk = this.contributorService.update(contributorSaveDto, id);
-        if(isContributorUpdateOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+    public ResponseEntity<Void> update(@RequestBody ContributorSaveDto contributorSaveDto, @PathVariable Long id) {
+        this.contributorService.update(contributorSaveDto, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

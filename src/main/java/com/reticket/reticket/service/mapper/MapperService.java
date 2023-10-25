@@ -3,8 +3,10 @@ package com.reticket.reticket.service.mapper;
 import com.reticket.reticket.domain.AddressEntity;
 import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.domain.Auditorium;
+import com.reticket.reticket.domain.Contributor;
 import com.reticket.reticket.dto.save.AddressSaveDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
+import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.security.UserRole;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,10 @@ public class MapperService {
         auditorium.setNumberOfPriceCategories(auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList().size());
     }
 
-
+    public static void contributorDtoToEntity(Contributor contributor, ContributorSaveDto contributorSaveDto) {
+        contributor.setFirstName(contributorSaveDto.getFirstName());
+        contributor.setLastName(contributorSaveDto.getLastName());
+        contributor.setIntroduction(contributorSaveDto.getIntroduction());
+    }
 
 }
