@@ -37,6 +37,9 @@ public class PerformanceService {
     private final PerformanceRepository performanceRepository;
     private final PlayService playService;
 
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
 
     public List<Performance> save(List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = new ArrayList<>();
@@ -76,10 +79,23 @@ public class PerformanceService {
         Pageable pageable = PageRequest.of(dto.getPageableDto().getPage(), dto.getPageableDto().getPageSize());
 
         CriteriaBuilderUtils.createJoins(criteriaJoinDto, playJoin);
-        LocalDateTime startDate = LocalDateTime.of(dto.getSearchDateDto().getStartYear(), dto.getSearchDateDto().getStartMonth(), dto.getSearchDateDto().getStartDay(), 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(dto.getSearchDateDto().getEndYear(), dto.getSearchDateDto().getEndMonth(), dto.getSearchDateDto().getEndDay(), 23, 59);
+        addValueToDates(dto);
+        List<PerformanceListDto> result = createQuery(criteriaQuery, performanceRoot, criteriaBuilder, criteriaJoinDto, dto,
+                pageable);
 
-        List<PerformanceListDto> result = entityManager.createQuery(
+        return new PageImpl<>(result, pageable, result.size());
+    }
+
+    private void addValueToDates(FilterPerformancesDto dto) {
+        startDate = LocalDateTime.of(dto.getSearchDateDto().getStartYear(), dto.getSearchDateDto().getStartMonth(), dto.getSearchDateDto().getStartDay(), 0, 0);
+        endDate = LocalDateTime.of(dto.getSearchDateDto().getEndYear(), dto.getSearchDateDto().getEndMonth(), dto.getSearchDateDto().getEndDay(), 23, 59);
+    }
+
+    private List<PerformanceListDto> createQuery(CriteriaQuery<PerformanceListDto> criteriaQuery,
+                                                 Root<Performance> performanceRoot, CriteriaBuilder criteriaBuilder,
+                                                 CriteriaJoinDto criteriaJoinDto, FilterPerformancesDto dto,
+                                                 Pageable pageable) {
+        return entityManager.createQuery(
                         criteriaQuery.multiselect(
                                 performanceRoot.get("originalPerformanceDateTime"),
                                 criteriaJoinDto.getPlayJoin().get("playName"),
@@ -88,8 +104,6 @@ public class PerformanceService {
                                 criteriaBuilder, criteriaJoinDto, startDate, endDate)
                                 .toArray(new Predicate[0]))).setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
                 .getResultList();
-
-        return new PageImpl<>(result, pageable, result.size());
     }
 
     private List<Predicate> fillPredicateList(FilterPerformancesDto dto, Root<Performance> performanceRoot,
@@ -97,7 +111,20 @@ public class PerformanceService {
                                               LocalDateTime queryStart, LocalDateTime queryEnd) {
 
         List<Predicate> predicateList = new ArrayList<>();
+        searchPath(dto, predicateList, criteriaBuilder, criteriaJoinDto);
 
+        predicateList.add(criteriaBuilder.and(
+                criteriaBuilder.isTrue(performanceRoot.get("isAvailableOnline")),
+                criteriaBuilder.isTrue(performanceRoot.get("isSeenOnline")),
+                criteriaBuilder.isFalse(performanceRoot.get("isCancelled")),
+                criteriaBuilder.isFalse(performanceRoot.get("isSold"))));
+        predicateList.add(criteriaBuilder.greaterThan(performanceRoot.get("originalPerformanceDateTime"), queryStart));
+        predicateList.add(criteriaBuilder.lessThan(performanceRoot.get("originalPerformanceDateTime"), queryEnd));
+
+        return predicateList;
+    }
+
+    private void searchPath(FilterPerformancesDto dto, List<Predicate> predicateList, CriteriaBuilder criteriaBuilder, CriteriaJoinDto criteriaJoinDto) {
         switch (dto.getPath()) {
             case "theater" ->
                     predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getTheaterJoin().get("id"), dto.getSearchId()));
@@ -110,16 +137,6 @@ public class PerformanceService {
                 predicateList.add(criteriaBuilder.equal(criteriaJoinDto.getPlayJoin().get("playType"), playType));
             }
         }
-        predicateList.add(criteriaBuilder.and(
-                criteriaBuilder.isTrue(performanceRoot.get("isAvailableOnline")),
-                criteriaBuilder.isTrue(performanceRoot.get("isSeenOnline")),
-                criteriaBuilder.isFalse(performanceRoot.get("isCancelled")),
-                criteriaBuilder.isFalse(performanceRoot.get("isSold"))));
-
-        predicateList.add(criteriaBuilder.greaterThan(performanceRoot.get("originalPerformanceDateTime"), queryStart));
-        predicateList.add(criteriaBuilder.lessThan(performanceRoot.get("originalPerformanceDateTime"), queryEnd));
-
-        return predicateList;
     }
 
     public void updatePerformance(UpdatePerformanceDto updatePerformanceDto, Long id) {
@@ -128,8 +145,4 @@ public class PerformanceService {
             MapperService.performanceDtoToEntity(updatePerformanceDto, performance);
         }
     }
-
-
-
-
 }
