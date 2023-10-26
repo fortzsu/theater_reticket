@@ -23,16 +23,14 @@ public class TicketActionService {
     private final AppUserService appUserService;
     private final TicketActionFollowerRepository ticketActionFollowerRepository;
 
-    public boolean ticketAction(List<TicketActionDto> ticketActionDtoList) {
-        boolean flag = false;
+    public void ticketAction(List<TicketActionDto> ticketActionDtoList) {
         for (TicketActionDto ticketActionDto : ticketActionDtoList) {
             AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
-            flag = addTicketsToAppUser(appUser, ticketActionDto);
+            addTicketsToAppUser(appUser, ticketActionDto);
         }
-        return flag;
     }
 
-    private boolean addTicketsToAppUser(AppUser appUser, TicketActionDto ticketActionDto) {
+    private void addTicketsToAppUser(AppUser appUser, TicketActionDto ticketActionDto) {
         if (appUser != null) {
             for (Long ticketId : ticketActionDto.getTicketId()) {
                 Ticket ticket = this.ticketService.findByTicketId(ticketId);
@@ -40,18 +38,19 @@ public class TicketActionService {
                 searchTicketActionPath(ticketActionDto, ticket);
                 createTicketActionFollower(appUser, ticket);
             }
-            return true;
         }
-        return false;
     }
 
     private void searchTicketActionPath(TicketActionDto ticketActionDto, Ticket ticket) {
+        String appUserName = ticket.getAppUser().getUsername();
+        String currentUsername = ticketActionDto.getUsername();
         if (ticketActionDto.getPath().equals("buy")) {
             ticket.setTicketCondition(TicketCondition.SOLD);
         } else if (ticketActionDto.getPath().equals("reserve")) {
             ticket.setTicketCondition(TicketCondition.RESERVED);
         } else {
-            if (ticket.getTicketCondition().equals(TicketCondition.SOLD) && ticket.getAppUser().getUsername().equals(ticketActionDto.getUsername())) {
+            if (ticket.getTicketCondition().equals(TicketCondition.SOLD) &&
+                    appUserName.equals(currentUsername)) {
                 ticket.setTicketCondition(TicketCondition.RETURNED);
             }
         }

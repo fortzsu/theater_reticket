@@ -3,7 +3,6 @@ package com.reticket.reticket.controller;
 import com.reticket.reticket.dto.save.TicketActionDto;
 import com.reticket.reticket.service.TicketActionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,18 +23,9 @@ public class TicketActionController {
     @PostMapping
     @PreAuthorize("hasAuthority('TICKET_ACTIONS')")
     public ResponseEntity<Void> ticketAction(@RequestBody List<TicketActionDto> ticketActionDtoList) {
-        boolean isTicketActionOk = this.ticketActionService.ticketAction(ticketActionDtoList);
-        if(isTicketActionOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        this.ticketActionService.ticketAction(ticketActionDtoList);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
-
-
 
 
 }
