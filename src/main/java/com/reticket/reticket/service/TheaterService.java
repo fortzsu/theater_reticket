@@ -30,25 +30,23 @@ public class TheaterService {
     private final AuditoriumRepository auditoriumRepository;
     private final AddressRepository addressRepository;
 
-    public Theater save(TheaterSaveDto theatreSaveDto) {
-        Theater theater = new Theater();
-        return updateValues(theater, theatreSaveDto);
+    public void save(TheaterSaveDto theatreSaveDto) {
+        updateValues(new Theater(), theatreSaveDto);
     }
 
-    private Theater updateValues(Theater theater, TheaterSaveDto theatreSaveDto) {
+    private void updateValues(Theater theater, TheaterSaveDto theatreSaveDto) {
         if(checkIfTheatreNameIsNotTaken(theatreSaveDto.getTheatreName())) {
             theater.setTheaterName(theatreSaveDto.getTheatreName());
             theater.setCapacity(0);
             theater.setIsArchived(false);
-            return theaterRepository.save(theater);
-        } else {
-            return null;
+            theaterRepository.save(theater);
         }
     }
 
     public boolean checkIfTheatreNameIsNotTaken(String theatreName) {
         return this.theaterRepository.findTheaterByTheaterName(theatreName) == null;
     }
+
     public Theater findById(Long id) {
         Optional<Theater> opt = theaterRepository.findById(id);
         return opt.orElse(null);
@@ -58,11 +56,11 @@ public class TheaterService {
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize());
         List<Theater> theaters = this.theaterRepository.findAllTheater(pageRequest);
         List<ListTheatersDto> resultList = new ArrayList<>();
-        searchTheaters(theaters, resultList);
+        searchTheatersToList(theaters, resultList);
         return resultList;
     }
 
-    private void searchTheaters(List<Theater> theaters, List<ListTheatersDto> resultList) {
+    private void searchTheatersToList(List<Theater> theaters, List<ListTheatersDto> resultList) {
         for (Theater theater : theaters) {
             ListTheatersDto listTheatersDto = new ListTheatersDto(theater.getTheaterName(), theater.getTheaterStory());
             List<Auditorium> auditoriums = this.auditoriumRepository.findAllByTheater(theater);
@@ -70,7 +68,6 @@ public class TheaterService {
             resultList.add(listTheatersDto);
         }
     }
-
 
     private void searchTheatersByAuditorium(List<Auditorium> auditoriums, ListTheatersDto listTheatersDto) {
         for (Auditorium auditorium : auditoriums) {
@@ -80,23 +77,17 @@ public class TheaterService {
         }
     }
 
-    public boolean updateTheater(TheaterSaveDto theatreSaveDto, String theaterName) {
+    public void update(TheaterSaveDto theatreSaveDto, String theaterName) {
         Theater theater = this.theaterRepository.findTheaterByTheaterName(theaterName);
         if(theater != null) {
             this.updateValues(theater, theatreSaveDto);
-            return true;
-        } else {
-            return false;
         }
     }
 
-    public boolean deleteTheater(String theaterName) {
+    public void delete(String theaterName) {
         Theater theater = this.theaterRepository.findTheaterByTheaterName(theaterName);
         if(theater != null) {
             theater.setIsArchived(true);
-            return true;
-        } else {
-            return false;
         }
     }
 

@@ -993,7 +993,7 @@ public class ReticketTest {
         TheaterSaveDto original = new TheaterSaveDto("TestTheaterOriginal", "Story.");
         this.theaterService.save(original);
         TheaterSaveDto updated = new TheaterSaveDto("TestTheaterUpdated", "Story.");
-        this.theaterService.updateTheater(updated, "TestTheaterOriginal");
+        this.theaterService.update(updated, "TestTheaterOriginal");
         Assert.assertEquals("TestTheaterUpdated", this.theaterRepository.findTheaterByTheaterName("TestTheaterUpdated").getTheaterName());
         this.theaterRepository.deleteById(3L);
     }
@@ -1002,7 +1002,7 @@ public class ReticketTest {
     public void testDeleteTheater() {
         TheaterSaveDto theater = new TheaterSaveDto("testDelete", "Story.");
         this.theaterService.save(theater);
-        this.theaterService.deleteTheater("testDelete");
+        this.theaterService.delete("testDelete");
         Assert.assertTrue(this.theaterRepository.findTheaterByTheaterName("testDelete").getIsArchived());
         this.theaterRepository.deleteById(3L);
     }
