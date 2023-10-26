@@ -37,6 +37,7 @@ public class AddressService {
         return opt.orElse(null);
     }
 
+
     public AddressEntity findByAuditoriumId(Auditorium auditorium) {
         return this.addressRepository.findAddressByAuditorium(auditorium);
     }
