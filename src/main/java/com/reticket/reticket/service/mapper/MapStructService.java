@@ -21,5 +21,4 @@ public abstract class MapStructService {
     @Mapping(target = "newDateTime", source = "updatePerformanceDto.modifiedDateTime")
     public abstract void updatePerformanceEntityFromDto(@MappingTarget Performance performance, UpdatePerformanceDto updatePerformanceDto);
 
-
 }

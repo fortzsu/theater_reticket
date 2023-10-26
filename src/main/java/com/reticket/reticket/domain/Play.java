@@ -29,6 +29,13 @@ public class Play {
     @Column(name = "plot")
     private String plot;
 
+    @Column(name = "premiere")
+    private LocalDateTime premiere;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "play_type")
+    private PlayType playType;
+
     @OneToMany(mappedBy = "play", fetch = FetchType.EAGER)
     private List<Performance> performances = new ArrayList<>();
     @ManyToMany
@@ -39,8 +46,6 @@ public class Play {
     )
     private List<AppUser> appUsers = new ArrayList<>();
 
-    @Column(name = "premiere")
-    private LocalDateTime premiere;
     @Column(name = "archived")
     private Boolean isArchived;
     @OneToOne
@@ -48,9 +53,7 @@ public class Play {
     private Auditorium auditorium;
     @OneToMany(mappedBy = "play")
     private List<Price> prices = new ArrayList<>();
-    @Enumerated(EnumType.STRING)
-    @Column(name = "play_type")
-    private PlayType playType;
+
 
     public void addAppUser(AppUser appUser) {
         this.appUsers.add(appUser);

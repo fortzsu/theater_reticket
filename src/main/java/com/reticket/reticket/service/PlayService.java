@@ -10,6 +10,7 @@ import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.repository.PriceRepository;
+import com.reticket.reticket.service.mapper.MapStructService;
 import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class PlayService {
         Auditorium auditorium = this.auditoriumService.findAuditoriumById(playSaveDto.getAuditoriumId());
         play.setAuditorium(auditorium);
         play.setIsArchived(false);
-        play.setPremiere(playSaveDto.getPremiere().plusHours(1));
+        play.setPlayType(playSaveDto.getPlayType());
         MapperService.playDtoToEntity(playSaveDto, play);
     }
 

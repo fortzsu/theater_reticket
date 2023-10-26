@@ -28,11 +28,10 @@ public class PlaySaveDto {
 
     private List<ContributorsSaveForPlaySaveDto> contributorsSaveForPlaySaveDtoList;
 
-
     public PlaySaveDto(String playName, String plot, LocalDateTime premiere, Long auditoriumId, List<Integer> prices, String playType) {
         this.playName = playName;
         this.plot = plot;
-        this.premiere = premiere;
+        this.premiere = premiere.plusHours(1);
         this.auditoriumId = auditoriumId;
         this.prices = prices;
         this.playType = playType;
