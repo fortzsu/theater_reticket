@@ -1,4 +1,4 @@
-package com.reticket.reticket.service;
+package com.reticket.reticket.service.performance;
 
 
 import com.reticket.reticket.domain.Performance;
@@ -7,7 +7,6 @@ import com.reticket.reticket.domain.enums.PlayType;
 import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
-import com.reticket.reticket.utils.CriteriaBuilderUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;

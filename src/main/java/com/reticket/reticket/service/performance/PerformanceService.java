@@ -1,4 +1,4 @@
-package com.reticket.reticket.service;
+package com.reticket.reticket.service.performance;
 
 import com.reticket.reticket.domain.Performance;
 import com.reticket.reticket.domain.Play;
@@ -7,6 +7,7 @@ import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.repository.PerformanceRepository;
+import com.reticket.reticket.service.PlayService;
 import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

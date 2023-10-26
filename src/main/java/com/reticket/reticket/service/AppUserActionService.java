@@ -9,6 +9,7 @@ import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.repository.PlayRepository;
+import com.reticket.reticket.service.performance.PerformanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

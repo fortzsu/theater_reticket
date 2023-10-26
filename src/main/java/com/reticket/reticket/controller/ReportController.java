@@ -2,9 +2,8 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.ReportResultDto;
-import com.reticket.reticket.service.ReportService;
+import com.reticket.reticket.service.report.ReportService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

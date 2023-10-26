@@ -2,6 +2,7 @@ package com.reticket.reticket;
 
 import com.reticket.reticket.dto.save.*;
 import com.reticket.reticket.service.*;
+import com.reticket.reticket.service.performance.GenerateTicketToPerformanceService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import java.util.List;
 public class SetDatabaseForTest {
 
     public static void init(GenerateTicketToPerformanceService generateTicketToPerformanceService, TicketActionService ticketActionService,
-    TheaterService theaterService, AuditoriumService auditoriumService, AddressService addressService, ContributorService contributorService,
-                     AppUserService appUserService,  PlayService playService) {
+                            TheaterService theaterService, AuditoriumService auditoriumService, AddressService addressService, ContributorService contributorService,
+                            AppUserService appUserService, PlayService playService) {
         // ************* THEATRE *************
         theaterService.save(new TheaterSaveDto("The Royal National Theater", "theatreHistory"));
         theaterService.save(new TheaterSaveDto("Harold Pinter Theater", "theatreHistory"));

@@ -1,4 +1,4 @@
-package com.reticket.reticket.utils;
+package com.reticket.reticket.service.performance;
 
 import com.reticket.reticket.domain.*;
 import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
@@ -9,7 +9,6 @@ import com.reticket.reticket.service.TheaterService;
 import jakarta.persistence.criteria.Join;
 
 public class CriteriaBuilderUtils {
-
 
     public static void createJoins(CriteriaJoinDto criteriaJoinDto, Join<Performance, Play> playJoin) {
         Join<Play, Auditorium> auditoriumJoin = playJoin.join("auditorium");
