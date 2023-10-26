@@ -897,7 +897,7 @@ public class ReticketTest {
 
     @Test
     public void testSaveContributors_checkListSize_fromService() {
-        Assert.assertEquals(16, this.contributorService.findContributors().size());
+        Assert.assertEquals(16, this.contributorService.findContributorsToPlay().size());
     }
 
     @Test

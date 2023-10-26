@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class MapperService {
 
-    private MapperService() {
-    }
-
     public static void appUserDtoToEntity(AppUser appUser, String password, GuestUserSaveDto guestUserSaveDto, UserRole userRole) {
         appUser.setFirstName(guestUserSaveDto.getFirstName());
         appUser.setLastName(guestUserSaveDto.getLastName());
@@ -27,12 +24,6 @@ public class MapperService {
         auditorium.setCapacity(auditoriumSaveDto.getSeatNumberPerAuditoriumRow() * auditoriumSaveDto.getNumberOfRows());
         auditorium.setIsActive(true);
         auditorium.setNumberOfPriceCategories(auditoriumSaveDto.getAuditoriumPriceCategorySaveDtoList().size());
-    }
-
-    public static void contributorDtoToEntity(Contributor contributor, ContributorSaveDto contributorSaveDto) {
-        contributor.setFirstName(contributorSaveDto.getFirstName());
-        contributor.setLastName(contributorSaveDto.getLastName());
-        contributor.setIntroduction(contributorSaveDto.getIntroduction());
     }
 
     public static void performanceDtoToEntity(UpdatePerformanceDto updatePerformanceDto, Performance performance) {

@@ -49,7 +49,7 @@ public class PlayController {
     public ResponseEntity<InitFormDataToPlaySaveDto> getPlayFormDataOfAuditoriumAndContributors(
             @PathVariable(value = "auditoriumId") String auditoriumId) {
         InitFormDataToPlaySaveDto initData = new InitFormDataToPlaySaveDto();
-        initData.setContributorsList(this.contributorService.findContributors());
+        initData.setContributorsList(this.contributorService.findContributorsToPlay());
         Auditorium auditorium = this.auditoriumService.findAuditoriumById(Long.valueOf(auditoriumId));
         if (auditorium != null) {
             initData.setNumberOfPriceCategories(auditorium.getNumberOfPriceCategories());

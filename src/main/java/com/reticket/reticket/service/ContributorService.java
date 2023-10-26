@@ -6,6 +6,7 @@ import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
+import com.reticket.reticket.service.mapper.MapStructService;
 import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,22 @@ public class ContributorService {
 
     private final ContributorRepository contributorRepository;
     private final PlayContributorTypeRepository playContributorTypeRepository;
+    private final MapStructService mapStructService;
 
 
     public void save(List<ContributorSaveDto> contributorSaveDtoList) {
-        for (ContributorSaveDto saveDto : contributorSaveDtoList) {
-            Contributor contributor = new Contributor();
-            MapperService.contributorDtoToEntity(contributor, saveDto);
+        for (ContributorSaveDto dto : contributorSaveDtoList) {
+            Contributor contributor = mapStructService.createContributorEntityFromDto(dto);
             this.contributorRepository.save(contributor);
         }
     }
+    public void update(ContributorSaveDto contributorSaveDto, Long id) {
+        Contributor contributor = this.findById(id);
+        if (contributor != null) {
+            this.mapStructService.updateContributorEntityFromDto(contributor, contributorSaveDto);
+        }
+    }
+
     public List<Contributor> findAllOrderByLastName() {
         return this.contributorRepository.findByOrderByLastName();
     }
@@ -41,7 +49,7 @@ public class ContributorService {
         return opt.orElse(null);
     }
 
-    public List<ListContributorsDto> findContributors() {
+    public List<ListContributorsDto> findContributorsToPlay() {
         List<ListContributorsDto> contributors = new ArrayList<>();
         for (Contributor contributor : findAllOrderByLastName()) {
             ListContributorsDto dto = new ListContributorsDto();
@@ -59,12 +67,5 @@ public class ContributorService {
                     this.playContributorTypeRepository.findAllPlaysByContributors(dto.getContributorFirstName(), dto.getContributorLastName()));
         }
         return resultSet;
-    }
-
-    public void update(ContributorSaveDto contributorSaveDto, Long id) {
-        Contributor contributor = this.findById(id);
-        if (contributor != null) {
-            MapperService.contributorDtoToEntity(contributor, contributorSaveDto);
-        }
     }
 }

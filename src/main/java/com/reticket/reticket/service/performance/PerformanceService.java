@@ -8,6 +8,7 @@ import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.service.PlayService;
+import com.reticket.reticket.service.mapper.MapStructService;
 import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class PerformanceService {
     private final PerformanceRepository performanceRepository;
     private final PlayService playService;
     private final FilteredPerformanceService filteredPerformanceService;
+    private final MapStructService mapStructService;
 
     public List<Performance> save(List<PerformanceSaveDto> performanceSaveDtoList) {
         List<Performance> performanceList = new ArrayList<>();
@@ -61,7 +63,7 @@ public class PerformanceService {
     public void updatePerformance(UpdatePerformanceDto updatePerformanceDto, Long id) {
         Performance performance = this.findPerformanceById(id);
         if (performance != null) {
-            MapperService.performanceDtoToEntity(updatePerformanceDto, performance);
+            mapStructService.updatePerformanceEntityFromDto(performance, updatePerformanceDto);
         }
     }
 }
