@@ -12,14 +12,6 @@ public class MapperService {
     private MapperService() {
     }
 
-    public static AddressEntity addressDtoToEntity(AddressSaveDto addressSaveDto, AddressEntity addressEntity) {
-        addressEntity.setCity(addressSaveDto.getCity());
-        addressEntity.setHouseNumber(addressSaveDto.getHouseNumber());
-        addressEntity.setStreet(addressSaveDto.getStreet());
-        addressEntity.setPostCode(addressSaveDto.getPostCode());
-        return addressEntity;
-    }
-
     public static void appUserDtoToEntity(AppUser appUser, String password, GuestUserSaveDto guestUserSaveDto, UserRole userRole) {
         appUser.setFirstName(guestUserSaveDto.getFirstName());
         appUser.setLastName(guestUserSaveDto.getLastName());

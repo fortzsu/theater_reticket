@@ -5,7 +5,6 @@ import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.dto.save.AddressSaveDto;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.service.mapper.MapStructService;
-import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +25,18 @@ public class AddressService {
 
     public void save(List<AddressSaveDto> addressSaveDtoList) {
         for (AddressSaveDto dto : addressSaveDtoList) {
-            AddressEntity addressEntity = mapStructService.fromDtoToEntity(dto);
+            AddressEntity addressEntity = mapStructService.createAddressEntityFromDto(dto);
             Auditorium auditorium = auditoriumService.findAuditoriumById(dto.getAuditoriumId());
             addressEntity.setAuditorium(auditorium);
             this.addressRepository.save(addressEntity);
         }
     }
+
+    public void update(AddressSaveDto addressSaveDto, Long id) {
+        Optional<AddressEntity> address = this.addressRepository.findById(id);
+        address.ifPresent(addressEntity -> this.mapStructService.updateAddressEntityFromDto(addressEntity, addressSaveDto));
+    }
+
     public AddressEntity findById(Long id) {
         Optional<AddressEntity> opt = this.addressRepository.findById(id);
         return opt.orElse(null);
@@ -40,13 +45,5 @@ public class AddressService {
 
     public AddressEntity findByAuditoriumId(Auditorium auditorium) {
         return this.addressRepository.findAddressByAuditorium(auditorium);
-    }
-
-    public void update(AddressSaveDto addressSaveDto, Long id) {
-        Optional<AddressEntity> address = this.addressRepository.findById(id);
-//        if (address.isPresent()) {
-//            this.mapStructService.fromDtoToEntity(addressSaveDto);
-//        }
-        address.ifPresent(addressEntity -> MapperService.addressDtoToEntity(addressSaveDto, addressEntity));
     }
 }
