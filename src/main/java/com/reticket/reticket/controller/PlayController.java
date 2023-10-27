@@ -7,6 +7,7 @@ import com.reticket.reticket.dto.list.ListPlaysDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.ContributorService;
@@ -33,7 +34,7 @@ public class PlayController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<HttpStatus> save(@RequestBody List<PlaySaveDto> playSaveDtoList) {
+    public ResponseEntity<Void> save(@RequestBody List<PlaySaveDto> playSaveDtoList) {
         try {
             this.playService.save(playSaveDtoList);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -60,21 +61,20 @@ public class PlayController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<List<ListPlaysDto>> listPlays(@RequestBody PageableDto pageableDto) {
-        this.playService.listPlays(pageableDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ListWrapper<ListPlaysDto>> listPlays(@RequestBody PageableDto pageableDto) {
+        return new ResponseEntity<>(this.playService.listPlays(pageableDto), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Boolean> update(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
         this.playService.updatePlay(updatePlayDto, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Boolean> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.playService.deletePlay(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

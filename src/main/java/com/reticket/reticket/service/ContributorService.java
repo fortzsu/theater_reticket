@@ -4,6 +4,7 @@ import com.reticket.reticket.domain.Contributor;
 import com.reticket.reticket.dto.list.ListContributorsDto;
 import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.service.mapper.MapStructService;
@@ -60,12 +61,15 @@ public class ContributorService {
         return contributors;
     }
 
-    public List<ListDetailedContributorsDto> listContributors() {
-        List<ListDetailedContributorsDto> resultSet = this.playContributorTypeRepository.findAllContributors();
-        for (ListDetailedContributorsDto dto : resultSet) {
+    public ListWrapper<ListDetailedContributorsDto> listContributors() {
+        List<ListDetailedContributorsDto> contributors = this.playContributorTypeRepository.findAllContributors();
+        ListWrapper<ListDetailedContributorsDto> result = new ListWrapper<>();
+        for (ListDetailedContributorsDto dto : contributors) {
             dto.setPlayNames(
-                    this.playContributorTypeRepository.findAllPlaysByContributors(dto.getContributorFirstName(), dto.getContributorLastName()));
+                    this.playContributorTypeRepository.findAllPlaysByContributors(dto.getContributorFirstName(),
+                            dto.getContributorLastName()));
+            result.addItem(dto);
         }
-        return resultSet;
+        return result;
     }
 }

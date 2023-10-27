@@ -834,7 +834,7 @@ public class ReticketTest {
 
     @Test
     public void testListPlays() {
-        Assert.assertEquals(8, this.playService.listPlays(new PageableDto(0, 8)).size());
+        Assert.assertEquals(8, this.playService.listPlays(new PageableDto(0, 8)).getWrapperList().size());
     }
 
     @Test
@@ -871,17 +871,17 @@ public class ReticketTest {
 
     @Test
     public void testListContributors_listSize() {
-        Assert.assertEquals(16, this.contributorService.listContributors().size());
+        Assert.assertEquals(16, this.contributorService.listContributors().getWrapperList().size());
     }
 
     @Test
     public void testListContributors_listSize_firstPlays() {
-        Assert.assertEquals(3, this.contributorService.listContributors().get(0).getPlayNames().size());
+        Assert.assertEquals(3, this.contributorService.listContributors().getWrapperList().get(0).getPlayNames().size());
     }
 
     @Test
     public void testListContributors_names() {
-        Assert.assertEquals("HaroldPTheatre", this.contributorService.listContributors().get(0).getContributorFirstName());
+        Assert.assertEquals("HaroldPTheatre", this.contributorService.listContributors().getWrapperList().get(0).getContributorFirstName());
     }
 
 

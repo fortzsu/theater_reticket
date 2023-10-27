@@ -2,6 +2,7 @@ package com.reticket.reticket.controller;
 
 import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.service.ContributorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,8 @@ public class ContributorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ListDetailedContributorsDto>> listContributors() {
-        this.contributorService.listContributors();
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ListWrapper<ListDetailedContributorsDto>> listContributors() {
+        return new ResponseEntity<>(this.contributorService.listContributors(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

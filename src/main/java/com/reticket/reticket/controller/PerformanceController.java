@@ -39,8 +39,7 @@ public class PerformanceController {
     @PostMapping("/search")
     public ResponseEntity<Page<PerformanceListDto>> searchFilteredPerformances(
             @RequestBody FilterPerformancesDto dto) {
-        this.performanceService.searchFilteredPerformances(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(this.performanceService.searchFilteredPerformances(dto), HttpStatus.OK);
     }
 
     @PostMapping("/updatePerformance/{id}")

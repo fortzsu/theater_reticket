@@ -6,6 +6,7 @@ import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.ContributorsSaveForPlaySaveDto;
 import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
@@ -80,8 +81,10 @@ public class PlayService {
         return opt.orElse(null);
     }
 
-    public List<ListPlaysDto> listPlays(PageableDto dto) {
-        return this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize()));
+    public ListWrapper<ListPlaysDto> listPlays(PageableDto dto) {
+        ListWrapper<ListPlaysDto> result = new ListWrapper<>();
+        result.addAll(this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize())));
+        return result;
     }
 
     public void updatePlay(UpdatePlayDto updatePlayDto, Long id) {

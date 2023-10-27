@@ -13,4 +13,8 @@ public class ListWrapper<T> {
     public void addItem(T t) {
         this.wrapperList.add(t);
     }
+
+    public void addAll(List<T> t) {
+        this.wrapperList.addAll(t);
+    }
 }
