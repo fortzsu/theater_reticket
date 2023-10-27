@@ -1,7 +1,6 @@
 package com.reticket.reticket.controller;
 
 
-import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.dto.list.InitFormDataToPlaySaveDto;
 import com.reticket.reticket.dto.list.ListPlaysDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
@@ -34,9 +33,9 @@ public class PlayController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> save(@RequestBody List<PlaySaveDto> playSaveDtoList) {
+    public ResponseEntity<Void> save(@RequestBody PlaySaveDto playSaveDto) {
         try {
-            this.playService.save(playSaveDtoList);
+            this.playService.save(playSaveDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (AuditoriumNotFoundException e) {
             Logger.getAnonymousLogger().info(e.getMessage());
@@ -49,15 +48,7 @@ public class PlayController {
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<InitFormDataToPlaySaveDto> getPlayFormDataOfAuditoriumAndContributors(
             @PathVariable(value = "auditoriumId") String auditoriumId) {
-        InitFormDataToPlaySaveDto initData = new InitFormDataToPlaySaveDto();
-        initData.setContributorsList(this.contributorService.findContributorsToPlay());
-        Auditorium auditorium = this.auditoriumService.findAuditoriumById(Long.valueOf(auditoriumId));
-        if (auditorium != null) {
-            initData.setNumberOfPriceCategories(auditorium.getNumberOfPriceCategories());
-            return new ResponseEntity<>(initData, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(this.playService.fillInitData(auditoriumId), HttpStatus.OK);
     }
 
     @PostMapping("/list")

@@ -28,11 +28,9 @@ public class ContributorService {
     private final MapStructService mapStructService;
 
 
-    public void save(List<ContributorSaveDto> contributorSaveDtoList) {
-        for (ContributorSaveDto dto : contributorSaveDtoList) {
-            Contributor contributor = mapStructService.createContributorEntityFromDto(dto);
+    public void save(ContributorSaveDto contributorSaveDto) {
+            Contributor contributor = mapStructService.createContributorEntityFromDto(contributorSaveDto);
             this.contributorRepository.save(contributor);
-        }
     }
     public void update(ContributorSaveDto contributorSaveDto, Long id) {
         Contributor contributor = this.findById(id);

@@ -22,8 +22,8 @@ public class TicketActionController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('TICKET_ACTIONS')")
-    public ResponseEntity<Void> ticketAction(@RequestBody List<TicketActionDto> ticketActionDtoList) {
-        this.ticketActionService.ticketAction(ticketActionDtoList);
+    public ResponseEntity<Void> ticketAction(@RequestBody TicketActionDto ticketActionDto) {
+        this.ticketActionService.ticketAction(ticketActionDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

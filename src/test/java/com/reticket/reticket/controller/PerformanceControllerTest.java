@@ -28,9 +28,9 @@ public class PerformanceControllerTest {
 
     @Test
     public void testSavePerformance_withSuper_NOT_FOUND() {
-        List<PerformanceSaveDto> saveDtos = List.of(new PerformanceSaveDto(LocalDateTime.now(), 100L));
+        PerformanceSaveDto dto = new PerformanceSaveDto(LocalDateTime.now(), 100L);
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        HttpEntity<PerformanceSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/performance", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
@@ -38,9 +38,9 @@ public class PerformanceControllerTest {
 
     @Test
     public void testSavePerformance_withTheaterUser_403() {
-        List<PerformanceSaveDto> saveDtos = List.of(new PerformanceSaveDto(LocalDateTime.now(), 100L));
+        PerformanceSaveDto dto = new PerformanceSaveDto(LocalDateTime.now(), 100L);
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        HttpEntity<PerformanceSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
                 .exchange("/api/performance", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
@@ -48,9 +48,9 @@ public class PerformanceControllerTest {
 
     @Test
     public void testSavePerformance_withWrongUser_401() {
-        List<PerformanceSaveDto> saveDtos = List.of(new PerformanceSaveDto(LocalDateTime.now(), 100L));
+        PerformanceSaveDto dto = new PerformanceSaveDto(LocalDateTime.now(), 100L);
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<PerformanceSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        HttpEntity<PerformanceSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/performance", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());

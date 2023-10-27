@@ -28,9 +28,10 @@ public class PlayControllerTest {
 
     @Test
     public void testSavePlay_withTheaterUser_403() {
-        List<PlaySaveDto> playSaveDtoList = List.of(new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1, 2, 3), "drama"));
+        PlaySaveDto playSaveDto = new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1, 2, 3),
+                "drama");
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
+        HttpEntity<PlaySaveDto> request = new HttpEntity<>(playSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
                 .exchange("/api/play", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
@@ -38,9 +39,10 @@ public class PlayControllerTest {
 
     @Test
     public void testSavePlay_withWrongUser_401() {
-        List<PlaySaveDto> playSaveDtoList = List.of(new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L, List.of(1, 2, 3), "drama"));
+        PlaySaveDto playSaveDto = new PlaySaveDto("Play", "Plot", LocalDateTime.now(), 1L,
+                List.of(1, 2, 3), "drama");
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<PlaySaveDto>> request = new HttpEntity<>(playSaveDtoList, headers);
+        HttpEntity<PlaySaveDto> request = new HttpEntity<>(playSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/play", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());

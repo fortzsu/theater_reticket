@@ -782,7 +782,7 @@ public class ReticketTest {
     public void testUpdatePerformance() {
         PerformanceSaveDto original = new PerformanceSaveDto(LocalDateTime.of(
                 LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), 17, 20, 0), 1L);
-        this.performanceService.save(List.of(original));
+        this.performanceService.save(original);
         UpdatePerformanceDto update = new UpdatePerformanceDto(LocalDateTime.of(
                 LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), 18, 20, 0), false, false, true);
         this.performanceService.updatePerformance(update, 17L);
@@ -862,7 +862,7 @@ public class ReticketTest {
     @Test
     public void testUpdateContributor() {
         ContributorSaveDto original = new ContributorSaveDto("testContrFirst", "testContrLast", "Intro");
-        this.contributorService.save(List.of(original));
+        this.contributorService.save(original);
         ContributorSaveDto updated = new ContributorSaveDto("ContrFirst", "testContrLast", "Intro");
         this.contributorService.update(updated, 17L);
         Assert.assertEquals("ContrFirst", this.contributorRepository.findAll().get(16).getFirstName());

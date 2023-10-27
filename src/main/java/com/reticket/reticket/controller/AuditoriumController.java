@@ -22,7 +22,7 @@ public class AuditoriumController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> save(@RequestBody List<AuditoriumSaveDto> auditoriumSaveDto) {
+    public ResponseEntity<Void> save(@RequestBody AuditoriumSaveDto auditoriumSaveDto) {
         auditoriumService.save(auditoriumSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

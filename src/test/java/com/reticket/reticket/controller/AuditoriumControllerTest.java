@@ -26,11 +26,11 @@ public class AuditoriumControllerTest {
 
     @Test
     public void testSaveAuditorium_withSuper_200() {
-        List<AuditoriumSaveDto> saveDtos = List.of(new AuditoriumSaveDto(
+        AuditoriumSaveDto saveDto = new AuditoriumSaveDto(
                 "Name",1L,100,10,
-                List.of(new AuditoriumPriceCategorySaveDto(3,4))));
+                List.of(new AuditoriumPriceCategorySaveDto(3,4)));
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<AuditoriumSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/auditorium", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -55,10 +55,10 @@ public class AuditoriumControllerTest {
         HttpEntity<GuestUserSaveDto> guestRequest = new HttpEntity<>(dto, guestHeaders);
         template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", guestRequest, String.class);
-        List<AuditoriumSaveDto> saveDtos = List.of(new AuditoriumSaveDto(
-                "Name",1L,100,10,List.of(new AuditoriumPriceCategorySaveDto())));
+        AuditoriumSaveDto saveDto = new AuditoriumSaveDto(
+                "Name",1L,100,10,List.of(new AuditoriumPriceCategorySaveDto()));
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<AuditoriumSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("username_15@testemail.com", "password")
                 .exchange("/api/auditorium", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());

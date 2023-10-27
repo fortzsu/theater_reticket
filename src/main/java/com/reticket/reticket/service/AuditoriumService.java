@@ -30,10 +30,8 @@ public class AuditoriumService {
     private final AddressRepository addressRepository;
 
 
-    public void save(List<AuditoriumSaveDto> auditoriumSaveDtoList) {
-        for (AuditoriumSaveDto dto : auditoriumSaveDtoList) {
-            generateSeatsToAuditorium(dto);
-        }
+    public void save(AuditoriumSaveDto auditoriumSaveDto) {
+            generateSeatsToAuditorium(auditoriumSaveDto);
     }
 
     public Auditorium update(AuditoriumSaveDto auditoriumSaveDto, Long id) {

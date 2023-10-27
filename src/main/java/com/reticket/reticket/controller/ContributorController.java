@@ -23,7 +23,7 @@ public class ContributorController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> save(@RequestBody List<ContributorSaveDto> contributorSaveDto) {
+    public ResponseEntity<Void> save(@RequestBody ContributorSaveDto contributorSaveDto) {
         this.contributorService.save(contributorSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

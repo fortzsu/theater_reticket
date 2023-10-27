@@ -30,14 +30,12 @@ public class PerformanceService {
     private final FilteredPerformanceService filteredPerformanceService;
     private final MapStructService mapStructService;
 
-    public List<Performance> save(List<PerformanceSaveDto> performanceSaveDtoList) {
+    public List<Performance> save(PerformanceSaveDto performanceSaveDto) {
         List<Performance> performanceList = new ArrayList<>();
-        for (PerformanceSaveDto saveDto : performanceSaveDtoList) {
             Performance performance = new Performance();
             Performance updatedPerformance =
-                    this.performanceRepository.save(addInitDataForNewPerformance(performance, saveDto));
+                    this.performanceRepository.save(addInitDataForNewPerformance(performance, performanceSaveDto));
             performanceList.add(updatedPerformance);
-        }
         return performanceList;
     }
 

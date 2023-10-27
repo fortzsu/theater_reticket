@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Transactional
@@ -23,11 +22,9 @@ public class TicketActionService {
     private final AppUserService appUserService;
     private final TicketActionFollowerRepository ticketActionFollowerRepository;
 
-    public void ticketAction(List<TicketActionDto> ticketActionDtoList) {
-        for (TicketActionDto ticketActionDto : ticketActionDtoList) {
-            AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
-            addTicketsToAppUser(appUser, ticketActionDto);
-        }
+    public void ticketAction(TicketActionDto ticketActionDto) {
+        AppUser appUser = this.appUserService.findByUsername(ticketActionDto.getUsername());
+        addTicketsToAppUser(appUser, ticketActionDto);
     }
 
     private void addTicketsToAppUser(AppUser appUser, TicketActionDto ticketActionDto) {

@@ -32,8 +32,8 @@ public class TicketActionControllerTest {
     @Test
     public void testTicketAction_withSuperUser_NOT_FOUND() {
         HttpHeaders headers = new HttpHeaders();
-        List<TicketActionDto> dtoList = List.of(new TicketActionDto("buy", "user", List.of(1L,2L)));
-        HttpEntity<List<TicketActionDto>> listRequest = new HttpEntity<>(dtoList, headers);
+        TicketActionDto dto = new TicketActionDto("buy", "user", List.of(1L,2L));
+        HttpEntity<TicketActionDto> listRequest = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/ticketAction", HttpMethod.POST, listRequest, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
@@ -42,8 +42,8 @@ public class TicketActionControllerTest {
     @Test
     public void testTicketAction_withTheaterUser_NOT_FOUND() {
         HttpHeaders headers = new HttpHeaders();
-        List<TicketActionDto> dtoList = List.of(new TicketActionDto("buy", "user", List.of(1L,2L)));
-        HttpEntity<List<TicketActionDto>> listRequest = new HttpEntity<>(dtoList, headers);
+        TicketActionDto dto = new TicketActionDto("buy", "user", List.of(1L,2L));
+        HttpEntity<TicketActionDto> listRequest = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
                 .exchange("/api/ticketAction", HttpMethod.POST, listRequest, String.class);
         assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO

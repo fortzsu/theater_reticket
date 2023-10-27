@@ -20,10 +20,10 @@ public class GenerateTicketToPerformanceService {
     private final TicketService ticketService;
     private final PerformanceService performanceService;
 
-    public void generateTickets(List<PerformanceSaveDto> performanceSaveDtoList) {
-        List<Performance> performanceList = this.performanceService.save(performanceSaveDtoList);
-        for (int i = 0; i < performanceSaveDtoList.size(); i++) {
-            this.ticketService.searchSeatsForPerformance(performanceList.get(i), performanceSaveDtoList.get(i));
+    public void generateTickets(PerformanceSaveDto performanceSaveDto) {
+        List<Performance> performanceList = this.performanceService.save(performanceSaveDto);
+        for (Performance performance : performanceList) {
+            this.ticketService.searchSeatsForPerformance(performance, performanceSaveDto);
         }
     }
 }

@@ -30,8 +30,8 @@ public class PerformanceController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> save(@RequestBody List<PerformanceSaveDto> performanceSaveDtoList) {
-        this.generateTicketToPerformanceService.generateTickets(performanceSaveDtoList);
+    public ResponseEntity<Void> save(@RequestBody PerformanceSaveDto performanceSaveDto) {
+        this.generateTicketToPerformanceService.generateTickets(performanceSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
