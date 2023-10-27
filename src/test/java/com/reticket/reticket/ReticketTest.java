@@ -1009,7 +1009,7 @@ public class ReticketTest {
 
     @Test
     public void testListTheaters() {
-        Assert.assertEquals(2, this.theaterService.listTheaters(new PageableDto(0, 10)).size());
+        Assert.assertEquals(2, this.theaterService.listTheaters(new PageableDto(0, 10)).getWrapperList().size());
     }
 
     @Test

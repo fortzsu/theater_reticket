@@ -3,6 +3,7 @@ package com.reticket.reticket.controller;
 import com.reticket.reticket.dto.list.ListTheatersDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.service.TheaterService;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,8 @@ public class TheaterController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<List<ListTheatersDto>> list(@RequestBody PageableDto pageableDto) {
-        this.theaterService.listTheaters(pageableDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ListWrapper<ListTheatersDto>> list(@RequestBody PageableDto pageableDto) {
+        return new ResponseEntity<>(this.theaterService.listTheaters(pageableDto), HttpStatus.OK);
     }
 
     @RolesAllowed("ROLE_SUPER")

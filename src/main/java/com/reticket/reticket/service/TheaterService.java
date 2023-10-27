@@ -8,6 +8,7 @@ import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.list.ListTheatersDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.repository.AuditoriumRepository;
 import com.reticket.reticket.repository.TheaterRepository;
@@ -52,21 +53,22 @@ public class TheaterService {
         return opt.orElse(null);
     }
 
-    public List<ListTheatersDto> listTheaters(PageableDto dto) {
+    public ListWrapper<ListTheatersDto> listTheaters(PageableDto dto) {
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize());
         List<Theater> theaters = this.theaterRepository.findAllTheater(pageRequest);
-        List<ListTheatersDto> resultList = new ArrayList<>();
-        searchTheatersToList(theaters, resultList);
-        return resultList;
+        ListWrapper<ListTheatersDto> result = new ListWrapper<>();
+        result.addAll(searchTheatersToList(theaters, new ArrayList<>()));
+        return result;
     }
 
-    private void searchTheatersToList(List<Theater> theaters, List<ListTheatersDto> resultList) {
+    private List<ListTheatersDto> searchTheatersToList(List<Theater> theaters, List<ListTheatersDto> resultList) {
         for (Theater theater : theaters) {
             ListTheatersDto listTheatersDto = new ListTheatersDto(theater.getTheaterName(), theater.getTheaterStory());
             List<Auditorium> auditoriums = this.auditoriumRepository.findAllByTheater(theater);
             searchTheatersByAuditorium(auditoriums, listTheatersDto);
             resultList.add(listTheatersDto);
         }
+        return resultList;
     }
 
     private void searchTheatersByAuditorium(List<Auditorium> auditoriums, ListTheatersDto listTheatersDto) {

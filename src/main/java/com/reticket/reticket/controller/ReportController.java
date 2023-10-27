@@ -22,11 +22,7 @@ public class ReportController {
     @PostMapping
     @PreAuthorize("hasAuthority('ACCESS_REPORT')")
     public ResponseEntity<ReportResultDto> report(@RequestBody FilterReportDto filterReportDto) {
-        if(this.reportService.report(filterReportDto) != null) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            return new ResponseEntity<>(this.reportService.report(filterReportDto), HttpStatus.OK);
     }
 
 
