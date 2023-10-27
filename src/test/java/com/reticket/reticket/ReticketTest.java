@@ -555,37 +555,37 @@ public class ReticketTest {
 
     @Test
     public void testReturnTest_withAppUser_listTickets() {
-        Assert.assertEquals(3, this.appUserActionService.listTickets("guestThree").size());
+        Assert.assertEquals(3, this.appUserActionService.listTickets("guestThree").getWrapperList().size());
     }
 
     @Test
     public void testReserveTest_withAppUser_ticketList() {
-        Assert.assertEquals(6, this.appUserActionService.listTickets("guestTwo").size());
+        Assert.assertEquals(6, this.appUserActionService.listTickets("guestTwo").getWrapperList().size());
     }
 
     @Test
     public void testReserveTest_withAppUser_sold() {
-        Assert.assertEquals("Sold", this.appUserActionService.listTickets("guestTwo").get(0).getTicketCondition());
+        Assert.assertEquals("Sold", this.appUserActionService.listTickets("guestTwo").getWrapperList().get(0).getTicketCondition());
     }
 
     @Test
     public void testReserveTest_withAppUser_reserved() {
-        Assert.assertEquals("Reserved", this.appUserActionService.listTickets("guestTwo").get(3).getTicketCondition());
+        Assert.assertEquals("Reserved", this.appUserActionService.listTickets("guestTwo").getWrapperList().get(3).getTicketCondition());
     }
 
     @Test
     public void testReserveTest_withAppUser_playName() {
-        Assert.assertEquals("Standing at the Sky's Edge", this.appUserActionService.listTickets("guestTwo").get(0).getPlayName());
+        Assert.assertEquals("Standing at the Sky's Edge", this.appUserActionService.listTickets("guestTwo").getWrapperList().get(0).getPlayName());
     }
 
     @Test
     public void testReserveTest_withAppUser_theatreName() {
-        Assert.assertEquals("The Royal National Theater", this.appUserActionService.listTickets("guestTwo").get(0).getTheatreName());
+        Assert.assertEquals("The Royal National Theater", this.appUserActionService.listTickets("guestTwo").getWrapperList().get(0).getTheatreName());
     }
 
     @Test
     public void testReserveTest_withAppUser_ticketPrice() {
-        Assert.assertEquals(100, (long) this.appUserActionService.listTickets("guestTwo").get(0).getTicketPrice());
+        Assert.assertEquals(100, (long) this.appUserActionService.listTickets("guestTwo").getWrapperList().get(0).getTicketPrice());
     }
 
 
@@ -614,14 +614,14 @@ public class ReticketTest {
 
     @Test
     public void testSaveAppUser_listTickets_Empty() {
-        Assert.assertEquals(0, this.appUserActionService.listTickets("guestOne").size());
+        Assert.assertEquals(0, this.appUserActionService.listTickets("guestOne").getWrapperList().size());
     }
 
     @Test
     public void testSaveAppUser_likedPlays() {
-        Assert.assertEquals(0, this.appUserActionService.listLikedPlays("guestOne").size());
+        Assert.assertEquals(0, this.appUserActionService.listLikedPlays("guestOne").getWrapperList().size());
         this.appUserActionService.likePlay("guestOne", 1L);
-        Assert.assertEquals(1, this.appUserActionService.listLikedPlays("guestOne").size());
+        Assert.assertEquals(1, this.appUserActionService.listLikedPlays("guestOne").getWrapperList().size());
     }
 
 

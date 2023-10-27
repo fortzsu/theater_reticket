@@ -5,6 +5,7 @@ import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.save.AssociateUserSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.service.AppUserActionService;
 import com.reticket.reticket.service.AppUserService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class AppUserController {
 
     @GetMapping("/{username}/tickets")
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
-    public ResponseEntity<List<ListTicketDto>> listTickets(@PathVariable(value = "username") String username) {
+    public ResponseEntity<ListWrapper<ListTicketDto>> listTickets(@PathVariable(value = "username") String username) {
         return new ResponseEntity<>(this.appUserActionService.listTickets(username), HttpStatus.OK);
     }
 
@@ -51,17 +52,13 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('LIKE_PLAY')")
     public ResponseEntity<Void> likePlay(@PathVariable(value = "username") String username,
                                          @PathVariable(value = "playId") Long playId) {
-        boolean isLikePlayOk = this.appUserActionService.likePlay(username, playId);
-        if (isLikePlayOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        this.appUserActionService.likePlay(username, playId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{username}/likedPlays")
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
-    public ResponseEntity<List<LikedPlaysListDto>> listLikedPlays(@PathVariable String username) {
+    public ResponseEntity<ListWrapper<LikedPlaysListDto>> listLikedPlays(@PathVariable String username) {
         return new ResponseEntity<>(this.appUserActionService.listLikedPlays(username), HttpStatus.OK);
     }
 
@@ -69,24 +66,16 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUserDto updateAppUserDto,
                                               @PathVariable String username) {
-        boolean isUpdateUserOk = this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username);
-        if (isUpdateUserOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{username}")
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable String username) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
         SecurityContext context = SecurityContextHolder.getContext();
-        boolean isDeleteUserOk = this.appUserService.deleteUser(username, context.getAuthentication());
-        if (isDeleteUserOk) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        this.appUserService.deleteUser(username, context.getAuthentication());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

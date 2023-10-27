@@ -5,6 +5,7 @@ import com.reticket.reticket.dto.list.LikedPlaysListDto;
 import com.reticket.reticket.dto.list.ListContributorsDto;
 import com.reticket.reticket.dto.list.ListTicketDto;
 import com.reticket.reticket.dto.list.PerformanceListToLikedPlaysDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PerformanceRepository;
@@ -53,14 +54,14 @@ public class AppUserActionService {
         return this.appUserRepository.findByUsername(username);
     }
 
-    public List<LikedPlaysListDto> listLikedPlays(String username) {
+    public ListWrapper<LikedPlaysListDto> listLikedPlays(String username) {
         AppUser appUser = this.appUserRepository.findByUsername(username);
         List<Play> likedPlaysByAppUser = this.playRepository.findPlaysByAppUser(appUser);
         return fillLikedPlayList(likedPlaysByAppUser);
     }
 
-    private List<LikedPlaysListDto> fillLikedPlayList(List<Play> likedPlaysByAppUser) {
-        List<LikedPlaysListDto> returnListOfLikedPlays = new ArrayList<>();
+    private ListWrapper<LikedPlaysListDto> fillLikedPlayList(List<Play> likedPlaysByAppUser) {
+        ListWrapper<LikedPlaysListDto> returnListOfLikedPlays = new ListWrapper<>();
         for (Play play : likedPlaysByAppUser) {
             LikedPlaysListDto dto = new LikedPlaysListDto();
             dto.setPlayName(play.getPlayName());
@@ -69,7 +70,7 @@ public class AppUserActionService {
             dto.setTheatreAddress(this.addressService.findByAuditoriumId(play.getAuditorium()).toString());
             dto.setListContributorsDto(findContributorsByPlay(play));
             dto.setPerformanceListDtoListToLikedPlays(findPerformancesByPlay(play));
-            returnListOfLikedPlays.add(dto);
+            returnListOfLikedPlays.addItem(dto);
         }
         return returnListOfLikedPlays;
     }
@@ -101,20 +102,20 @@ public class AppUserActionService {
         return dtoList;
     }
 
-    public List<ListTicketDto> listTickets(String username) {
+    public ListWrapper<ListTicketDto> listTickets(String username) {
         AppUser appUser = findByUsername(username);
         List<Ticket> tickets = this.ticketService.findTicketByAppUserId(appUser);
         return fillListTicketDto(tickets);
     }
 
-    private List<ListTicketDto> fillListTicketDto(List<Ticket> tickets) {
-        List<ListTicketDto> resultList = new ArrayList<>();
+    private ListWrapper<ListTicketDto> fillListTicketDto(List<Ticket> tickets) {
+        ListWrapper<ListTicketDto> resultList = new ListWrapper<>();
         for (Ticket ticket : tickets) {
             ListTicketDto listTicketDto = new ListTicketDto();
             addEntitiesToListTicketDto(listTicketDto, ticket);
             listTicketDto.setTicketPrice(ticket.getPrice().getAmount());
             listTicketDto.setTicketCondition(ticket.getTicketCondition().getDisplayName());
-            resultList.add(listTicketDto);
+            resultList.addItem(listTicketDto);
         }
         return resultList;
     }
