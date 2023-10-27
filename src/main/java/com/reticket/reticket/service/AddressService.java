@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -23,13 +22,11 @@ public class AddressService {
     private final AuditoriumService auditoriumService;
     private final MapStructService mapStructService;
 
-    public void save(List<AddressSaveDto> addressSaveDtoList) {
-        for (AddressSaveDto dto : addressSaveDtoList) {
-            AddressEntity addressEntity = mapStructService.createAddressEntityFromDto(dto);
-            Auditorium auditorium = auditoriumService.findAuditoriumById(dto.getAuditoriumId());
-            addressEntity.setAuditorium(auditorium);
-            this.addressRepository.save(addressEntity);
-        }
+    public void save(AddressSaveDto addressSaveDto) {
+        AddressEntity addressEntity = mapStructService.createAddressEntityFromDto(addressSaveDto);
+        Auditorium auditorium = auditoriumService.findAuditoriumById(addressSaveDto.getAuditoriumId());
+        addressEntity.setAuditorium(auditorium);
+        this.addressRepository.save(addressEntity);
     }
 
     public void update(AddressSaveDto addressSaveDto, Long id) {

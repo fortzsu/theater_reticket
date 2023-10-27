@@ -1,7 +1,8 @@
 package com.reticket.reticket.controller;
 
+import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
-import com.reticket.reticket.dto.wrapper.ListWrapperDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.service.AuditoriumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class AuditoriumController {
     }
 
     @GetMapping
-    public ResponseEntity<ListWrapperDto> list() {
+    public ResponseEntity<ListWrapper<AuditoriumListDto>> list() {
         return new ResponseEntity<>(auditoriumService.listAuditoriums(), HttpStatus.OK);
     }
 }

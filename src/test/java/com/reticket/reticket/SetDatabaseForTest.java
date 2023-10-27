@@ -56,12 +56,10 @@ public class SetDatabaseForTest {
 
         // ************* ADDRESS *************
 
-        List<AddressSaveDto> addressSaveDtoList = new ArrayList<>();
-        addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 1, 1L));
-        addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 2, 2L));
-        addressSaveDtoList.add(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 3, 3L));
-        addressSaveDtoList.add(new AddressSaveDto("SW1Y 4SW", "London", "Panton", 4, 4L));
-        addressService.save(addressSaveDtoList);
+        addressService.save(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 1, 1L));
+        addressService.save(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 2, 2L));
+        addressService.save(new AddressSaveDto("SE1 9PX", "London", "Upper Ground, South Bank", 3, 3L));
+        addressService.save(new AddressSaveDto("SW1Y 4SW", "London", "Panton", 4, 4L));
 
         // ************* ADDRESS *************
 

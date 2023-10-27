@@ -1,8 +1,6 @@
 package com.reticket.reticket.dto.list;
 
 import com.reticket.reticket.domain.AddressEntity;
-import com.reticket.reticket.domain.Auditorium;
-import com.reticket.reticket.dto.wrapper.WrapperDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AuditoriumListDto extends WrapperDto {
+public class AuditoriumListDto {
 
     private String auditoriumName;
     private String auditoriumAddress;

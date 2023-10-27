@@ -5,8 +5,7 @@ import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.domain.Theater;
 import com.reticket.reticket.dto.list.AuditoriumListDto;
 import com.reticket.reticket.dto.save.AuditoriumSaveDto;
-import com.reticket.reticket.dto.wrapper.ListWrapperDto;
-import com.reticket.reticket.dto.wrapper.WrapperDto;
+import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.repository.AuditoriumRepository;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,25 +64,22 @@ public class AuditoriumService {
         }
     }
 
-    public boolean deleteAuditorium(Long id) {
+    public void deleteAuditorium(Long id) {
         Optional<Auditorium> opt = this.auditoriumRepository.findById(id);
         if (opt.isPresent()) {
             Auditorium auditorium = opt.get();
             auditorium.setIsActive(false);
-            return true;
-        } else {
-            return false;
         }
     }
 
-    public ListWrapperDto listAuditoriums() {
-        List<WrapperDto> wrapperDtoList = new ArrayList<>(auditoriumRepository.findAllAuditorium());
-        ListWrapperDto resultList = new ListWrapperDto();
-        resultList.setWrapperList(wrapperDtoList);
-        for (WrapperDto dto : wrapperDtoList) {
-            findAddressToAuditorium((AuditoriumListDto) dto);
+    public ListWrapper<AuditoriumListDto> listAuditoriums() {
+        List<AuditoriumListDto> resultList = auditoriumRepository.findAllAuditorium();
+        ListWrapper<AuditoriumListDto> listWrapper = new ListWrapper<>();
+        for (AuditoriumListDto dto : resultList) {
+            findAddressToAuditorium(dto);
+            listWrapper.addItem(dto);
         }
-        return resultList;
+        return listWrapper;
     }
 
     private void findAddressToAuditorium(AuditoriumListDto dto) {

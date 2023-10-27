@@ -28,8 +28,8 @@ public class AddressControllerTest {
     public void testAddress_withSuper_200() {
         try {
             HttpHeaders headers = new HttpHeaders();
-            List<AddressSaveDto> saveDtos = List.of(new AddressSaveDto("1000", "City", "Street", 123, 5L));
-            HttpEntity<List<AddressSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+            AddressSaveDto addressSaveDto = new AddressSaveDto("1000", "City", "Street", 123, 5L);
+            HttpEntity<AddressSaveDto> request = new HttpEntity<>(addressSaveDto, headers);
             ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                     .exchange("/api/address", HttpMethod.POST, request, String.class);
 //            fail("Expected an AuditoriumNotFoundException to be thrown");
@@ -41,8 +41,8 @@ public class AddressControllerTest {
     @Test
     public void testAddress_withTheaterUser_403() {
         HttpHeaders headers = new HttpHeaders();
-        List<AddressSaveDto> saveDtos = List.of(new AddressSaveDto("1000", "City", "Street", 123, 1L));
-        HttpEntity<List<AddressSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        AddressSaveDto addressSaveDto = new AddressSaveDto("1000", "City", "Street", 123, 1L);
+        HttpEntity<AddressSaveDto> request = new HttpEntity<>(addressSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterUser@testemail.te", "test")
                 .exchange("/api/address", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
@@ -51,8 +51,8 @@ public class AddressControllerTest {
     @Test
     public void testAddress_withWrongUser_401() {
         HttpHeaders headers = new HttpHeaders();
-        List<AddressSaveDto> saveDtos = List.of(new AddressSaveDto("1000", "City", "Street", 123, 1L));
-        HttpEntity<List<AddressSaveDto>> request = new HttpEntity<>(saveDtos, headers);
+        AddressSaveDto addressSaveDto = new AddressSaveDto("1000", "City", "Street", 123, 1L);
+        HttpEntity<AddressSaveDto> request = new HttpEntity<>(addressSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("wrong", "test")
                 .exchange("/api/address", HttpMethod.POST, request, String.class);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());

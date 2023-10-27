@@ -21,7 +21,7 @@ public class AddressController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
-    public ResponseEntity<Void> save(@RequestBody List<AddressSaveDto> addressSaveDto) {
+    public ResponseEntity<Void> save(@RequestBody AddressSaveDto addressSaveDto) {
         this.addressService.save(addressSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
