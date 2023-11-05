@@ -45,7 +45,7 @@ public class ContributorControllerTest {
         HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/contributor", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class ContributorControllerTest {
         HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterAdmin@testemail.te", "test")
                 .exchange("/api/contributor", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
 
     @Test
@@ -80,13 +80,13 @@ public class ContributorControllerTest {
     }
 
     @Test
-    public void testUpdateContributor_withSuper_NOT_FOUND() {
+    public void testUpdateContributor_withSuper_404() {
         ContributorSaveDto dto = new ContributorSaveDto("First", "Last", "Introduction");
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<ContributorSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/contributor/1000", HttpMethod.PUT, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());//TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test

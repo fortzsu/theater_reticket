@@ -35,16 +35,13 @@ public class TicketService {
         return opt.orElse(null);
     }
 
-    public boolean searchSeatsForPerformance(Performance performance, PerformanceSaveDto performanceSaveDto) {
+    public void searchSeatsForPerformance(Performance performance, PerformanceSaveDto performanceSaveDto) {
         Play play = this.playService.findById(performanceSaveDto.getPlayId());
         if (play != null) {
             String auditoriumName = performance.getPlay().getAuditorium().getAuditoriumName();
             Auditorium auditorium = this.auditoriumService.findAuditoriumByAuditoriumName(auditoriumName);
             List<Seat> seats = this.seatService.findAllByAuditoriumId(auditorium);
             generateTicketsToPerformance(seats, performance, play);
-            return true;
-        } else {
-            return false;
         }
     }
 

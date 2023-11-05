@@ -5,10 +5,10 @@ import com.reticket.reticket.dto.list.ListContributorsDto;
 import com.reticket.reticket.dto.list.ListDetailedContributorsDto;
 import com.reticket.reticket.dto.save.ContributorSaveDto;
 import com.reticket.reticket.dto.wrapper.ListWrapper;
+import com.reticket.reticket.exception.ContributorNotFoundException;
 import com.reticket.reticket.repository.ContributorRepository;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.service.mapper.MapStructService;
-import com.reticket.reticket.service.mapper.MapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +29,10 @@ public class ContributorService {
 
 
     public void save(ContributorSaveDto contributorSaveDto) {
-            Contributor contributor = mapStructService.createContributorEntityFromDto(contributorSaveDto);
-            this.contributorRepository.save(contributor);
+        Contributor contributor = mapStructService.createContributorEntityFromDto(contributorSaveDto);
+        this.contributorRepository.save(contributor);
     }
+
     public void update(ContributorSaveDto contributorSaveDto, Long id) {
         Contributor contributor = this.findById(id);
         if (contributor != null) {
@@ -45,7 +46,11 @@ public class ContributorService {
 
     public Contributor findById(Long id) {
         Optional<Contributor> opt = this.contributorRepository.findById(id);
-        return opt.orElse(null);
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            throw new ContributorNotFoundException();
+        }
     }
 
     public List<ListContributorsDto> findContributorsToPlay() {

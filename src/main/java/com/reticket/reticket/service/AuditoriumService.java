@@ -31,12 +31,17 @@ public class AuditoriumService {
 
 
     public void save(AuditoriumSaveDto auditoriumSaveDto) {
-            generateSeatsToAuditorium(auditoriumSaveDto);
+        generateSeatsToAuditorium(auditoriumSaveDto);
     }
 
-    public Auditorium update(AuditoriumSaveDto auditoriumSaveDto, Long id) {
-        Optional<Auditorium> opt = auditoriumRepository.findById(id);
-        return opt.map(auditorium -> updateValues(auditoriumSaveDto, auditorium)).orElse(null);
+    public void update(AuditoriumSaveDto auditoriumSaveDto, Long id) {
+        Auditorium auditorium = findAuditoriumById(id);
+        updateValues(auditoriumSaveDto, auditorium);
+    }
+
+    public void deleteAuditorium(Long auditoriumId) {
+        Auditorium auditorium = findAuditoriumById(auditoriumId);
+        auditorium.setIsActive(false);
     }
 
     private Auditorium updateValues(AuditoriumSaveDto auditoriumSaveDto, Auditorium auditorium) {
@@ -62,11 +67,12 @@ public class AuditoriumService {
         }
     }
 
-    public void deleteAuditorium(Long id) {
-        Optional<Auditorium> opt = this.auditoriumRepository.findById(id);
+    public Auditorium findAuditoriumById(Long auditoriumId) {
+        Optional<Auditorium> opt = this.auditoriumRepository.findById(auditoriumId);
         if (opt.isPresent()) {
-            Auditorium auditorium = opt.get();
-            auditorium.setIsActive(false);
+            return opt.get();
+        } else {
+            throw new AuditoriumNotFoundException();
         }
     }
 
@@ -87,17 +93,13 @@ public class AuditoriumService {
         dto.setAuditoriumAddress(addressEntity.toString());
     }
 
-    public Auditorium findAuditoriumById(Long auditoriumId) {
-        Optional<Auditorium> opt = this.auditoriumRepository.findById(auditoriumId);
-        if (opt.isPresent()) {
-            return opt.get();
+    public Auditorium findAuditoriumByAuditoriumName(String auditoriumName) {
+        Auditorium auditorium = this.auditoriumRepository.findAuditoriumByAuditoriumName(auditoriumName);
+        if(auditorium != null) {
+            return auditorium;
         } else {
             throw new AuditoriumNotFoundException();
         }
-    }
-
-    public Auditorium findAuditoriumByAuditoriumName(String auditoriumName) {
-        return this.auditoriumRepository.findAuditoriumByAuditoriumName(auditoriumName);
     }
 
 }

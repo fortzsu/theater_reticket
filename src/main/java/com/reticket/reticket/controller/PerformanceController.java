@@ -33,8 +33,7 @@ public class PerformanceController {
     public ResponseEntity<Void> save(@RequestBody PerformanceSaveDto performanceSaveDto) {
         this.generateTicketToPerformanceService.generateTickets(performanceSaveDto);
         return new ResponseEntity<>(HttpStatus.OK);
-
-    }
+    } //TODO multiple exceptions
 
     @PostMapping("/search")
     public ResponseEntity<Page<PerformanceListDto>> searchFilteredPerformances(

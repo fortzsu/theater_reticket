@@ -33,7 +33,7 @@ public class AuditoriumControllerTest {
         HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/auditorium", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
 
     @Test
@@ -65,25 +65,25 @@ public class AuditoriumControllerTest {
     }
 
     @Test
-    public void testUpdateAuditorium_withSuper_NOT_FOUND() {
+    public void testUpdateAuditorium_withSuper_404() {
         AuditoriumSaveDto saveDto = new AuditoriumSaveDto("Name",1L,100,10,
                 List.of(new AuditoriumPriceCategorySaveDto(3,4)));
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/auditorium/100", HttpMethod.PUT, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
-    public void testUpdateAuditorium_withTheaterAdmin_NOT_FOUND() {
+    public void testUpdateAuditorium_withTheaterAdmin_404() {
         AuditoriumSaveDto saveDto = new AuditoriumSaveDto("Name",1L,100,10,
                 List.of(new AuditoriumPriceCategorySaveDto(3,4)));
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AuditoriumSaveDto> request = new HttpEntity<>(saveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("theaterAdmin@testemail.te", "test")
                 .exchange("/api/auditorium/100", HttpMethod.PUT, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
@@ -116,12 +116,12 @@ public class AuditoriumControllerTest {
 
 
     @Test
-    public void testDeleteAuditorium_withSuper_NOT_FOUND() {
+    public void testDeleteAuditorium_withSuper_404() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/auditorium/100", HttpMethod.DELETE, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
