@@ -9,6 +9,7 @@ import com.reticket.reticket.dto.report_search.CriteriaJoinDto;
 import com.reticket.reticket.dto.report_search.FilterReportDto;
 import com.reticket.reticket.dto.report_search.ReportResultDto;
 import com.reticket.reticket.dto.report_search.ReportResultPerformancesDto;
+import com.reticket.reticket.exception.GoogleSheetsExportException;
 import com.reticket.reticket.google.GoogleService;
 import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.PlayService;
@@ -84,7 +85,7 @@ public class ReportService {
             try {
                 this.googleService.exportDataToSheet(reportResultDto);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new GoogleSheetsExportException();
             }
         }
     }

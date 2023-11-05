@@ -10,7 +10,7 @@ public enum TicketCondition {
     FOR_SALE("For Sale"),
     SOLD("Sold");
 
-    private String displayName;
+    private final String displayName;
 
     TicketCondition(String displayName) {
         this.displayName = displayName;
