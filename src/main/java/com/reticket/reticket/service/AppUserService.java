@@ -4,6 +4,7 @@ import com.reticket.reticket.domain.AppUser;
 import com.reticket.reticket.dto.save.AssociateUserSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
+import com.reticket.reticket.exception.AppUserNotFoundException;
 import com.reticket.reticket.repository.AppUserRepository;
 import com.reticket.reticket.security.UserRole;
 import com.reticket.reticket.security.repository_service.UserRoleRepository;
@@ -116,41 +117,34 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
-    public boolean updateAppUser(UpdateAppUserDto updateAppUserDto, Authentication authentication, String username) {
-        AppUser appUser = appUserRepository.findByUsername(username);
-        if (appUser != null) {
-            if (username.equals(authentication.getName())) {
-                setUpdatedData(appUser, updateAppUserDto);
-                return true;
-            } else {
-                if (authentication.getName().equals("super")) {
-                    setUpdatedData(appUser, updateAppUserDto);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+    public void updateAppUser(UpdateAppUserDto updateAppUserDto, Authentication authentication, String username) {
+        AppUser appUser = findAppUser(username);
+        if (username.equals(authentication.getName())) {
+            setUpdatedData(appUser, updateAppUserDto);
         } else {
-            return false;
+            if (authentication.getName().equals("super")) {
+                setUpdatedData(appUser, updateAppUserDto);
+            }
         }
     }
 
-    public boolean deleteUser(String username, Authentication authentication) {
+    public void deleteUser(String username, Authentication authentication) {
+        AppUser appUser = findAppUser(username);
+        if (username.equals(authentication.getName())) {
+            appUser.setDeleted(true);
+        } else {
+            if (authentication.getName().equals("super")) {
+                appUser.setDeleted(true);
+            }
+        }
+    }
+
+    private AppUser findAppUser(String username) {
         AppUser appUser = appUserRepository.findByUsername(username);
         if (appUser != null) {
-            if (username.equals(authentication.getName())) {
-                appUser.setDeleted(true);
-                return true;
-            } else {
-                if (authentication.getName().equals("super")) {
-                    appUser.setDeleted(true);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            return appUser;
         } else {
-            return false;
+            throw new AppUserNotFoundException();
         }
     }
 }

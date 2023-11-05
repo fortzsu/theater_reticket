@@ -92,7 +92,7 @@ public class AuditoriumService {
         if (opt.isPresent()) {
             return opt.get();
         } else {
-            throw new AuditoriumNotFoundException("The Auditorium is not found!");
+            throw new AuditoriumNotFoundException();
         }
     }
 

@@ -6,6 +6,7 @@ import com.reticket.reticket.dto.save.AssociateUserSaveDto;
 import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.dto.wrapper.ListWrapper;
+import com.reticket.reticket.exception.AppUserNotFoundException;
 import com.reticket.reticket.service.AppUserActionService;
 import com.reticket.reticket.service.AppUserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/api/appUser")
@@ -66,16 +67,26 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Void> updateAppUser(@RequestBody UpdateAppUserDto updateAppUserDto,
                                               @PathVariable String username) {
-        this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            this.appUserService.updateAppUser(updateAppUserDto, SecurityContextHolder.getContext().getAuthentication(), username);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (AppUserNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{username}")
     @PreAuthorize("hasAuthority('MODIFY_APPUSER_AND_FOLLOW_ACTIONS')")
     public ResponseEntity<Void> deleteUser(@PathVariable String username) {
         SecurityContext context = SecurityContextHolder.getContext();
-        this.appUserService.deleteUser(username, context.getAuthentication());
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            this.appUserService.deleteUser(username, context.getAuthentication());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (AppUserNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

@@ -2,7 +2,7 @@ package com.reticket.reticket.controller;
 
 
 import com.reticket.reticket.dto.save.AddressSaveDto;
-import com.reticket.reticket.exception.AuditoriumNotFoundException;
+import com.reticket.reticket.exception.AddressNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-import static org.aspectj.bridge.MessageUtil.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -25,17 +22,13 @@ public class AddressControllerTest {
 
     @Test
 
-    public void testAddress_withSuper_200() {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            AddressSaveDto addressSaveDto = new AddressSaveDto("1000", "City", "Street", 123, 5L);
-            HttpEntity<AddressSaveDto> request = new HttpEntity<>(addressSaveDto, headers);
-            ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
-                    .exchange("/api/address", HttpMethod.POST, request, String.class);
-//            fail("Expected an AuditoriumNotFoundException to be thrown");
-        } catch (AuditoriumNotFoundException e) {
-//            assertEquals("The Auditorium is not found!", e.getMessage());
-        }
+    public void testAddress_withSuper_404() {
+        HttpHeaders headers = new HttpHeaders();
+        AddressSaveDto addressSaveDto = new AddressSaveDto("1000", "City", "Street", 123, 5L);
+        HttpEntity<AddressSaveDto> request = new HttpEntity<>(addressSaveDto, headers);
+        ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
+                .exchange("/api/address", HttpMethod.POST, request, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test

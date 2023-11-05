@@ -3,6 +3,7 @@ package com.reticket.reticket.service;
 import com.reticket.reticket.domain.AddressEntity;
 import com.reticket.reticket.domain.Auditorium;
 import com.reticket.reticket.dto.save.AddressSaveDto;
+import com.reticket.reticket.exception.AddressNotFoundException;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.service.mapper.MapStructService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,11 @@ public class AddressService {
 
     public AddressEntity findById(Long id) {
         Optional<AddressEntity> opt = this.addressRepository.findById(id);
-        return opt.orElse(null);
+        if(opt.isPresent()) {
+            return opt.get();
+        } else {
+            throw new AddressNotFoundException();
+        }
     }
 
 
