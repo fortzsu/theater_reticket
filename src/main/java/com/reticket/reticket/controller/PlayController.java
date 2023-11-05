@@ -8,6 +8,7 @@ import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
+import com.reticket.reticket.exception.PlayNotFoundException;
 import com.reticket.reticket.service.AuditoriumService;
 import com.reticket.reticket.service.ContributorService;
 import com.reticket.reticket.service.PlayService;
@@ -18,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -36,7 +36,7 @@ public class PlayController {
     public ResponseEntity<Void> save(@RequestBody PlaySaveDto playSaveDto) {
         try {
             this.playService.save(playSaveDto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (AuditoriumNotFoundException e) {
             Logger.getAnonymousLogger().info(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -48,7 +48,12 @@ public class PlayController {
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<InitFormDataToPlaySaveDto> getPlayFormDataOfAuditoriumAndContributors(
             @PathVariable(value = "auditoriumId") String auditoriumId) {
-        return new ResponseEntity<>(this.playService.fillInitData(auditoriumId), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(this.playService.fillInitData(auditoriumId), HttpStatus.OK);
+        } catch (AuditoriumNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/list")
@@ -59,14 +64,24 @@ public class PlayController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UpdatePlayDto updatePlayDto) {
-        this.playService.updatePlay(updatePlayDto, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            this.playService.updatePlay(updatePlayDto, id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (PlayNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        this.playService.deletePlay(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            this.playService.deletePlay(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (PlayNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

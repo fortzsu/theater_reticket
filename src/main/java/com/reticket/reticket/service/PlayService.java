@@ -9,6 +9,7 @@ import com.reticket.reticket.dto.save.PlaySaveDto;
 import com.reticket.reticket.dto.update.UpdatePlayDto;
 import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.exception.AuditoriumNotFoundException;
+import com.reticket.reticket.exception.PlayNotFoundException;
 import com.reticket.reticket.repository.PlayContributorTypeRepository;
 import com.reticket.reticket.repository.PlayRepository;
 import com.reticket.reticket.repository.PriceRepository;
@@ -35,11 +36,11 @@ public class PlayService {
     private final PlayContributorTypeRepository playContributorTypeRepository;
 
     public void save(PlaySaveDto playSaveDto) throws AuditoriumNotFoundException {
-            Play play = new Play();
-            updateValues(play, playSaveDto);
-            this.playRepository.save(play);
-            savePricesOfPlay(play.getId(), playSaveDto.getPrices());
-            connectContributorWithPlayAndContributorType(play.getId(), playSaveDto.getContributorsSaveForPlaySaveDtoList());
+        Play play = new Play();
+        updateValues(play, playSaveDto);
+        this.playRepository.save(play);
+        savePricesOfPlay(play.getId(), playSaveDto.getPrices());
+        connectContributorWithPlayAndContributorType(play.getId(), playSaveDto.getContributorsSaveForPlaySaveDtoList());
     }
 
     private void updateValues(Play play, PlaySaveDto playSaveDto) throws AuditoriumNotFoundException {
@@ -73,22 +74,10 @@ public class PlayService {
         }
     }
 
-    public Play findById(Long id) {
-        Optional<Play> opt = this.playRepository.findById(id);
-        return opt.orElse(null);
-    }
-
     public ListWrapper<ListPlaysDto> listPlays(PageableDto dto) {
         ListWrapper<ListPlaysDto> result = new ListWrapper<>();
         result.addAll(this.playRepository.findAllPlay(PageRequest.of(dto.getPage(), dto.getPageSize())));
         return result;
-    }
-
-    public void updatePlay(UpdatePlayDto updatePlayDto, Long id) {
-        Play play = findPlayById(id);
-        if (play != null) {
-            updatePlayData(updatePlayDto, play);
-        }
     }
 
     private void updatePlayData(UpdatePlayDto updatePlayDto, Play play) {
@@ -104,24 +93,30 @@ public class PlayService {
         }
     }
 
-    public void deletePlay(Long id) {
-        Play play = findPlayById(id);
-        if (play != null) {
-            play.setIsArchived(true);
-        }
+    public void updatePlay(UpdatePlayDto updatePlayDto, Long id) {
+        Play play = findById(id);
+        updatePlayData(updatePlayDto, play);
     }
 
-    private Play findPlayById(Long id) {
-        return this.findById(id);
+    public void deletePlay(Long id) {
+        Play play = findById(id);
+        play.setIsArchived(true);
+    }
+
+    public Play findById(Long id) {
+        Optional<Play> opt = this.playRepository.findById(id);
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            throw new PlayNotFoundException();
+        }
     }
 
     public InitFormDataToPlaySaveDto fillInitData(String auditoriumId) {
         InitFormDataToPlaySaveDto initData = new InitFormDataToPlaySaveDto();
         initData.setContributorsList(this.contributorService.findContributorsToPlay());
         Auditorium auditorium = this.auditoriumService.findAuditoriumById(Long.valueOf(auditoriumId));
-        if (auditorium != null) {
-            initData.setNumberOfPriceCategories(auditorium.getNumberOfPriceCategories());
-        }
+        initData.setNumberOfPriceCategories(auditorium.getNumberOfPriceCategories());
         return initData;
     }
 }

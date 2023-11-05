@@ -838,11 +838,6 @@ public class ReticketTest {
     }
 
     @Test
-    public void testSavePlay_findById_fromService_false() {
-        Assert.assertNull(this.playService.findById(12L));
-    }
-
-    @Test
     public void testSavePlay_findByIdLast_fromService() {
         Assert.assertEquals("Dr. Semmelweis", this.playService.findById(8L).getPlayName());
     }

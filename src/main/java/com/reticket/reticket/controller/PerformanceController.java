@@ -5,6 +5,8 @@ import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
+import com.reticket.reticket.exception.PerformanceNotFoundException;
+import com.reticket.reticket.exception.PlayNotFoundException;
 import com.reticket.reticket.service.performance.GenerateTicketToPerformanceService;
 import com.reticket.reticket.service.performance.PerformanceService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/api/performance")
@@ -31,9 +33,14 @@ public class PerformanceController {
     @PostMapping
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> save(@RequestBody PerformanceSaveDto performanceSaveDto) {
-        this.generateTicketToPerformanceService.generateTickets(performanceSaveDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    } //TODO multiple exceptions
+        try {
+            this.generateTicketToPerformanceService.generateTickets(performanceSaveDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (PlayNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping("/search")
     public ResponseEntity<Page<PerformanceListDto>> searchFilteredPerformances(
@@ -44,8 +51,13 @@ public class PerformanceController {
     @PostMapping("/updatePerformance/{id}")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> update(@RequestBody UpdatePerformanceDto updatePerformanceDto, @PathVariable Long id) {
-        this.performanceService.updatePerformance(updatePerformanceDto, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            this.performanceService.updatePerformance(updatePerformanceDto, id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (PerformanceNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

@@ -27,13 +27,13 @@ public class PerformanceControllerTest {
 
 
     @Test
-    public void testSavePerformance_withSuper_NOT_FOUND() {
+    public void testSavePerformance_withSuper_404() {
         PerformanceSaveDto dto = new PerformanceSaveDto(LocalDateTime.now(), 100L);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<PerformanceSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/performance", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
@@ -57,13 +57,13 @@ public class PerformanceControllerTest {
     }
 
     @Test
-    public void testUpdatePerformance_withSuper_NOT_FOUND() {
+    public void testUpdatePerformance_withSuper_404() {
         UpdatePerformanceDto dto = new UpdatePerformanceDto(LocalDateTime.now(), false, false, false);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<UpdatePerformanceDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/performance/updatePerformance/1000", HttpMethod.POST, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.reticket.reticket.dto.list.PerformanceListDto;
 import com.reticket.reticket.dto.report_search.FilterPerformancesDto;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
 import com.reticket.reticket.dto.update.UpdatePerformanceDto;
+import com.reticket.reticket.exception.PerformanceNotFoundException;
 import com.reticket.reticket.repository.PerformanceRepository;
 import com.reticket.reticket.service.PlayService;
 import com.reticket.reticket.service.mapper.MapStructService;
@@ -51,7 +52,11 @@ public class PerformanceService {
 
     public Performance findPerformanceById(Long id) {
         Optional<Performance> opt = this.performanceRepository.findById(id);
-        return opt.orElse(null);
+        if(opt.isPresent()) {
+            return opt.get();
+        } else {
+            throw new PerformanceNotFoundException();
+        }
     }
 
     public Page<PerformanceListDto> searchFilteredPerformances(FilterPerformancesDto dto) {
