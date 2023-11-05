@@ -7,6 +7,7 @@ import com.reticket.reticket.dto.save.GuestUserSaveDto;
 import com.reticket.reticket.dto.update.UpdateAppUserDto;
 import com.reticket.reticket.dto.wrapper.ListWrapper;
 import com.reticket.reticket.exception.AppUserNotFoundException;
+import com.reticket.reticket.exception.TheaterNotFoundException;
 import com.reticket.reticket.service.AppUserActionService;
 import com.reticket.reticket.service.AppUserService;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +32,25 @@ public class AppUserController {
 
     @PostMapping("/saveGuest")
     public ResponseEntity<Void> saveGuest(@RequestBody GuestUserSaveDto guestUserSaveDto) {
-        this.appUserService.saveGuest(guestUserSaveDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            this.appUserService.saveGuest(guestUserSaveDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (TheaterNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/saveAssociate")
     @PreAuthorize("hasAuthority('MODIFY_IN_THEATER')")
     public ResponseEntity<Void> saveAssociate(@RequestBody AssociateUserSaveDto associateUserSaveDto) {
-        this.appUserService.saveAssociate(associateUserSaveDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-
+        try {
+            this.appUserService.saveAssociate(associateUserSaveDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (TheaterNotFoundException e) {
+            Logger.getAnonymousLogger().info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{username}/tickets")

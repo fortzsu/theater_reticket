@@ -28,7 +28,7 @@ public class TheaterControllerTest {
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/theater", request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
 
     @Test
@@ -42,13 +42,13 @@ public class TheaterControllerTest {
     }
 
     @Test
-    public void testUpdateTheater_withSuper_authOk_NOT_FOUND() {
+    public void testUpdateTheater_withSuper_authOk_404() {
         TheaterSaveDto theaterSaveDto = new TheaterSaveDto();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<TheaterSaveDto> request = new HttpEntity<>(theaterSaveDto, headers);
         ResponseEntity<Boolean> result = template.withBasicAuth("reticket23@gmail.com", "test")
                         .exchange("/api/theater/theaterName", HttpMethod.PUT, request, Boolean.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
@@ -62,12 +62,12 @@ public class TheaterControllerTest {
     }
 
     @Test
-    public void testDeleteTheater_withSuper_authOk_NOT_FOUND() {
+    public void testDeleteTheater_withSuper_authOk_404() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .exchange("/api/theater/theaterName", HttpMethod.DELETE, request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode()); //TODO
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test

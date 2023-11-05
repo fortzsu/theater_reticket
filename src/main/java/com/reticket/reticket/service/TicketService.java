@@ -4,6 +4,7 @@ import com.reticket.reticket.domain.*;
 import com.reticket.reticket.domain.enums.SeatConditions;
 import com.reticket.reticket.domain.enums.TicketCondition;
 import com.reticket.reticket.dto.save.PerformanceSaveDto;
+import com.reticket.reticket.exception.TicketNotFoundException;
 import com.reticket.reticket.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,11 @@ public class TicketService {
 
     public Ticket findByTicketId(Long id) {
         Optional<Ticket> opt = this.ticketRepository.findById(id);
-        return opt.orElse(null);
+        if(opt.isPresent()) {
+            return opt.get();
+        } else {
+            throw new TicketNotFoundException();
+        }
     }
 
     public void searchSeatsForPerformance(Performance performance, PerformanceSaveDto performanceSaveDto) {

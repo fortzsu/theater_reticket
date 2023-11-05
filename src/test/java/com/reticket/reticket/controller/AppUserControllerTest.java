@@ -132,7 +132,7 @@ public class AppUserControllerTest {
         HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.withBasicAuth("reticket23@gmail.com", "test")
                 .postForEntity("/api/appUser/saveGuest", request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
     @Test
     public void testSaveGuest_withNoUser_200() {
@@ -141,7 +141,7 @@ public class AppUserControllerTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<GuestUserSaveDto> request = new HttpEntity<>(dto, headers);
         ResponseEntity<String> result = template.postForEntity("/api/appUser/saveGuest", request, String.class);
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
 
     @Test

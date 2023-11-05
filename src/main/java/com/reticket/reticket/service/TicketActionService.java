@@ -28,13 +28,11 @@ public class TicketActionService {
     }
 
     private void addTicketsToAppUser(AppUser appUser, TicketActionDto ticketActionDto) {
-        if (appUser != null) {
-            for (Long ticketId : ticketActionDto.getTicketId()) {
-                Ticket ticket = this.ticketService.findByTicketId(ticketId);
-                ticket.setAppUser(appUser);
-                searchTicketActionPath(ticketActionDto, ticket);
-                createTicketActionFollower(appUser, ticket);
-            }
+        for (Long ticketId : ticketActionDto.getTicketId()) {
+            Ticket ticket = this.ticketService.findByTicketId(ticketId);
+            ticket.setAppUser(appUser);
+            searchTicketActionPath(ticketActionDto, ticket);
+            createTicketActionFollower(appUser, ticket);
         }
     }
 

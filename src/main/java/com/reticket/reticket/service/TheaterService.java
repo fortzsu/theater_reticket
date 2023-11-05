@@ -9,6 +9,7 @@ import com.reticket.reticket.dto.list.ListTheatersDto;
 import com.reticket.reticket.dto.report_search.PageableDto;
 import com.reticket.reticket.dto.save.TheaterSaveDto;
 import com.reticket.reticket.dto.wrapper.ListWrapper;
+import com.reticket.reticket.exception.TheaterNotFoundException;
 import com.reticket.reticket.repository.AddressRepository;
 import com.reticket.reticket.repository.AuditoriumRepository;
 import com.reticket.reticket.repository.TheaterRepository;
@@ -36,7 +37,7 @@ public class TheaterService {
     }
 
     private void updateValues(Theater theater, TheaterSaveDto theatreSaveDto) {
-        if(checkIfTheatreNameIsNotTaken(theatreSaveDto.getTheatreName())) {
+        if (checkIfTheatreNameIsNotTaken(theatreSaveDto.getTheatreName())) {
             theater.setTheaterName(theatreSaveDto.getTheatreName());
             theater.setCapacity(0);
             theater.setIsArchived(false);
@@ -50,7 +51,11 @@ public class TheaterService {
 
     public Theater findById(Long id) {
         Optional<Theater> opt = theaterRepository.findById(id);
-        return opt.orElse(null);
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            throw new TheaterNotFoundException();
+        }
     }
 
     public ListWrapper<ListTheatersDto> listTheaters(PageableDto dto) {
@@ -80,16 +85,21 @@ public class TheaterService {
     }
 
     public void update(TheaterSaveDto theatreSaveDto, String theaterName) {
-        Theater theater = this.theaterRepository.findTheaterByTheaterName(theaterName);
-        if(theater != null) {
-            this.updateValues(theater, theatreSaveDto);
-        }
+        Theater theater = findTheaterByTheaterName(theaterName);
+        this.updateValues(theater, theatreSaveDto);
     }
 
     public void delete(String theaterName) {
+        Theater theater = findTheaterByTheaterName(theaterName);
+        theater.setIsArchived(true);
+    }
+
+    private Theater findTheaterByTheaterName(String theaterName) {
         Theater theater = this.theaterRepository.findTheaterByTheaterName(theaterName);
-        if(theater != null) {
-            theater.setIsArchived(true);
+        if (theater != null) {
+            return theater;
+        } else {
+            throw new TheaterNotFoundException();
         }
     }
 
