@@ -26,15 +26,15 @@ The application could be tried out with Postman or the tests.
 Project is: _in progress_ 
 
 ## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
 
 Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
+- Testing structure nedds to be revied
+- Break down large classes into smaller ones
+- Outsource code duplications into separated classes/methods
 
 To do:
-- Feature to be added 1
-- Feature to be added 2
+- Validation
+- Frontend (Angular)
 
 
 
