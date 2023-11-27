@@ -14,9 +14,9 @@
 - Spring Boot - version 3.0.6
 
 ## Features
-- Export report data to Google Sheets with Google API
-- Authorization with OAuth 2.0
-- Report queries and searching with JPA Criteria Queries
+- Authorization and authentication with OAuth 2.0 and Google API
+- Export report data to Google Sheets
+- Reporting and search queries with JPA Criteria Queries
 
 
 ## Usage
