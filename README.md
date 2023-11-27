@@ -5,8 +5,8 @@
 
 
 ## General Information
-- ReTicket application is a ticket handler application, where the users (employees and visitors) could reserve, buy and resell tickets.
-- The employees have extended functions like reporting and managing visitor user accounts, creating new plays and performances.
+- This is currently a backend application for (event)ticket handling, where the users (employees and visitors) could reserve, buy and resell tickets.
+- The employees have access to extended functions like reporting and managing visitor user accounts, creating new plays and performances.
 - This is a project for practicing Java/Spring Boot/SQL and expand my horizon with other technologies.
 
 ## Technologies Used
