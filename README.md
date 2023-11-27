@@ -12,23 +12,18 @@
 ## Technologies Used
 - Java - version 17
 - Spring Boot - version 3.0.6
+- JUnit - version 4.13.2
 
 ## Features
 - Authorization and authentication with OAuth 2.0 and Google API
 - Export report data to Google Sheets
 - Reporting and search queries with JPA Criteria Queries
 
-
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
-
+The application could be tried out with Postman or the tests.
 
 ## Project Status
 Project is: _in progress_ 
-
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
