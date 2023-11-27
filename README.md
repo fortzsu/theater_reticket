@@ -10,8 +10,8 @@
 - This is a project for practicing Java/Spring Boot/SQL and expand my horizon with other technologies.
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
+- Java - version 17
+- Spring Boot - version 3.0.6
 
 ## Features
 List the ready features here:
