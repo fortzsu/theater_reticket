@@ -5,52 +5,36 @@
 
 
 ## General Information
-- Provide general information about your project here.
-- What is the purpose of your project?
+- This is currently a backend application for (event)ticket handling, where the users (employees and visitors) could reserve, buy and resell tickets.
+- The employees have access to extended functions like reporting and managing visitor user accounts, creating new plays and performances.
+- This is a project for practicing Java/Spring Boot/SQL and expand my horizon with other technologies.
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
+- Java - version 17
+- Spring Boot - version 3.0.6
+- JUnit - version 4.13.2
 
 ## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
-
-
-## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
-
-
-## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
-
-Proceed to describe how to install / setup one's local environment / get started with the project.
-
+- Authorization and authentication with OAuth 2.0 and Google API
+- Export report data to Google Sheets
+- Reporting and search queries with JPA Criteria Queries
 
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
-
+The application could be try out with Postman or the tests.
 
 ## Project Status
 Project is: _in progress_ 
 
-
 ## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
 
 Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
+- Testing structure need to be revised
+- Break down large classes into smaller ones
+- Outsource code duplications into separated classes/methods
 
 To do:
-- Feature to be added 1
-- Feature to be added 2
+- Validation
+- Frontend (Angular)
 
 
 
