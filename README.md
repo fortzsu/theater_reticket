@@ -20,7 +20,7 @@
 - Reporting and search queries with JPA Criteria Queries
 
 ## Usage
-The application could be tried out with Postman or the tests.
+The application could be try out with Postman or the tests.
 
 ## Project Status
 Project is: _in progress_ 
@@ -28,7 +28,7 @@ Project is: _in progress_
 ## Room for Improvement
 
 Room for improvement:
-- Testing structure nedds to be revied
+- Testing structure need to be revised
 - Break down large classes into smaller ones
 - Outsource code duplications into separated classes/methods
 
