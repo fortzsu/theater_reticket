@@ -14,10 +14,9 @@
 - Spring Boot - version 3.0.6
 
 ## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- Export report data to Google Sheets with Google API
+- Authorization with OAuth 2.0
+- Report queries and searching with JPA Criteria Queries
 
 
 ## Usage
