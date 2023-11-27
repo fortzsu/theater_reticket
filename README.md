@@ -5,8 +5,9 @@
 
 
 ## General Information
-- Provide general information about your project here.
-- What is the purpose of your project?
+- ReTicket application is a ticket handler application, where the users (employees and visitors) could reserve, buy and resell tickets.
+- The employees have extended functions like reporting and managing visitor user accounts, creating new plays and performances.
+- This is a project for practicing Java/Spring Boot/SQL and expand my horizon with other technologies.
 
 ## Technologies Used
 - Tech 1 - version 1.0
@@ -17,17 +18,6 @@ List the ready features here:
 - Awesome feature 1
 - Awesome feature 2
 - Awesome feature 3
-
-
-## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
-
-
-## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
-
-Proceed to describe how to install / setup one's local environment / get started with the project.
 
 
 ## Usage
