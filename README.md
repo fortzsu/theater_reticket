@@ -4,14 +4,15 @@
 
 
 ## General Information
-- This is currently a backend application for (event)ticket handling, where the users (employees and visitors) could reserve, buy and resell tickets.
-- The employees have access to extended functions like reporting and managing visitor user accounts, creating new plays and performances.
+- This is currently a backend application for (event)ticket handling, where the users (admins and visitors) could reserve, buy and resell tickets.
+- The employees have access to extended functions like reporting and managing visitor user accounts, creating events (e.g. plays and performances).
 - This is a project for practicing Java/Spring Boot/SQL and expand my horizon with other technologies.
 
 ## Technologies Used
 - Java - version 17
 - Spring Boot - version 3.0.6
 - JUnit - version 4.13.2
+- Maven - version 3.11.0
 
 ## Features
 - Authorization and authentication with OAuth 2.0 and Google API
@@ -19,7 +20,7 @@
 - Reporting and search queries with JPA Criteria Queries
 
 ## Usage
-The application could be try out with Postman or the tests.
+The application could be tried out with Postman or run by tests.
 
 ## Project Status
 Project is: _in progress_ 
@@ -27,7 +28,7 @@ Project is: _in progress_
 ## Room for Improvement
 
 Room for improvement:
-- Testing structure need to be revised
+- Revise testing structure
 - Break down large classes into smaller ones
 - Outsource code duplications into separated classes/methods
 
