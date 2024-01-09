@@ -5,7 +5,7 @@
 
 ## General Information
 - This is currently a backend application for (event)ticket handling, where the users (admins and visitors) could reserve, buy and resell tickets.
-- The employees have access to extended functions like reporting and managing visitor user accounts, creating events (e.g. plays and performances).
+- The admins have access to extended functions like reporting and managing visitor user accounts, creating events (e.g. plays and performances).
 - This is a project for practicing Java/Spring Boot/SQL and expand my horizon with other technologies.
 
 ## Technologies Used
