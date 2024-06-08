@@ -21,7 +21,6 @@
 
 ## Usage
 The application runs on localhost, could be tried out with Postman or **by running tests**. 
-Due to authentication, access is needed or: reticket23@gmail.com/Reticket2023!
 
 ## Project Status
 Project is: _in progress_ 
